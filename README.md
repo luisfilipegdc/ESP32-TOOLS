@@ -8,7 +8,7 @@
 
 <img src="img/splash.jpg" width="400" alt="Splash screen con el ajolote"/>
 
-**By PepeAngell** · [Instagram](https://instagram.com/pepeangelll) · [Facebook](https://www.facebook.com/esp32tools/) · [GitHub](https://github.com/pepeangell5)
+**By PepeAngell** · [Instagram](https://instagram.com/esp32_tools) · [Facebook](https://www.facebook.com/esp32tools/) · [GitHub](https://github.com/pepeangell5)
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform: ESP32](https://img.shields.io/badge/platform-ESP32-red.svg)
@@ -612,7 +612,7 @@ En resumen: puedes usar, modificar y distribuir este código libremente, incluso
 **José Ángel Chávez Félix (PepeAngell)**
 
 - 📧 **Email:** [joseangelchavezfelix@gmail.com](mailto:joseangelchavezfelix@gmail.com)
-- 📸 **Instagram:** [@pepeangelll](https://instagram.com/pepeangelll)
+- 📸 **Instagram:** [@esp32_tools](https://instagram.com/esp32_tools)
 - 📘 **Facebook:** [ESP32-TOOLS](https://www.facebook.com/esp32tools/)
 - 🐙 **GitHub:** [@pepeangell5](https://github.com/pepeangell5)
 
