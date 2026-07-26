@@ -156,11 +156,13 @@ Portal cativo completo com AP falso + DNS spoofing + servidor HTTP. Quando um di
 - 🟢 **Modo SIMPLE** — AP fixo com um de 10 SSIDs predefinidos (`INFINITUM_5G_LIBRE`, `TOTALPLAY_INVITADOS`, `Starbucks_Clientes`, `OXXO_WiFi_Gratis`, etc.). Ideal para demos.
 - 🔴 **Modo CLONE + Deauth** — escaneia a rede real, **clona seu SSID e canal**, e simultaneamente dispara ataques deauth contra a rede original para forçar os clientes a reconectar ao clone.
 
-**4 plataformas de phishing:**
+**6 plataformas de phishing:**
 - 📘 Facebook com SVG circular oficial
 - 🟢 Google com logo colorido
 - 📸 Instagram com gradiente + ícone de câmera
 - 🎵 TikTok com logo ciano/magenta
+- ✖️ X (Twitter) com logo oficial, tema escuro
+- 🔴 Netflix com wordmark vermelho
 
 Depois de capturar credenciais, redireciona para `/success`, que rebota para `google.com` para não levantar suspeitas.
 
@@ -584,7 +586,6 @@ Ideias para versões seguintes (pull requests são bem-vindos):
 - [ ] **Case imprimível em 3D** com design dedicado
 - [ ] **Suporte a cartão SD** (log de capturas, export pcap)
 - [ ] **OTA updates** via web (aproveitando o WiFi Config existente)
-- [ ] **Mais plataformas no Evil Portal** (Twitter/X, Netflix, bancos)
 
 ### ✅ Concluído na v2.0
 
@@ -596,6 +597,7 @@ Ideias para versões seguintes (pull requests são bem-vindos):
 - [x] WiFi Config persistente com teclado virtual
 - [x] Seletor manual de timezone em `Settings` (com fusos do Brasil)
 - [x] Indicador de bateria no header (opcional — ver abaixo)
+- [x] Mais plataformas no Evil Portal (X/Twitter e Netflix)
 
 ---
 
