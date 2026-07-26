@@ -3,6 +3,7 @@
 #include "Icons.h"
 #include "Pins.h"
 #include "SoundUtils.h"
+#include "Battery.h"
 
 // Handlers das ferramentas existentes (chamadas a partir do carrossel)
 #include "WifiScanner.h"
@@ -145,15 +146,20 @@ static int currentEntry = 0;
 //  HELPERS DE DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Desenha o header com contador "< X/N >" à direita
+// Desenha o header com contador "< X/N >" à direita.
+// Se o monitor de bateria estiver habilitado, o indicador vai no canto
+// superior-direito e o contador é deslocado para a esquerda dele.
 static void drawMainHeader() {
     tft.fillRect(1, 1, 318, 28, TFT_BLACK);
     drawStringBig(10, 8, "ESP32-TOOLS", UI_MAIN, 1);
 
+    int battW = batteryIndicatorWidth();   // 0 quando desabilitado
+    if (battW > 0) drawBatteryIndicator(320 - battW, 9);
+
     String counter = "< " + String(currentEntry + 1) + "/" +
                      String(MAIN_COUNT) + " >";
     int w = getTextWidth(counter, 1);
-    drawStringCustom(315 - w, 12, counter, UI_ACCENT, 1);
+    drawStringCustom(315 - battW - w, 12, counter, UI_ACCENT, 1);
 
     tft.drawFastHLine(0, 30, 320, UI_ACCENT);
 }

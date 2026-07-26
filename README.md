@@ -326,6 +326,15 @@ Lista de componentes para replicar este projeto. Tudo conseguível no México pe
 - Cabos jumper dupont (fêmea-macho, macho-macho)
 - Pin headers 2.54mm
 - Case impresso em 3D (pendente para uma versão futura)
+- **Monitor de bateria** — 2× resistores de 100kΩ formando um divisor de tensão da bateria ao **GPIO 36**
+
+#### 🔋 Habilitando o indicador de bateria
+
+O firmware já traz um indicador de bateria no header do menu principal, mas ele vem **desligado por padrão** (sem o divisor, o GPIO 36 fica flutuando e mostraria valores falsos). Para ativar:
+
+1. Monte um divisor de tensão com **2× 100kΩ**: bateria (+) → 100kΩ → **GPIO 36** → 100kΩ → GND. Isso entrega metade da tensão da bateria (LiPo de 4,2 V → ~2,1 V) ao ADC do ESP32.
+2. Em `include/Pins.h`, mude `#define BATTERY_MONITOR_ENABLED 0` para `1`.
+3. Recompile e grave. O ícone de bateria (verde/amarelo/vermelho conforme o nível) aparece no canto superior direito do menu.
 
 ---
 
@@ -572,11 +581,9 @@ O firmware usa detecção de pressionar curto vs. segurar para distinguir seleç
 Ideias para versões seguintes (pull requests são bem-vindos):
 
 - [ ] **PMKID Attack** para captura de hashes WPA2
-- [ ] **Indicador de bateria** em todos os headers (requer divisor de tensão com 2x 100kΩ no GPIO 36)
 - [ ] **Case imprimível em 3D** com design dedicado
 - [ ] **Suporte a cartão SD** (log de capturas, export pcap)
 - [ ] **OTA updates** via web (aproveitando o WiFi Config existente)
-- [ ] **Seletor manual de timezone** em Settings (para casos em que a geolocalização por IP falha)
 - [ ] **Mais plataformas no Evil Portal** (Twitter/X, Netflix, bancos)
 
 ### ✅ Concluído na v2.0
@@ -587,6 +594,8 @@ Ideias para versões seguintes (pull requests são bem-vindos):
 - [x] Screensaver com animação do axolote
 - [x] Relógio com NTP + clima ao vivo
 - [x] WiFi Config persistente com teclado virtual
+- [x] Seletor manual de timezone em `Settings` (com fusos do Brasil)
+- [x] Indicador de bateria no header (opcional — ver abaixo)
 
 ---
 
