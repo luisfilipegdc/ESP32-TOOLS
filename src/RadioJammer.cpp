@@ -152,7 +152,7 @@ static void runChannelJammer() {
         tft.fillRect(1, 1, 318, 42, hdrBg);
 
         if (attackMode == 0)
-            drawStringCustom(10, 10, "CANAL FIJO", TFT_BLACK, 3);
+            drawStringCustom(10, 10, "CANAL FIXO", TFT_BLACK, 3);
         else if (attackMode == 1)
             drawStringCustom(10, 10, "TURBO JAM!", TFT_WHITE, 3);
         else
@@ -175,10 +175,10 @@ static void runChannelJammer() {
         if (attackMode == 0) {
             drawStringCustom(10, 115, "OK: TURBO → WIDE → OFF", UI_ACCENT, 1);
         } else if (attackMode == 1) {
-            drawStringCustom(10, 115, "500 pkt/iter canal exacto", TFT_RED, 1);
-            drawStringCustom(10, 132, "Maxima densidad. 1 canal.", TFT_RED, 1);
+            drawStringCustom(10, 115, "500 pkt/iter canal exato", TFT_RED, 1);
+            drawStringCustom(10, 132, "Maxima densidade. 1 canal.", TFT_RED, 1);
         } else {
-            drawStringCustom(10, 115, "100 pkt x 5 canales (+/-2)", TFT_ORANGE, 1);
+            drawStringCustom(10, 115, "100 pkt x 5 canais (+/-2)", TFT_ORANGE, 1);
             drawStringCustom(10, 132, "Cubre ~10 MHz de ancho.", TFT_ORANGE, 1);
         }
 
@@ -195,7 +195,7 @@ static void runChannelJammer() {
         if (attackMode == 0)
             drawStringCustom(5, 220, "UP/DOWN:CANAL/NAV  OK:SELEC", UI_ACCENT, 1);
         else
-            drawStringCustom(5, 220, "UP/DOWN:CANAL  OK:CAMBIAR MODO", UI_ACCENT, 1);
+            drawStringCustom(5, 220, "UP/DOWN:CANAL  OK:TROCAR MODO", UI_ACCENT, 1);
     };
 
     redraw();
@@ -269,15 +269,15 @@ static void runSweepJammer() {
         tft.drawRect(0, 0, 320, 240, TFT_WHITE);
 
         tft.fillRect(1, 1, 318, 42, isAttacking ? TFT_RED : TFT_WHITE);
-        drawStringCustom(10, 10, isAttacking ? "BARRIDO ACTIVO" : "BARRIDO TOTAL",
+        drawStringCustom(10, 10, isAttacking ? "VARREDURA ATIVA" : "BARRIDO TOTAL",
                          isAttacking ? TFT_WHITE : TFT_BLACK, 2);
 
         if (isAttacking) {
             drawStringCustom(10, 55, "WiFi CH1-13 + Bluetooth", TFT_RED, 2);
-            drawStringCustom(10, 80, String(sweep_total) + " canales en bucle", TFT_YELLOW, 2);
+            drawStringCustom(10, 80, String(sweep_total) + " canais em loop", TFT_YELLOW, 2);
         } else {
             drawStringCustom(10, 55, "WiFi 2.4GHz + Bluetooth", TFT_WHITE, 2);
-            drawStringCustom(10, 80, "ESTADO: LISTO", TFT_GREEN, 2);
+            drawStringCustom(10, 80, "ESTADO: PRONTO", TFT_GREEN, 2);
 
             uint16_t iBg = (sel == 0) ? TFT_WHITE : TFT_BLACK;
             tft.fillRect(5, 115, 140, 30, iBg);
@@ -353,8 +353,8 @@ static void drawModeMenu(int sel) {
 
     tft.fillRect(10, 52,  300, 46, sel == 0 ? TFT_WHITE : TFT_BLACK);
     tft.drawRect( 10, 52,  300, 46, TFT_WHITE);
-    drawStringCustom(20, 58,  "1. CANAL FIJO",          sel == 0 ? TFT_BLACK : TFT_WHITE, 2);
-    drawStringCustom(20, 82,  "TURBO o WIDE por canal",  sel == 0 ? TFT_BLACK : UI_ACCENT, 1);
+    drawStringCustom(20, 58,  "1. CANAL FIXO",          sel == 0 ? TFT_BLACK : TFT_WHITE, 2);
+    drawStringCustom(20, 82,  "TURBO ou WIDE por canal",  sel == 0 ? TFT_BLACK : UI_ACCENT, 1);
 
     tft.fillRect(10, 106, 300, 46, sel == 1 ? TFT_WHITE : TFT_BLACK);
     tft.drawRect( 10, 106, 300, 46, TFT_WHITE);

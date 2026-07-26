@@ -123,22 +123,22 @@ static bool showDisclaimer() {
     tft.drawFastHLine(0, 46, 320, TFT_RED);
 
     int y = 54;
-    drawStringCustom(10, y, "Esta herramienta desconecta",   UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "dispositivos de su red WiFi.",  UI_MAIN, 1); y += 20;
+    drawStringCustom(10, y, "Esta ferramenta desconecta",   UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "dispositivos da sua rede WiFi.",  UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "USO LEGAL:",                     TFT_GREEN, 1); y += 12;
-    drawStringCustom(20, y, "- Tu red propia",                UI_ACCENT, 1); y += 12;
-    drawStringCustom(20, y, "- Red con permiso del dueño",    UI_ACCENT, 1); y += 18;
+    drawStringCustom(20, y, "- Sua propria rede",                UI_ACCENT, 1); y += 12;
+    drawStringCustom(20, y, "- Rede com permissao do dono",    UI_ACCENT, 1); y += 18;
 
     drawStringCustom(10, y, "USO ILEGAL:",                    TFT_RED, 1); y += 12;
-    drawStringCustom(20, y, "- Redes ajenas sin permiso",     UI_ACCENT, 1); y += 12;
+    drawStringCustom(20, y, "- Redes alheias sem permissao",     UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- Servicios criticos / medicos", UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- Empresas / gobierno",          UI_ACCENT, 1); y += 18;
 
     drawStringCustom(10, y, "Violacion = delito federal.",    TFT_RED, 1);
 
     tft.drawFastHLine(0, 212, 320, TFT_RED);
-    drawStringCustom(10, 220, "OK: ENTIENDO   UP/DN: SALIR",  UI_ACCENT, 1);
+    drawStringCustom(10, 220, "OK: ENTENDI   UP/DN: SAIR",  UI_ACCENT, 1);
 
     while (true) {
         if (digitalRead(BTN_OK) == LOW) {
@@ -376,10 +376,10 @@ static bool confirmRambo() {
     tft.drawFastHLine(0, 48, 320, TFT_RED);
 
     int y = 58;
-    drawStringCustom(10, y, "Atacara TODAS las redes WiFi",   UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "Ataca TODAS as redes WiFi",   UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "cercanas simultaneamente.",       UI_MAIN, 1); y += 20;
 
-    drawStringCustom(10, y, "Rota canales 1, 6 y 11.",         UI_ACCENT, 1); y += 20;
+    drawStringCustom(10, y, "Gira os canais 1, 6 e 11.",         UI_ACCENT, 1); y += 20;
 
     drawStringCustom(10, y, "!! ESTO AFECTA A TERCEROS !!",    TFT_RED, 1); y += 12;
     drawStringCustom(10, y, "!! VECINOS, OFICINAS, ETC !!",    TFT_RED, 1); y += 20;
@@ -437,8 +437,8 @@ static void drawActionMenu(int cursor, const APInfo& ap) {
         "< BACK"
     };
     const char* descs[] = {
-        "Desconecta a todos",
-        "Selecciona target fino",
+        "Desconecta todos",
+        "Seleciona alvo especifico",
         ""
     };
 

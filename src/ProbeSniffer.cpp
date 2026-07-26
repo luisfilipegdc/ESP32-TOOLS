@@ -176,9 +176,9 @@ static void drawList() {
     int total = probeCount;
     if (total == 0) {
         drawStringCustom(60, 100, "Esperando probe requests...", UI_ACCENT, 1);
-        drawStringCustom(50, 115, "Asegurate que haya celulares cerca",
+        drawStringCustom(50, 115, "Garanta que haja celulares perto",
                          UI_ACCENT, 1);
-        drawStringCustom(70, 130, "con WiFi activo y desconectados.",
+        drawStringCustom(70, 130, "com WiFi ativo e desconectados.",
                          UI_ACCENT, 1);
         return;
     }
@@ -359,7 +359,7 @@ void runProbeSniffer() {
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_MAIN);
     drawStringBig(60, 90, "INICIANDO", UI_SELECT, 2);
-    drawStringCustom(80, 130, "Activando modo promiscuo...", UI_ACCENT, 1);
+    drawStringCustom(80, 130, "Ativando modo promiscuo...", UI_ACCENT, 1);
     delay(500);
 
     // ── Setup WiFi promiscuo ────────────────────────────────────────────

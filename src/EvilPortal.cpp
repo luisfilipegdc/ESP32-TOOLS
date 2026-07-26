@@ -249,12 +249,12 @@ static bool showDisclaimer() {
     drawStringCustom(10, y, "credenciales via portal cautivo.",   UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "Uso LEGAL:",                          TFT_GREEN, 1); y += 12;
-    drawStringCustom(20, y, "- Tu red / tus dispositivos",         UI_ACCENT, 1); y += 12;
-    drawStringCustom(20, y, "- Red con permiso del dueno",         UI_ACCENT, 1); y += 18;
+    drawStringCustom(20, y, "- Sua rede / seus dispositivos",         UI_ACCENT, 1); y += 12;
+    drawStringCustom(20, y, "- Rede com permissao do dono",         UI_ACCENT, 1); y += 18;
 
     drawStringCustom(10, y, "Uso ILEGAL:",                         TFT_RED, 1); y += 12;
     drawStringCustom(20, y, "- Enganar a terceros",                UI_ACCENT, 1); y += 12;
-    drawStringCustom(20, y, "- Capturar info sin consentim.",      UI_ACCENT, 1); y += 18;
+    drawStringCustom(20, y, "- Capturar info sem consentim.",      UI_ACCENT, 1); y += 18;
 
     drawStringCustom(10, y, "Phishing es delito grave.",           TFT_RED, 1); y += 12;
     drawStringCustom(10, y, "100% responsabilidad tuya.",          UI_MAIN, 1);
@@ -292,7 +292,7 @@ static void drawMainMenu(int cursor) {
     const char* items[] = {
         "Iniciar Ataque",
         "Ver Logs Capturados",
-        "Borrar Todos los Logs",
+        "Apagar Todos os Logs",
         "< BACK"
     };
 
@@ -307,7 +307,7 @@ static void drawMainMenu(int cursor) {
     int logCount = portalLogCount();
     tft.drawFastHLine(0, 215, 320, UI_ACCENT);
     drawStringCustom(10, 222,
-        "Logs guardados: " + String(logCount) + "/" + String(MAX_LOGS),
+        "Logs salvos: " + String(logCount) + "/" + String(MAX_LOGS),
         UI_ACCENT, 1);
 }
 
@@ -349,7 +349,7 @@ static int selectMode() {
     };
     const char* descs[] = {
         "SSID predefinido",
-        "Clona red real + ataque",
+        "Clona rede real + ataque",
         ""
     };
 
@@ -677,7 +677,7 @@ static void drawDashboardStats() {
                                      String(ago / 3600) + "h ago";
         drawStringCustom(15, 180, "Hace " + agoStr, UI_ACCENT, 1);
     } else {
-        drawStringCustom(15, 155, "(esperando primera captura...)",
+        drawStringCustom(15, 155, "(esperando primeira captura...)",
                          UI_ACCENT, 1);
     }
 }
@@ -809,8 +809,8 @@ static void viewLogs() {
         tft.drawRect(0, 0, 320, 240, UI_MAIN);
         drawStringBig(10, 8, "LOGS", UI_MAIN, 1);
         tft.drawFastHLine(0, 30, 320, UI_ACCENT);
-        drawStringCustom(50, 110, "No hay capturas guardadas.", UI_ACCENT, 1);
-        drawStringCustom(50, 125, "Intenta un ataque primero.", UI_ACCENT, 1);
+        drawStringCustom(50, 110, "Nao ha capturas salvas.", UI_ACCENT, 1);
+        drawStringCustom(50, 125, "Tente um ataque primeiro.", UI_ACCENT, 1);
         drawStringCustom(10, 222, "OK: Back", UI_ACCENT, 1);
         while (digitalRead(BTN_OK) == HIGH) delay(20);
         beep(1800, 40);
@@ -907,12 +907,12 @@ static bool confirmClearLogs() {
     drawCenteredTitle("CONFIRMAR", 20, TFT_RED, 2);
     tft.drawFastHLine(0, 60, 320, TFT_RED);
 
-    drawStringCustom(30, 90,  "Borrar TODOS los logs?", UI_MAIN, 2);
+    drawStringCustom(30, 90,  "Apagar TODOS os logs?", UI_MAIN, 2);
     drawStringCustom(30, 120, "Esta accion no se puede",  UI_ACCENT, 1);
     drawStringCustom(30, 132, "deshacer.",                UI_ACCENT, 1);
 
     tft.drawFastHLine(0, 210, 320, TFT_RED);
-    drawStringCustom(10, 220, "OK: SI BORRAR   UP/DN: CANCELAR", UI_ACCENT, 1);
+    drawStringCustom(10, 220, "OK: SIM APAGAR  UP/DN: CANCELAR", UI_ACCENT, 1);
 
     while (true) {
         if (digitalRead(BTN_OK) == LOW) {

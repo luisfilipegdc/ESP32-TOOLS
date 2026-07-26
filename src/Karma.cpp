@@ -135,22 +135,22 @@ static bool showDisclaimer() {
     tft.drawFastHLine(0, 50, 320, TFT_RED);
 
     int y = 60;
-    drawStringCustom(10, y, "Captura los SSIDs que buscan",   UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "Captura os SSIDs que procuram",   UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "celulares cercanos y los",       UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "anuncia como redes existentes.", UI_MAIN, 1); y += 20;
 
-    drawStringCustom(10, y, "Dispositivos vulnerables se",    UI_ACCENT, 1); y += 12;
-    drawStringCustom(10, y, "conectaran AUTOMATICAMENTE.",    UI_ACCENT, 1); y += 20;
+    drawStringCustom(10, y, "Dispositivos vulneraveis se",    UI_ACCENT, 1); y += 12;
+    drawStringCustom(10, y, "conectarao AUTOMATICAMENTE.",    UI_ACCENT, 1); y += 20;
 
     drawStringCustom(10, y, "Uso LEGAL:",                      TFT_GREEN, 1); y += 12;
     drawStringCustom(20, y, "- Auditorias autorizadas",        UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- Demostraciones controladas",    UI_ACCENT, 1); y += 18;
 
-    drawStringCustom(10, y, "Atacar dispositivos ajenos =",    TFT_RED, 1); y += 12;
+    drawStringCustom(10, y, "Atacar dispositivos alheios =",    TFT_RED, 1); y += 12;
     drawStringCustom(10, y, "delito federal (Art. 211 bis).",  TFT_RED, 1);
 
     tft.drawFastHLine(0, 212, 320, TFT_RED);
-    drawStringCustom(10, 220, "OK: ENTIENDO   UP/DN: SALIR", UI_ACCENT, 1);
+    drawStringCustom(10, 220, "OK: ENTENDI   UP/DN: SAIR", UI_ACCENT, 1);
 
     while (true) {
         if (digitalRead(BTN_OK) == LOW) {
@@ -230,8 +230,8 @@ static bool runProbeCaptureFase() {
     drawStringCustom(10, 42, "Capturando probes...", UI_MAIN, 1);
     drawStringCustom(10, 56, "Duracion: " + String(SCAN_TIME_S) + "s",
                      UI_ACCENT, 1);
-    drawStringCustom(10, 68, "Espera a que celulares cercanos", UI_ACCENT, 1);
-    drawStringCustom(10, 80, "envien probe requests.", UI_ACCENT, 1);
+    drawStringCustom(10, 68, "Espera que celulares proximos", UI_ACCENT, 1);
+    drawStringCustom(10, 80, "enviem probe requests.", UI_ACCENT, 1);
 
     int barX = 10, barY = 105, barW = 300, barH = 14;
     tft.drawRect(barX, barY, barW, barH, UI_ACCENT);
@@ -334,8 +334,8 @@ static void drawAttackFrame() {
     drawStringCustom(10, 42, "SSIDs falsos:", UI_ACCENT, 1);
     drawStringCustom(170, 42, "Beacons:", UI_ACCENT, 1);
     drawStringCustom(10, 95, "Probes captados:", UI_ACCENT, 1);
-    drawStringCustom(10, 145, "Canal actual:", UI_ACCENT, 1);
-    drawStringCustom(10, 175, "SSID transmitiendo:", UI_ACCENT, 1);
+    drawStringCustom(10, 145, "Canal atual:", UI_ACCENT, 1);
+    drawStringCustom(10, 175, "SSID transmitindo:", UI_ACCENT, 1);
 
     tft.drawFastHLine(0, 212, 320, TFT_RED);
     drawStringCustom(10, 220, "OK(HOLD): STOP", TFT_RED, 1);
@@ -489,10 +489,10 @@ void runKarma() {
         drawStringBig(20, 80, "NO PROBES CAUGHT", TFT_RED, 1);
         drawStringCustom(20, 120, "No se capturo ningun probe.", UI_ACCENT, 1);
         drawStringCustom(20, 134, "Causas posibles:", UI_ACCENT, 1);
-        drawStringCustom(30, 148, "- No hay celulares cerca", UI_ACCENT, 1);
-        drawStringCustom(30, 160, "- Estan conectados a redes", UI_ACCENT, 1);
+        drawStringCustom(30, 148, "- Nao ha celulares perto", UI_ACCENT, 1);
+        drawStringCustom(30, 160, "- Estao conectados a redes", UI_ACCENT, 1);
         drawStringCustom(30, 172, "- iPhones modernos no probean", UI_ACCENT, 1);
-        drawStringCustom(20, 220, "OK: Volver", UI_MAIN, 1);
+        drawStringCustom(20, 220, "OK: Voltar", UI_MAIN, 1);
 
         while (digitalRead(BTN_OK) == HIGH) delay(20);
         beep(1500, 60);
@@ -511,9 +511,9 @@ void runKarma() {
     drawStringCustom(180, 78, String(karmaCount), TFT_GREEN, 2);
 
     drawStringCustom(10, 110, "Comenzar a transmitir falsos", UI_MAIN, 1);
-    drawStringCustom(10, 122, "beacons para atraer dispositivos?", UI_MAIN, 1);
+    drawStringCustom(10, 122, "beacons para atrair dispositivos?", UI_MAIN, 1);
 
-    drawStringCustom(10, 150, "Algunos SSIDs detectados:", UI_ACCENT, 1);
+    drawStringCustom(10, 150, "Alguns SSIDs detectados:", UI_ACCENT, 1);
     int show = karmaCount > 4 ? 4 : karmaCount;
     for (int i = 0; i < show; i++) {
         String s = String(karmaSSIDs[i]);

@@ -107,7 +107,7 @@ static bool tryAutoConnect() {
     drawStringBig(10, 8, "WIFI CONFIG", UI_MAIN, 1);
     tft.drawFastHLine(0, 30, 320, UI_ACCENT);
 
-    drawStringCustom(10, 50, "Conectando a red guardada:", UI_MAIN, 1);
+    drawStringCustom(10, 50, "Conectando a rede salva:", UI_MAIN, 1);
     String ssidDisp = ssid;
     if (ssidDisp.length() > 30) ssidDisp = ssidDisp.substring(0, 28) + "..";
     drawStringBig(10, 70, ssidDisp, UI_SELECT, 1);
@@ -188,12 +188,12 @@ static bool tryAutoConnect() {
     // Timeout sin conectar
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, TFT_RED);
-    drawStringBig(40, 70, "FALLO CONEXION", TFT_RED, 2);
-    drawStringCustom(20, 120, "No se pudo conectar a:", UI_MAIN, 1);
+    drawStringBig(40, 70, "FALHA CONEXAO", TFT_RED, 2);
+    drawStringCustom(20, 120, "Nao foi possivel conectar a:", UI_MAIN, 1);
     drawStringCustom(20, 134, ssidDisp, UI_ACCENT, 1);
     drawStringCustom(20, 160, "Posibles causas:", UI_ACCENT, 1);
     drawStringCustom(30, 174, "- Password cambio", UI_ACCENT, 1);
-    drawStringCustom(30, 186, "- Red fuera de alcance", UI_ACCENT, 1);
+    drawStringCustom(30, 186, "- Rede fora de alcance", UI_ACCENT, 1);
     drawStringCustom(20, 215, "OK: elegir otra red", UI_MAIN, 1);
 
     beep(800, 100); delay(50);

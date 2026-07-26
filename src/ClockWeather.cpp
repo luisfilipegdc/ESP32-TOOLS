@@ -98,13 +98,13 @@ static String ianaToPosix(const String& iana, int offsetSec) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 static const char* DAYS_ES[] = {
-    "Domingo", "Lunes", "Martes", "Miercoles",
-    "Jueves", "Viernes", "Sabado"
+    "Domingo", "Segunda", "Terca", "Quarta",
+    "Quinta", "Sexta", "Sabado"
 };
 
 static const char* MONTHS_ES[] = {
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 };
 
 static String formatHHMMSS(struct tm* t) {
@@ -180,20 +180,20 @@ static WeatherIcon weatherCodeToIcon(int code) {
 }
 
 static String weatherCodeToDescES(int code) {
-    if (code == 0) return "Despejado";
-    if (code == 1) return "Mayormente despejado";
+    if (code == 0) return "Limpo";
+    if (code == 1) return "Quase limpo";
     if (code == 2) return "Parcialmente nublado";
     if (code == 3) return "Nublado";
-    if (code == 45 || code == 48) return "Niebla";
-    if (code == 51 || code == 53 || code == 55) return "Llovizna";
-    if (code == 61 || code == 63) return "Lluvia ligera";
-    if (code == 65) return "Lluvia fuerte";
-    if (code == 71 || code == 73 || code == 75) return "Nieve";
-    if (code == 80 || code == 81) return "Chubascos";
-    if (code == 82) return "Chubascos fuertes";
-    if (code == 95) return "Tormenta";
-    if (code >= 96) return "Tormenta granizo";
-    return "Desconocido";
+    if (code == 45 || code == 48) return "Nevoa";
+    if (code == 51 || code == 53 || code == 55) return "Garoa";
+    if (code == 61 || code == 63) return "Chuva leve";
+    if (code == 65) return "Chuva forte";
+    if (code == 71 || code == 73 || code == 75) return "Neve";
+    if (code == 80 || code == 81) return "Pancadas";
+    if (code == 82) return "Pancadas fortes";
+    if (code == 95) return "Tempestade";
+    if (code >= 96) return "Tempestade granizo";
+    return "Desconhecido";
 }
 
 // Dibuja sol
@@ -406,7 +406,7 @@ static void drawLoadingStep(const String& step, int progress) {
     drawStringBig(40, 20, "CLOCK & WEATHER", UI_MAIN, 1);
     tft.drawFastHLine(0, 50, 320, UI_ACCENT);
 
-    drawStringCustom(20, 100, "Cargando...", UI_ACCENT, 1);
+    drawStringCustom(20, 100, "Carregando...", UI_ACCENT, 1);
     drawStringBig(20, 120, step, UI_SELECT, 1);
 
     int barX = 20, barY = 180, barW = 280, barH = 14;
@@ -425,7 +425,7 @@ static void drawMainScreenFrame() {
 
     // City + day indicator (sun/moon)
     drawStringCustom(10, 8, g_city + ", " + g_country, UI_ACCENT, 1);
-    drawStringCustom(260, 8, g_isDay ? "DIA" : "NOCHE", UI_ACCENT, 1);
+    drawStringCustom(260, 8, g_isDay ? "DIA" : "NOITE", UI_ACCENT, 1);
     tft.drawFastHLine(0, 22, 320, UI_ACCENT);
 
     // Separador entre reloj y clima
@@ -487,7 +487,7 @@ static void drawWeather() {
 
     // Sensación térmica
     char feelsBuf[24];
-    snprintf(feelsBuf, sizeof(feelsBuf), "Sensacion: %.0fC", g_feelsLikeC);
+    snprintf(feelsBuf, sizeof(feelsBuf), "Sensacao: %.0fC", g_feelsLikeC);
     drawStringCustom(110, 178, String(feelsBuf), UI_MAIN, 1);
 
     // Descripción del clima
@@ -591,7 +591,7 @@ void runClockWeather() {
     }
 
     // 2. IP geolocation
-    drawLoadingStep("Detectando ubicacion...", 30);
+    drawLoadingStep("Detectando localizacao...", 30);
     bool geoOk = fetchGeolocation();
     if (!geoOk) {
         // Usar fallback
@@ -607,10 +607,10 @@ void runClockWeather() {
     if (!syncNTP()) {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, TFT_RED);
-        drawStringBig(50, 90, "NTP FALLO", TFT_RED, 2);
+        drawStringBig(50, 90, "NTP FALHOU", TFT_RED, 2);
         drawStringCustom(40, 130, "No se pudo sincronizar la hora.",
                          UI_MAIN, 1);
-        drawStringCustom(40, 220, "OK: salir", UI_MAIN, 1);
+        drawStringCustom(40, 220, "OK: sair", UI_MAIN, 1);
         beep(800, 100);
         while (digitalRead(BTN_OK) == HIGH) delay(20);
         while (digitalRead(BTN_OK) == LOW) delay(5);
@@ -620,7 +620,7 @@ void runClockWeather() {
     }
 
     // 4. Weather
-    drawLoadingStep("Obteniendo clima...", 80);
+    drawLoadingStep("Obtendo clima...", 80);
     if (!fetchWeather()) {
         // Default values si falla
         g_tempC = 0;
@@ -631,7 +631,7 @@ void runClockWeather() {
         g_sunset = "19:00";
     }
 
-    drawLoadingStep("Listo!", 100);
+    drawLoadingStep("Pronto!", 100);
     beep(2400, 50); delay(30);
     beep(3000, 50); delay(30);
     beep(3600, 80);

@@ -209,7 +209,7 @@ static void computeWifiChannels() {
         int level = (maxInWindow > avg) ? maxInWindow : avg;
         wifiChanLevels[w - 1] = level;
 
-        // El "mejor canal" es el de menor actividad ponderada total
+        // El "melhor canal" es el de menor actividad ponderada total
         if (weighted < best) {
             best = weighted;
             bestWifiChannel = w;

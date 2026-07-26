@@ -131,7 +131,7 @@ static const char* MODE_NAMES[] = {
     "Mix Total (all)"
 };
 static const char* MODE_DESCS[] = {
-    "40 SSIDs en español",
+    "40 SSIDs em espanhol",
     "Los clasicos de internet",
     "Pone nervioso a cualquiera",
     "Solo emojis y simbolos",
@@ -281,13 +281,13 @@ static bool showDisclaimer() {
     drawStringCustom(10, y, "que aparecen en tu lista WiFi.", UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "No interfiere conexiones reales,", UI_ACCENT, 1); y += 12;
-    drawStringCustom(10, y, "solo agrega redes ficticias.", UI_ACCENT, 1); y += 20;
+    drawStringCustom(10, y, "so adiciona redes ficticias.", UI_ACCENT, 1); y += 20;
 
-    drawStringCustom(10, y, "Usalo con responsabilidad:", UI_MAIN, 1); y += 12;
-    drawStringCustom(20, y, "- Diviertete con amigos", UI_ACCENT, 1); y += 12;
+    drawStringCustom(10, y, "Use com responsabilidade:", UI_MAIN, 1); y += 12;
+    drawStringCustom(20, y, "- Divirta-se com amigos", UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- NO en lugares sensibles", UI_ACCENT, 1); y += 20;
 
-    drawStringCustom(10, y, "Tu eres responsable del uso.", UI_MAIN, 1);
+    drawStringCustom(10, y, "Voce e responsavel pelo uso.", UI_MAIN, 1);
 
     tft.drawFastHLine(0, 210, 320, UI_MAIN);
     drawStringCustom(10, 218, "OK: ACEPTAR   UP/DN: CANCELAR", UI_ACCENT, 1);
