@@ -12,29 +12,29 @@ extern TFT_eSPI tft;
 // ═══════════════════════════════════════════════════════════════════════════
 //  CONFIG
 // ═══════════════════════════════════════════════════════════════════════════
-#define VIEWPORT_TOP    34     // donde empieza el viewport (debajo del header)
-#define VIEWPORT_BOTTOM 218    // donde termina (arriba del footer)
+#define VIEWPORT_TOP    34     // onde começa o viewport (abaixo do header)
+#define VIEWPORT_BOTTOM 218    // onde termina (acima do footer)
 #define SCROLL_STEP     20
 
 static int g_scrollY = 0;
 static int g_maxScroll = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HELPERS DE DIBUJO CON CLIPPING (no dibuja fuera del viewport)
+//  HELPERS DE DESENHO COM CLIPPING (não desenha fora do viewport)
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Dibuja texto SOLO si cae completamente dentro del viewport.
-// Si está parcialmente fuera, no lo dibuja (evita manchar header/footer).
+// Desenha o texto SOMENTE se ele cabe inteiramente dentro do viewport.
+// Se estiver parcialmente fora, não desenha (evita sujar header/footer).
 static void drawScrollableText(int yContent, int x, const String& text,
                                 uint16_t color, int size) {
     int yScreen = VIEWPORT_TOP + (yContent - g_scrollY);
     int textH = (size == 1) ? 7 : (size * 8);
 
-    // Si está completamente fuera del viewport, no dibujar
+    // Se estiver completamente fora do viewport, não desenha
     if (yScreen + textH < VIEWPORT_TOP) return;
     if (yScreen > VIEWPORT_BOTTOM) return;
 
-    // Si está parcialmente fuera, tampoco — evita que se desborde
+    // Se estiver parcialmente fora, também não — evita que vaze
     if (yScreen < VIEWPORT_TOP) return;
     if (yScreen + textH > VIEWPORT_BOTTOM) return;
 
@@ -47,24 +47,24 @@ static void drawScrollableLine(int yContent, uint16_t color) {
     tft.drawFastHLine(15, yScreen, 290, color);
 }
 
-// Ajolote a media escala (48x40). Recorta filas individuales si quedan
-// parcialmente fuera del viewport.
+// Axolote em meia escala (48x40). Recorta linhas individuais se ficarem
+// parcialmente fora do viewport.
 static void drawScrollableAjolote(int yContent) {
     const int W = 48;
     const int H = 40;
     int x = (320 - W) / 2;
     int yBase = VIEWPORT_TOP + (yContent - g_scrollY);
 
-    // Si está completamente fuera, salir
+    // Se estiver completamente fora, sair
     if (yBase + H < VIEWPORT_TOP) return;
     if (yBase > VIEWPORT_BOTTOM) return;
 
-    // Dibujar fila por fila, saltando las que estén fuera del viewport
+    // Desenha linha por linha, pulando as que estão fora do viewport
     int bytesPerRow = AJOLOTE_WIDTH / 8;
     for (int r = 0; r < AJOLOTE_HEIGHT; r += 2) {
         int outY = yBase + r / 2;
-        if (outY < VIEWPORT_TOP) continue;     // arriba del viewport
-        if (outY > VIEWPORT_BOTTOM) break;     // ya pasamos el viewport
+        if (outY < VIEWPORT_TOP) continue;     // acima do viewport
+        if (outY > VIEWPORT_BOTTOM) break;     // já passamos do viewport
 
         for (int byteIdx = 0; byteIdx < bytesPerRow; byteIdx++) {
             uint8_t bits = pgm_read_byte(
@@ -81,23 +81,23 @@ static void drawScrollableAjolote(int yContent) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONTENIDO PRINCIPAL
+//  CONTEÚDO PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawAboutContent() {
-    // Limpiar el viewport (NO el header ni el footer)
+    // Limpa o viewport (NÃO o header nem o footer)
     tft.fillRect(2, VIEWPORT_TOP, 316, VIEWPORT_BOTTOM - VIEWPORT_TOP,
                  TFT_BLACK);
 
-    int y = 5;   // posición Y dentro del contenido virtual
+    int y = 5;   // posição Y dentro do conteúdo virtual
 
     // ─── Título grande ───
     String title = "ESP32-TOOLS";
-    int tw = title.length() * 8 * 3;   // size 3 con FONT_BIG
+    int tw = title.length() * 8 * 3;   // size 3 com FONT_BIG
     drawScrollableText(y, (320 - tw) / 2, title, UI_MAIN, 3);
     y += 32;
 
-    // ─── Versión ───
+    // ─── Versão ───
     String version = String(FW_VERSION);
     int vw = version.length() * 6 * 2;
     drawScrollableText(y, (320 - vw) / 2, version, UI_SELECT, 2);
@@ -106,7 +106,7 @@ static void drawAboutContent() {
     drawScrollableLine(y, UI_ACCENT);
     y += 12;
 
-    // ─── Ajolote (48x40) ───
+    // ─── Axolote (48x40) ───
     drawScrollableAjolote(y);
     y += 50;
 
@@ -130,8 +130,8 @@ static void drawAboutContent() {
     drawScrollableLine(y, UI_ACCENT);
     y += 14;
 
-    // ─── Redes sociales ───
-    drawScrollableText(y, 30, "REDES SOCIALES", UI_MAIN, 1);
+    // ─── Redes sociais ───
+    drawScrollableText(y, 30, "REDES SOCIAIS", UI_MAIN, 1);
     y += 20;
 
     drawScrollableText(y, 30, "IG:", TFT_CYAN, 2);
@@ -151,7 +151,7 @@ static void drawAboutContent() {
 
     // ─── Boot count ───
     int boots = nvsGetInt("boot_cnt", 0);
-    String bootText = "Booteado " + String(boots) + " veces";
+    String bootText = "Iniciado " + String(boots) + " vezes";
     int bw = bootText.length() * 6;
     drawScrollableText(y, (320 - bw) / 2, bootText, UI_ACCENT, 1);
     y += 18;
@@ -159,25 +159,25 @@ static void drawAboutContent() {
     drawScrollableLine(y, UI_ACCENT);
     y += 14;
 
-    // ─── Quote / filosofía ───
-    drawScrollableText(y, 30, "\"El conocimiento", TFT_GREEN, 2);
+    // ─── Citação / filosofia ───
+    drawScrollableText(y, 30, "\"O conhecimento", TFT_GREEN, 2);
     y += 22;
-    drawScrollableText(y, 30, "debe ser libre.\"", TFT_GREEN, 2);
+    drawScrollableText(y, 30, "deve ser livre.\"", TFT_GREEN, 2);
     y += 32;
 
     drawScrollableText(y, 80, "HECHO", UI_ACCENT, 1);
     y += 12;
-    drawScrollableText(y, 100, "EN MÉXICO", UI_ACCENT, 1);
+    drawScrollableText(y, 100, "NO MÉXICO", UI_ACCENT, 1);
     y += 25;
 
-    // Calcular max scroll
+    // Calcula o max scroll
     int viewportH = VIEWPORT_BOTTOM - VIEWPORT_TOP;
     g_maxScroll = y - viewportH;
     if (g_maxScroll < 0) g_maxScroll = 0;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HEADER Y FOOTER (se redibujan SIEMPRE encima para evitar manchas)
+//  HEADER E FOOTER (redesenhados SEMPRE por cima para evitar manchas)
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawHeader() {
@@ -191,20 +191,20 @@ static void drawFooter() {
     tft.fillRect(0, VIEWPORT_BOTTOM, 320, 240 - VIEWPORT_BOTTOM, TFT_BLACK);
     tft.drawFastHLine(2, VIEWPORT_BOTTOM, 316, UI_ACCENT);
 
-    // Re-dibujar bordes laterales por si se mancharon
+    // Redesenha as bordas laterais caso tenham sido sujas
     tft.drawFastVLine(0, 0, 240, UI_MAIN);
     tft.drawFastVLine(319, 0, 240, UI_MAIN);
     tft.drawFastHLine(0, 239, 320, UI_MAIN);
 
     if (g_maxScroll > 0) {
         if (g_scrollY == 0) {
-            drawStringCustom(10, 226, "DOWN: VER MAS  OK: VOLVER",
+            drawStringCustom(10, 226, "DOWN: VER MAIS  OK: VOLTAR",
                              UI_ACCENT, 1);
         } else if (g_scrollY >= g_maxScroll) {
-            drawStringCustom(10, 226, "UP: SUBIR  OK: VOLVER",
+            drawStringCustom(10, 226, "UP: SUBIR  OK: VOLTAR",
                              UI_ACCENT, 1);
         } else {
-            drawStringCustom(10, 226, "UP/DN: SCROLL  OK: VOLVER",
+            drawStringCustom(10, 226, "UP/DN: SCROLL  OK: VOLTAR",
                              UI_ACCENT, 1);
         }
 
@@ -219,23 +219,23 @@ static void drawFooter() {
         if (g_maxScroll > 0) {
             barY = trackTop + (g_scrollY * (trackH - barH)) / g_maxScroll;
         }
-        // Limpiar track antes
+        // Limpa o track antes
         tft.fillRect(310, trackTop, 6, trackH, TFT_BLACK);
         tft.drawFastVLine(312, trackTop, trackH, UI_ACCENT);
         tft.fillRect(310, barY, 5, barH, UI_SELECT);
     } else {
-        drawStringCustom(110, 226, "OK: VOLVER", UI_ACCENT, 1);
+        drawStringCustom(110, 226, "OK: VOLTAR", UI_ACCENT, 1);
     }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  REDIBUJADO COMPLETO (orden importante: contenido → header → footer)
+//  REDESENHO COMPLETO (ordem importa: conteúdo → header → footer)
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void redrawAll() {
-    drawAboutContent();    // 1. contenido scrolleable (puede manchar bordes)
-    drawHeader();          // 2. header encima → tapa cualquier mancha arriba
-    drawFooter();          // 3. footer encima → tapa cualquier mancha abajo
+    drawAboutContent();    // 1. conteúdo rolável (pode sujar as bordas)
+    drawHeader();          // 2. header por cima → cobre manchas em cima
+    drawFooter();          // 3. footer por cima → cobre manchas embaixo
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -248,7 +248,7 @@ void runAbout() {
 
     g_scrollY = 0;
 
-    // Beep de entrada (jingle de credits)
+    // Beep de entrada (jingle dos créditos)
     beep(2400, 60); delay(40);
     beep(3000, 60); delay(40);
     beep(3600, 100);

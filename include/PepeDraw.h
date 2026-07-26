@@ -5,11 +5,11 @@
 #include <TFT_eSPI.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PEPE-DRAW v2  ·  Librería de renderizado de texto bitmap
-//  · 2 fuentes propias: SMALL (5x7) y BIG (8x12)
-//  · Ancho variable por carácter (kerning real)
+//  PEPE-DRAW v2  ·  Biblioteca de renderização de texto bitmap
+//  · 2 fontes próprias: SMALL (5x7) e BIG (8x12)
+//  · Largura variável por caractere (kerning real)
 //  · Descenders reales (g j p q y)
-//  · Soporte español: á é í ó ú ü ñ Ñ Á É Í Ó Ú Ü ¿ ¡
+//  · Suporte a espanhol: á é í ó ú ü ñ Ñ Á É Í Ó Ú Ü ¿ ¡
 //  · UTF-8 aware
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -18,18 +18,18 @@
 #define UI_BG      TFT_BLACK
 #define UI_ACCENT  0x7BEF   // Gris
 #define UI_CURSOR  TFT_WHITE
-#define UI_SELECT  0xFA20   // Naranja-rojo fuerte (highlight al seleccionar)
+#define UI_SELECT  0xFA20   // Laranja-vermelho forte (highlight ao selecionar)
 
 extern TFT_eSPI tft;
 
-// ── Tipos de fuente ───────────────────────────────────────────────────────
+// ── Tipos de fonte ───────────────────────────────────────────────────────
 enum FontType {
-    FONT_SMALL = 0,   // 5 ancho × 7 alto (compacta, legible)
-    FONT_BIG   = 1    // 8 ancho × 12 alto (titulares, headers)
+    FONT_SMALL = 0,   // 5 largura × 7 altura (compacta, legível)
+    FONT_BIG   = 1    // 8 largura × 12 altura (títulos, headers)
 };
 
 // ───────────────────────────────────────────────────────────────────────────
-//  API compatible hacia atrás (no rompe código existente)
+//  API retrocompatível (não quebra código existente)
 //  drawCharCustom / drawStringCustom → usan FONT_SMALL internamente
 // ───────────────────────────────────────────────────────────────────────────
 void drawCharCustom(int x, int y, char c, uint16_t color, int size);
@@ -39,20 +39,20 @@ void drawStringCustom(int x, int y, String txt, uint16_t color, int size);
 //  API nueva
 // ───────────────────────────────────────────────────────────────────────────
 
-// Dibuja con fuente BIG (8x12)
+// Desenha com a fonte BIG (8x12)
 void drawStringBig(int x, int y, const String& txt, uint16_t color, int size);
 
-// Calcula el ancho en píxeles de un texto (útil para centrar o alinear)
+// Calcula a largura em pixels de um texto (útil para centralizar ou alinhar)
 int  getTextWidth(const String& txt, int size, FontType font = FONT_SMALL);
 
-// Altura en píxeles de la fuente (para calcular posiciones verticales)
+// Altura em pixels da fonte (para calcular posições verticais)
 int  getFontHeight(int size, FontType font = FONT_SMALL);
 
-// Dibuja centrado horizontalmente en la pantalla (ancho 320)
+// Desenha centralizado horizontalmente na tela (largura 320)
 void drawStringCentered(int y, const String& txt, uint16_t color,
                         int size, FontType font = FONT_SMALL);
 
-// Dibuja alineado a la derecha (xRight = borde derecho del texto)
+// Desenha alinhado à direita (xRight = borda direita do texto)
 void drawStringRight(int xRight, int y, const String& txt, uint16_t color,
                      int size, FontType font = FONT_SMALL);
 

@@ -94,7 +94,7 @@ static String encTypeStr(wifi_auth_mode_t auth) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA: AUTO-CONNECT (intenta credenciales guardadas)
+//  TELA: AUTO-CONNECT (tenta as credenciais salvas)
 // ═══════════════════════════════════════════════════════════════════════════
 
 static bool tryAutoConnect() {
@@ -107,7 +107,7 @@ static bool tryAutoConnect() {
     drawStringBig(10, 8, "WIFI CONFIG", UI_MAIN, 1);
     tft.drawFastHLine(0, 30, 320, UI_ACCENT);
 
-    drawStringCustom(10, 50, "Conectando a red guardada:", UI_MAIN, 1);
+    drawStringCustom(10, 50, "Conectando a rede salva:", UI_MAIN, 1);
     String ssidDisp = ssid;
     if (ssidDisp.length() > 30) ssidDisp = ssidDisp.substring(0, 28) + "..";
     drawStringBig(10, 70, ssidDisp, UI_SELECT, 1);
@@ -133,7 +133,7 @@ static bool tryAutoConnect() {
     while (millis() - start < AUTOCONNECT_TIMEOUT) {
         wl_status_t st = WiFi.status();
         if (st == WL_CONNECTED) {
-            // Limpiar spinner y mostrar éxito
+            // Limpa o spinner e mostra sucesso
             tft.fillScreen(TFT_BLACK);
             tft.drawRect(0, 0, 320, 240, UI_MAIN);
             drawStringBig(10, 8, "WIFI CONFIG", UI_MAIN, 1);
@@ -156,7 +156,7 @@ static bool tryAutoConnect() {
         int fw = (int)((barW - 2) * p);
         tft.fillRect(barX + 1, barY + 1, fw, barH - 2, UI_SELECT);
 
-        // Animación spinner (asterisco rotando)
+        // Animação do spinner (asterisco girando)
         const char* frames[] = {"|", "/", "-", "\\"};
         tft.fillRect(spinX, spinY, 16, 16, TFT_BLACK);
         drawStringBig(spinX, spinY, String(frames[spinFrame]), UI_MAIN, 2);
@@ -185,15 +185,15 @@ static bool tryAutoConnect() {
         return false;   // user wants to pick another network
     }
 
-    // Timeout sin conectar
+    // Timeout sem conectar
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, TFT_RED);
-    drawStringBig(40, 70, "FALLO CONEXION", TFT_RED, 2);
-    drawStringCustom(20, 120, "No se pudo conectar a:", UI_MAIN, 1);
+    drawStringBig(40, 70, "FALHA CONEXAO", TFT_RED, 2);
+    drawStringCustom(20, 120, "Nao foi possivel conectar a:", UI_MAIN, 1);
     drawStringCustom(20, 134, ssidDisp, UI_ACCENT, 1);
     drawStringCustom(20, 160, "Posibles causas:", UI_ACCENT, 1);
     drawStringCustom(30, 174, "- Password cambio", UI_ACCENT, 1);
-    drawStringCustom(30, 186, "- Red fuera de alcance", UI_ACCENT, 1);
+    drawStringCustom(30, 186, "- Rede fora de alcance", UI_ACCENT, 1);
     drawStringCustom(20, 215, "OK: elegir otra red", UI_MAIN, 1);
 
     beep(800, 100); delay(50);
@@ -206,7 +206,7 @@ static bool tryAutoConnect() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA: SCAN DE REDES
+//  TELA: SCAN DE REDES
 // ═══════════════════════════════════════════════════════════════════════════
 
 struct ScanNet {
@@ -262,7 +262,7 @@ static void scanNetworksFn() {
     scanNetCount = n;
     WiFi.scanDelete();
 
-    // Ordenar por RSSI desc
+    // Ordena por RSSI desc
     for (int i = 0; i < scanNetCount - 1; i++) {
         for (int j = 0; j < scanNetCount - 1 - i; j++) {
             if (scanNetworks[j].rssi < scanNetworks[j + 1].rssi) {
@@ -277,10 +277,10 @@ static void scanNetworksFn() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA: SELECCIÓN DE RED
+//  TELA: SELEÇÃO DE REDE
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Returns: índice elegido o -1 = rescan, -2 = cancel
+// Returns: índice escolhido ou -1 = rescan, -2 = cancel
 static int selectNetwork() {
     int cursor = 0;
     int scrollOffset = 0;
@@ -379,7 +379,7 @@ static int selectNetwork() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONECTAR CON CREDENCIALES NUEVAS
+//  CONECTAR COM CREDENCIAIS NOVAS
 // ═══════════════════════════════════════════════════════════════════════════
 
 static bool connectWithCredentials(const String& ssid, const String& pass) {
@@ -411,7 +411,7 @@ static bool connectWithCredentials(const String& ssid, const String& pass) {
             drawStringCustom(50, 120, ssidDisp, UI_MAIN, 1);
             drawStringCustom(10, 140, "IP:", UI_ACCENT, 1);
             drawStringCustom(50, 140, WiFi.localIP().toString(), UI_MAIN, 1);
-            drawStringCustom(10, 160, "Credenciales guardadas.",
+            drawStringCustom(10, 160, "Credenciais salvas.",
                              TFT_GREEN, 1);
 
             beep(2400, 50); delay(30);
@@ -434,7 +434,7 @@ static bool connectWithCredentials(const String& ssid, const String& pass) {
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, TFT_RED);
     drawStringBig(40, 80, "FALLO", TFT_RED, 2);
-    drawStringCustom(20, 130, "No se pudo conectar.", UI_MAIN, 1);
+    drawStringCustom(20, 130, "Nao foi possivel conectar.", UI_MAIN, 1);
     drawStringCustom(20, 146, "Password incorrecto?", UI_ACCENT, 1);
     drawStringCustom(20, 220, "OK: Reintentar", UI_MAIN, 1);
 
@@ -452,13 +452,13 @@ static bool connectWithCredentials(const String& ssid, const String& pass) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 bool wifiConfigConnect() {
-    // Si ya estamos conectados, retornar true
+    // Se já estamos conectados, retorna true
     if (WiFi.status() == WL_CONNECTED) return true;
 
-    // 1. Intentar autoconexión con credenciales guardadas
+    // 1. Tenta autoconexão com as credenciais salvas
     if (wifiConfigHasSaved()) {
         if (tryAutoConnect()) return true;
-        // Si falló, caemos al flujo de selección manual
+        // Se falhou, caímos no fluxo de seleção manual
     }
 
     // 2. Loop de scan + select + password
@@ -468,8 +468,8 @@ bool wifiConfigConnect() {
         if (scanNetCount == 0) {
             tft.fillScreen(TFT_BLACK);
             tft.drawRect(0, 0, 320, 240, UI_MAIN);
-            drawStringBig(20, 80, "NO HAY REDES", TFT_RED, 1);
-            drawStringCustom(20, 130, "No se encontraron redes WiFi.",
+            drawStringBig(20, 80, "SEM REDES", TFT_RED, 1);
+            drawStringCustom(20, 130, "Nenhuma rede WiFi encontrada.",
                              UI_ACCENT, 1);
             drawStringCustom(20, 220, "OK: reintentar  UP/DN: cancelar",
                              UI_MAIN, 1);
@@ -497,7 +497,7 @@ bool wifiConfigConnect() {
 
         ScanNet& net = scanNetworks[choice];
 
-        // Si la red es OPEN, no necesitamos password
+        // Se a rede é OPEN, não precisamos de password
         String pass = "";
         if (net.auth != WIFI_AUTH_OPEN) {
             pass = virtualKeyboardInput("WIFI PASSWORD",
@@ -505,7 +505,7 @@ bool wifiConfigConnect() {
                                           62,
                                           true);   // mask = true
             if (pass.length() == 0) {
-                // Usuario canceló desde el teclado
+                // Usuário cancelou pelo teclado
                 continue;
             }
         }
@@ -513,6 +513,6 @@ bool wifiConfigConnect() {
         if (connectWithCredentials(net.ssid, pass)) {
             return true;
         }
-        // Si falló, volvemos al loop (otro intento)
+        // Se falhou, voltamos ao loop (outra tentativa)
     }
 }

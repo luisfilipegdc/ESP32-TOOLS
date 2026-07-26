@@ -4,7 +4,7 @@
 #include "SoundUtils.h"
 
 // ═════════════════════════════════════════════════════════════════════════════
-// CONFIGURACIÓN
+// CONFIGURAÇÃO
 // ═════════════════════════════════════════════════════════════════════════════
 #define MAX_NETWORKS     30    // Tope de redes (protege el stack)
 #define VISIBLE_LINES    6     // Líneas visibles en la lista
@@ -21,8 +21,8 @@ struct NetInfo {
 };
 
 // ═════════════════════════════════════════════════════════════════════════════
-// TABLA OUI — Fabricantes comunes en México
-// (formato: 0xAABBCC = primeros 3 bytes de la MAC)
+// TABELA OUI — Fabricantes comuns no México
+// (formato: 0xAABBCC = primeiros 3 bytes da MAC)
 // Cubre routers de Telmex, Totalplay, Megacable, Izzi, AT&T + dispositivos
 // ═════════════════════════════════════════════════════════════════════════════
 struct OuiEntry {
@@ -70,12 +70,12 @@ static const OuiEntry OUI_TABLE[] = {
     {0x0015EB, "ZTE"},      {0x344B50, "ZTE"},      {0xD0154A, "ZTE"},
     {0x4C16F1, "ZTE"},
 
-    // ── TP-Link (retail muy común) ──
+    // ── TP-Link (retail muito comum) ──
     {0x14D864, "TP-Link"},  {0x40ED00, "TP-Link"},  {0x68DDB7, "TP-Link"},
     {0x002719, "TP-Link"},  {0x14CC20, "TP-Link"},  {0x50C7BF, "TP-Link"},
     {0xE894F6, "TP-Link"},  {0xA842A1, "TP-Link"},
 
-    // ── Mercusys (TP-Link económico) ──
+    // ── Mercusys (TP-Link econômico) ──
     {0x50D4F7, "Mercusys"}, {0xB4B024, "Mercusys"},
 
     // ── Xiaomi / Mi Router ──
@@ -107,7 +107,7 @@ static uint32_t macToOui(const String& mac) {
     return (uint32_t) strtoul(buf, nullptr, 16);
 }
 
-// Lookup en la tabla OUI
+// Lookup na tabela OUI
 static String lookupVendor(const String& mac) {
     uint32_t oui = macToOui(mac);
     for (int i = 0; i < OUI_COUNT; i++) {
@@ -116,7 +116,7 @@ static String lookupVendor(const String& mac) {
     return "Unknown";
 }
 
-// Texto legible de encriptación
+// Texto legível de encriptação
 static String authToString(uint8_t type) {
     switch (type) {
         case WIFI_AUTH_OPEN:            return "OPEN";
@@ -131,7 +131,7 @@ static String authToString(uint8_t type) {
     }
 }
 
-// Abreviatura corta (2-3 chars) para la lista
+// Abreviatura curta (2-3 chars) para a lista
 static String authToShort(uint8_t type) {
     switch (type) {
         case WIFI_AUTH_OPEN:            return "OP";
@@ -145,7 +145,7 @@ static String authToShort(uint8_t type) {
     }
 }
 
-// Color según nivel de seguridad
+// Cor conforme o nível de segurança
 static uint16_t authToColor(uint8_t type) {
     switch (type) {
         case WIFI_AUTH_OPEN:            return TFT_RED;
@@ -159,7 +159,7 @@ static uint16_t authToColor(uint8_t type) {
     }
 }
 
-// Canal WiFi → frecuencia en MHz
+// Canal WiFi → frequência em MHz
 static int channelToFreq(int ch) {
     if (ch >= 1 && ch <= 13) return 2407 + ch * 5;
     if (ch == 14) return 2484;
@@ -175,17 +175,17 @@ static int rssiToBars(int rssi) {
     return 0;
 }
 
-// Color de las barras según fuerza
+// Cor das barras conforme a força
 static uint16_t barsColor(int bars) {
     if (bars >= 3) return TFT_GREEN;
     if (bars == 2) return TFT_YELLOW;
     return TFT_RED;
 }
 
-// Dibuja 4 bloques verticales tipo señal celular
+// Desenha 4 blocos verticais tipo sinal de celular
 static void drawSignalBars(int x, int y, int bars) {
-    const int bw = 3;       // ancho de cada bloque
-    const int gap = 2;      // separación
+    const int bw = 3;       // largura de cada bloco
+    const int gap = 2;      // separação
     const int heights[4] = {4, 8, 12, 16};
     uint16_t onColor = barsColor(bars);
     for (int i = 0; i < 4; i++) {
@@ -203,7 +203,7 @@ static String truncate(const String& s, int maxChars) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// PANTALLA DE DETALLES (mejorada)
+// TELA DE DETALHES (melhorada)
 // ═════════════════════════════════════════════════════════════════════════════
 static void showDetails(const NetInfo& net) {
 
@@ -215,7 +215,7 @@ static void showDetails(const NetInfo& net) {
 
     int y = 44;
 
-    // SSID (con detección de oculta)
+    // SSID (com detecção de oculta)
     bool hidden = (net.ssid.length() == 0);
     String displaySsid = hidden ? "<HIDDEN>" : truncate(net.ssid, 22);
     drawStringCustom(10, y, "SSID:", UI_ACCENT, 1);
@@ -223,7 +223,7 @@ static void showDetails(const NetInfo& net) {
                      hidden ? TFT_RED : TFT_WHITE, 2);
     y += 34;
 
-    // Canal + frecuencia
+    // Canal + frequência
     String chStr = "CH " + String(net.channel) + "  " +
                    String(channelToFreq(net.channel)) + " MHz";
     drawStringCustom(10, y, "CHANNEL:", UI_ACCENT, 1);
@@ -260,7 +260,7 @@ static void showDetails(const NetInfo& net) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// ANIMACIÓN DE SCANNING
+// ANIMAÇÃO DE SCANNING
 // ═════════════════════════════════════════════════════════════════════════════
 static void drawScanningAnim(int tick) {
     const char dots[][4] = {"   ", ".  ", ".. ", "..."};
@@ -271,7 +271,7 @@ static void drawScanningAnim(int tick) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// LISTA DE REDES (con scroll bar + barras + encryption color)
+// LISTA DE REDES (com scroll bar + barras + encryption color)
 // ═════════════════════════════════════════════════════════════════════════════
 static void drawList(const NetInfo* nets, int n, int cursor, int scrollOffset) {
 
@@ -303,7 +303,7 @@ static void drawList(const NetInfo* nets, int n, int cursor, int scrollOffset) {
             if (isSelected) tft.fillRect(5, yPos - 4, 305, 26, TFT_WHITE);
             uint16_t fg = isSelected ? TFT_BLACK : TFT_WHITE;
 
-            // Barras de señal
+            // Barras de sinal
             drawSignalBars(12, yPos + 2, rssiToBars(net.rssi));
 
             // SSID (o <HIDDEN>)
@@ -320,7 +320,7 @@ static void drawList(const NetInfo* nets, int n, int cursor, int scrollOffset) {
         }
     }
 
-    // Scroll bar lateral (si hay más entradas de las visibles)
+    // Barra de rolagem lateral (se houver mais entradas que as visíveis)
     int totalEntries = n + 1;   // +1 por BACK
     if (totalEntries > VISIBLE_LINES) {
         int barH = map(VISIBLE_LINES, 0, totalEntries, 20, 180);
@@ -342,8 +342,8 @@ void runWifiScan() {
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
 
-    // Animación de scanning (el scan real es bloqueante, así que
-    // mostramos al menos un frame antes de entrar)
+    // Animação de scanning (o scan real é bloqueante, então
+    // mostramos ao menos um frame antes de entrar)
     drawScanningAnim(0);
     int n = WiFi.scanNetworks();
 
@@ -354,7 +354,7 @@ void runWifiScan() {
         return;
     }
 
-    // 🛡️ Tope de seguridad (protege el stack)
+    // 🛡️ Limite de segurança (protege o stack)
     if (n > MAX_NETWORKS) n = MAX_NETWORKS;
 
     NetInfo networks[MAX_NETWORKS];
@@ -366,10 +366,10 @@ void runWifiScan() {
         networks[i].authType = WiFi.encryptionType(i);
     }
 
-    // Liberar memoria interna del driver WiFi
+    // Libera a memória interna do driver WiFi
     WiFi.scanDelete();
 
-    // Ordenar por RSSI descendente (señal fuerte primero)
+    // Ordena por RSSI descendente (sinal forte primeiro)
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - 1 - i; j++) {
             if (networks[j].rssi < networks[j + 1].rssi) {

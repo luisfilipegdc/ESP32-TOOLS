@@ -4,16 +4,16 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PROBE REQUEST SNIFFER · captura los SSIDs que buscan celulares cercanos
+//  PROBE REQUEST SNIFFER · captura os SSIDs que os celulares próximos procuram
 //  · Modo promiscuo, filtra solo probe requests (subtype 0x04)
-//  · Deduplica SSIDs y cuenta cuántas veces se vio cada uno
-//  · Channel hopping (1 → 6 → 11) cada 2 segundos
-//  · Lista navegable con SSID + count + último RSSI + último visto
+//  · Deduplica SSIDs e conta quantas vezes cada um foi visto
+//  · Channel hopping (1 → 6 → 11) a cada 2 segundos
+//  · Lista navegável com SSID + count + último RSSI + último visto
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runProbeSniffer();
 
-// API para que KARMA Attack reuse la lista capturada (siguiente feature)
+// API para o KARMA Attack reutilizar a lista capturada (próxima feature)
 struct ProbeEntry {
     char     ssid[33];
     uint16_t count;

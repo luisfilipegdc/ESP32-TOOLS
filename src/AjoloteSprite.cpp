@@ -4,9 +4,9 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  BITMAP DEL AJOLOTE CON LENTES · 96x80 píxeles monochrome
-//  · 80 filas × 12 bytes = 960 bytes
-//  · Mascota oficial del firmware
+//  BITMAP DO AXOLOTE COM ÓCULOS · 96x80 pixels monochrome
+//  · 80 linhas × 12 bytes = 960 bytes
+//  · Mascote oficial do firmware
 //  · Compartido entre SplashScreen, About y Screensaver
 // ═══════════════════════════════════════════════════════════════════════════
 const uint8_t AJOLOTE_BMP[AJOLOTE_BYTES] PROGMEM = {
@@ -93,7 +93,7 @@ const uint8_t AJOLOTE_BMP[AJOLOTE_BYTES] PROGMEM = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HELPERS DE DIBUJO
+//  HELPERS DE DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 
 void drawAjoloteRow(int x0, int y0, int row, uint16_t color) {
@@ -136,7 +136,7 @@ void drawAjoloteScaled(int x0, int y0, uint16_t color, int scale) {
     }
 }
 
-// Dibuja el ajolote a la mitad (48x40): solo lee filas pares y bits pares
+// Desenha o axolote pela metade (48x40): só lê linhas pares e bits pares
 void drawAjoloteHalf(int x0, int y0, uint16_t color) {
     int bytesPerRow = AJOLOTE_WIDTH / 8;
     for (int r = 0; r < AJOLOTE_HEIGHT; r += 2) {

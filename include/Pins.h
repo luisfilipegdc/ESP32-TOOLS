@@ -1,7 +1,7 @@
 // Pins.h
 #pragma once
 
-// ── Botones ──────────────────────────
+// ── Botões ──────────────────────────
 #define BTN_UP    34
 #define BTN_OK    35
 #define BTN_DOWN  23

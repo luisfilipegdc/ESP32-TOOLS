@@ -9,12 +9,12 @@
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESP32-TOOLS · Firmware principal
-//  El main.cpp solo inicializa hardware y entrega el control al menú.
+//  O main.cpp apenas inicializa o hardware e entrega o controle ao menu.
 // ═══════════════════════════════════════════════════════════════════════════
 
 TFT_eSPI tft = TFT_eSPI();
 
-// ── Carga todas las preferencias desde NVS a las variables globales ──────
+// ── Carrega todas as preferências do NVS para as variáveis globais ──────
 static void loadPreferences() {
     soundEnabled = nvsGetBool("sound_on",  true);
     soundVolume  = nvsGetInt ("sound_vol", 3);
@@ -22,7 +22,7 @@ static void loadPreferences() {
     if (soundVolume > 5) soundVolume = 5;
 }
 
-// ── Incrementa contador de arranques (útil para System Info después) ─────
+// ── Incrementa o contador de boots (útil para o System Info depois) ─────
 static void bumpBootCount() {
     unsigned long bc = nvsGetULong("boot_cnt", 0);
     bc++;
@@ -33,7 +33,7 @@ static void bumpBootCount() {
 void setup() {
     Serial.begin(115200);
 
-    // ── Botones ─────────────────────────────────────────────────────────
+    // ── Botões ──────────────────────────────────────────────────────────
     pinMode(BTN_UP,   INPUT_PULLUP);
     pinMode(BTN_OK,   INPUT_PULLUP);
     pinMode(BTN_DOWN, INPUT_PULLUP);
@@ -43,12 +43,12 @@ void setup() {
     ledcAttachPin(BUZZER_PIN, 0);
     ledcWriteTone(0, 0);
 
-    // ── NVS: cargar configuración guardada ──────────────────────────────
+    // ── NVS: carregar configuração salva ────────────────────────────────
     nvsBegin();
     loadPreferences();
     bumpBootCount();
 
-    // ── Reset pantalla ──────────────────────────────────────────────────
+    // ── Reset da tela ───────────────────────────────────────────────────
     pinMode(4, OUTPUT);
     digitalWrite(4, LOW);  delay(100);
     digitalWrite(4, HIGH); delay(100);
@@ -64,13 +64,13 @@ void setup() {
 
     tft.fillScreen(TFT_BLACK);
 
-    // ── Splash screen (espera a que usuario presione OK) ────────────────
+    // ── Splash screen (espera o usuário pressionar OK) ──────────────────
     runSplashScreen();
 
-    // ── Menú principal (bucle infinito, nunca regresa) ──────────────────
+    // ── Menu principal (loop infinito, nunca retorna) ───────────────────
     runMainMenu();
 
-    // ── Menú principal (bucle infinito, nunca regresa) ──────────────────
+    // ── Menu principal (loop infinito, nunca retorna) ───────────────────
     runMainMenu();
 }
 

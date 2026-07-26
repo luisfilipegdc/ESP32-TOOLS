@@ -4,7 +4,7 @@
 #include "Pins.h"
 #include "SoundUtils.h"
 
-// Handlers de las tools existentes (llamadas desde el carrusel)
+// Handlers das ferramentas existentes (chamadas a partir do carrossel)
 #include "WifiScanner.h"
 #include "RadioScanner.h"
 #include "RadioJammer.h"
@@ -26,13 +26,13 @@
 #include "AjoloteSprite.h"
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CARROUSEL PRINCIPAL
+//  CARROSSEL PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════
 
-// ── Registry de categorías del menú principal ────────────────────────────
-// NOTA: por ahora cada categoría lleva directo a una tool (compatibilidad
-//       con lo que ya tienes). Cuando agreguemos submenús reales, el handler
-//       apuntará a una función que llame a runSubMenu() con su lista.
+// ── Registro das categorias do menu principal ───────────────────────────
+// NOTA: por enquanto cada categoria leva direto a uma ferramenta (compat.
+//       com o que já existe). Quando adicionarmos submenus reais, o handler
+//       apontará para uma função que chame runSubMenu() com sua lista.
 // Submenu WIFI TOOLS · WiFi Scanner + Beacon Spam + Deauther
 static void handlerWifi() {
     static const char* wifiItems[] = {
@@ -84,7 +84,7 @@ static void handlerBT() {
 
 static void handlerMonitor() { runPacketMonitor(); }
 
-// Submenu RADIO TOOLS · abre lista con Jammer + Spectrum
+// Submenu RADIO TOOLS · abre a lista com Jammer + Spectrum
 static void handlerRadio() {
     static const char* radioItems[] = {
         "Jammer",
@@ -103,7 +103,7 @@ static void handlerRadio() {
     }
 }
 
-// Submenu SYSTEM · abre lista con Settings + System Info
+// Submenu SYSTEM · abre a lista com Settings + System Info
 static void handlerSystem() {
     static const char* systemItems[] = {
         "Settings",
@@ -126,9 +126,9 @@ static void handlerSystem() {
     }
 }
 
-// Nota: RadioScanner (el espectómetro) lo movemos a "RADIO TOOLS" cuando
-//       tengamos submenús reales. Por ahora accesible desde el menú SYSTEM
-//       o lo podemos dejar como categoría propia provisional.
+// Nota: RadioScanner (o espectrômetro) foi movido para "RADIO TOOLS" quando
+//       tivermos submenus reais. Por ora acessível pelo menu SYSTEM
+//       ou podemos deixá-lo como categoria própria provisória.
 
 static const MainMenuEntry MAIN_ENTRIES[] = {
     { "WIFI TOOLS",      "Scan, Deauth, ...",   ICON_WIFI,      handlerWifi    },
@@ -142,10 +142,10 @@ static const int MAIN_COUNT = sizeof(MAIN_ENTRIES) / sizeof(MainMenuEntry);
 static int currentEntry = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HELPERS DE DIBUJO
+//  HELPERS DE DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Dibuja header con contador "< X/N >" a la derecha
+// Desenha o header com contador "< X/N >" à direita
 static void drawMainHeader() {
     tft.fillRect(1, 1, 318, 28, TFT_BLACK);
     drawStringBig(10, 8, "ESP32-TOOLS", UI_MAIN, 1);
@@ -158,7 +158,7 @@ static void drawMainHeader() {
     tft.drawFastHLine(0, 30, 320, UI_ACCENT);
 }
 
-// Dibuja footer con hints de botones
+// Desenha o footer com as dicas de botões
 static void drawMainFooter() {
     tft.drawFastHLine(0, 215, 320, UI_ACCENT);
     tft.fillRect(1, 217, 318, 22, TFT_BLACK);
@@ -166,9 +166,9 @@ static void drawMainFooter() {
     drawStringCustom(230, 223, "OK: ENTRAR", UI_ACCENT, 1);
 }
 
-// Dibuja el ícono + texto de la tarjeta centrada en pantalla.
-// `yOffset` permite desplazar verticalmente para la animación slide.
-// `highlighted` = true cuando el usuario acaba de apretar OK (flash naranja)
+// Desenha o ícone + texto do card centralizado na tela.
+// `yOffset` permite deslocar verticalmente para a animação de slide.
+// `highlighted` = true quando o usuário acabou de apertar OK (flash laranja)
 static void drawCard(int entryIdx, int yOffset, bool highlighted) {
     if (entryIdx < 0 || entryIdx >= MAIN_COUNT) return;
 
@@ -176,35 +176,35 @@ static void drawCard(int entryIdx, int yOffset, bool highlighted) {
     uint16_t iconColor  = highlighted ? UI_SELECT : UI_MAIN;
     uint16_t titleColor = highlighted ? UI_SELECT : UI_MAIN;
 
-    // Ícono centrado horizontalmente, un poco arriba del centro vertical
+    // Ícone centralizado horizontalmente, um pouco acima do centro vertical
     int iconCx = 160;
     int iconCy = 95 + yOffset;
-    // Clipping al área central (entre header y=30 y footer y=215)
+    // Clipping na área central (entre header y=30 e footer y=215)
     drawIcon(iconCx, iconCy, e.icon, iconColor, 31, 214);
 
-    // Título bajo el ícono con fuente BIG
+    // Título abaixo do ícone com fonte BIG
     int titleY = 150 + yOffset;
     String title = e.title;
     int tw = getTextWidth(title, 2, FONT_BIG);
     drawStringBig((320 - tw) / 2, titleY, title, titleColor, 2);
 
-    // Subtítulo con fuente SMALL
+    // Subtítulo com fonte SMALL
     int subY = 180 + yOffset;
     String sub = e.subtitle;
     int sw = getTextWidth(sub, 1);
     drawStringCustom((320 - sw) / 2, subY, sub, UI_ACCENT, 1);
 }
 
-// Limpia solo el área interior (entre header y footer) para redibujar
+// Limpa apenas a área interna (entre header e footer) para redesenhar
 static void clearCardArea() {
     tft.fillRect(1, 31, 318, 183, TFT_BLACK);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ANIMACIÓN DE SLIDE
-//  La tarjeta actual sale en una dirección, la nueva entra desde la opuesta.
-//  direction = +1 → nueva entra desde abajo (navegamos DOWN)
-//  direction = -1 → nueva entra desde arriba (navegamos UP)
+//  ANIMAÇÃO DE SLIDE
+//  O card atual sai em uma direção, o novo entra pela direção oposta.
+//  direction = +1 → o novo entra por baixo (navegamos DOWN)
+//  direction = -1 → o novo entra por cima (navegamos UP)
 // ═══════════════════════════════════════════════════════════════════════════
 static void slideAnimation(int oldIdx, int newIdx, int direction) {
     const int STEPS   = 6;
@@ -219,7 +219,7 @@ static void slideAnimation(int oldIdx, int newIdx, int direction) {
         drawCard(oldIdx, oldOff, false);
         drawCard(newIdx, newOff, false);
 
-        // Tapar cualquier pixel que se haya salido al footer
+        // Cobre qualquer pixel que tenha vazado para o footer
         tft.fillRect(1, 215, 318, 24, TFT_BLACK);
         tft.drawFastHLine(0, 215, 320, UI_ACCENT);
         drawStringCustom(10, 223, "UP/DN: NAVEGAR", UI_ACCENT, 1);
@@ -233,10 +233,10 @@ static void slideAnimation(int oldIdx, int newIdx, int direction) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MAIN MENU · carrusel vertical
+//  MAIN MENU · carrossel vertical
 // ═══════════════════════════════════════════════════════════════════════════
 void runMainMenu() {
-    // Dibujar marco completo inicial
+    // Desenha a moldura completa inicial
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_MAIN);
     drawMainHeader();
@@ -244,11 +244,11 @@ void runMainMenu() {
     drawCard(currentEntry, 0, false);
 
     unsigned long lastPress = 0;
-    unsigned long lastActivity = millis();   // ← NUEVO: tracking de idle
+    unsigned long lastActivity = millis();   // ← NOVO: rastreio de inatividade
 
     while (true) {
 
-        // ── UP: tarjeta anterior (wrap-around) ──────────────────────────
+        // ── UP: card anterior (wrap-around) ────────────────────────────
         if (digitalRead(BTN_UP) == LOW && (millis() - lastPress > 200)) {
             int prev = (currentEntry - 1 + MAIN_COUNT) % MAIN_COUNT;
             beep(2200, 25);
@@ -256,10 +256,10 @@ void runMainMenu() {
             currentEntry = prev;
             drawMainHeader();
             lastPress = millis();
-            lastActivity = millis();              // ← NUEVO
+            lastActivity = millis();              // ← NOVO
         }
 
-        // ── DOWN: tarjeta siguiente (wrap-around) ───────────────────────
+        // ── DOWN: próximo card (wrap-around) ────────────────────────────
         if (digitalRead(BTN_DOWN) == LOW && (millis() - lastPress > 200)) {
             int next = (currentEntry + 1) % MAIN_COUNT;
             beep(2200, 25);
@@ -267,12 +267,12 @@ void runMainMenu() {
             currentEntry = next;
             drawMainHeader();
             lastPress = millis();
-            lastActivity = millis();              // ← NUEVO
+            lastActivity = millis();              // ← NOVO
         }
 
-        // ── OK: flash naranja + llamar handler ──────────────────────────
+        // ── OK: flash laranja + chamar o handler ───────────────────────
         if (digitalRead(BTN_OK) == LOW && (millis() - lastPress > 350)) {
-            // Flash de selección: 3 pulsos rápidos de color
+            // Flash de seleção: 3 pulsos rápidos de cor
             for (int i = 0; i < 3; i++) {
                 clearCardArea();
                 drawCard(currentEntry, 0, true);
@@ -283,30 +283,30 @@ void runMainMenu() {
                 delay(40);
             }
 
-            // Ejecutar la tool
+            // Executa a ferramenta
             MAIN_ENTRIES[currentEntry].handler();
 
-            // Al regresar, redibujar el menú entero
+            // Ao retornar, redesenha o menu inteiro
             tft.fillScreen(TFT_BLACK);
             tft.drawRect(0, 0, 320, 240, UI_MAIN);
             drawMainHeader();
             drawMainFooter();
             drawCard(currentEntry, 0, false);
             lastPress = millis();
-            lastActivity = millis();              // ← NUEVO
+            lastActivity = millis();              // ← NOVO
         }
 
-        // ── SCREENSAVER: si hay 30s sin actividad, lanzar ───────────────
+        // ── SCREENSAVER: se houver 30s sem atividade, disparar ─────────
         if (millis() - lastActivity > SCREENSAVER_IDLE_MS) {
-            runScreensaver();   // bloquea hasta que el usuario presione un botón
+            runScreensaver();   // bloqueia até o usuário pressionar um botão
 
-            // Al regresar, redibujar el menú entero
+            // Ao retornar, redesenha o menu inteiro
             tft.fillScreen(TFT_BLACK);
             tft.drawRect(0, 0, 320, 240, UI_MAIN);
             drawMainHeader();
             drawMainFooter();
             drawCard(currentEntry, 0, false);
-            lastActivity = millis();              // resetear idle
+            lastActivity = millis();              // reseta a inatividade
             lastPress = millis();
         }
 
@@ -315,16 +315,16 @@ void runMainMenu() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SUB MENU · lista vertical scrolleable con BACK al inicio
-//  · Devuelve índice 0..count-1 del item elegido
-//  · Devuelve -1 si usuario eligió "< BACK" o mantuvo OK presionado
+//  SUB MENU · lista vertical rolável com BACK no início
+//  · Retorna o índice 0..count-1 do item escolhido
+//  · Retorna -1 se o usuário escolheu "< BACK" ou segurou o OK
 // ═══════════════════════════════════════════════════════════════════════════
 int runSubMenu(const char* title, const char* items[], int count) {
     const int VISIBLE       = 5;
     const int LINE_HEIGHT   = 30;
     const int LIST_Y_START  = 50;
 
-    int totalItems   = count + 1;   // +1 por BACK
+    int totalItems   = count + 1;   // +1 pelo BACK
     int cursor       = 0;
     int scrollOffset = 0;
     bool needsRedraw = true;
@@ -332,7 +332,7 @@ int runSubMenu(const char* title, const char* items[], int count) {
 
     unsigned long lastPress = 0;
 
-    // Esperar que suelten OK del menú anterior
+    // Espera soltar o OK do menu anterior
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -368,7 +368,7 @@ int runSubMenu(const char* title, const char* items[], int count) {
                 }
             }
 
-            // Scroll bar lateral
+            // Barra de rolagem lateral
             if (totalItems > VISIBLE) {
                 int barH = (VISIBLE * 170) / totalItems;
                 int barY = 40 + (scrollOffset * (170 - barH)) / (totalItems - VISIBLE);
@@ -377,7 +377,7 @@ int runSubMenu(const char* title, const char* items[], int count) {
 
             // Footer
             tft.drawFastHLine(0, 215, 320, UI_ACCENT);
-            drawStringCustom(10, 223, "UP/DN: NAVEGAR   OK: SELECC",
+            drawStringCustom(10, 223, "UP/DN: NAVEGAR   OK: SELEC",
                              UI_ACCENT, 1);
 
             needsRedraw = false;
@@ -415,7 +415,7 @@ int runSubMenu(const char* title, const char* items[], int count) {
         delay(10);
     }
 
-    // Esperar liberación del OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 

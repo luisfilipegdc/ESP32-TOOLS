@@ -3,8 +3,8 @@
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  Namespace de NVS.
-//  Todas las claves se guardan bajo este namespace para no colisionar
-//  con otras librerías que usen Preferences.
+//  Todas as chaves são salvas sob este namespace para não colidir
+//  com outras bibliotecas que usem Preferences.
 // ═══════════════════════════════════════════════════════════════════════════
 static const char* NVS_NAMESPACE = "esp32tools";
 

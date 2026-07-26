@@ -7,15 +7,15 @@ extern TFT_eSPI tft;
 
 static RF24 radioJam(CE_PIN, CSN_PIN);
 
-// ── Canal WiFi seleccionado (1-13) ────────────────────────────────────────────
+// ── Canal WiFi selecionado (1-13) ────────────────────────────────────────────
 static int jamChannel = 6;
 
-// ── Tabla: canal WiFi → offset NRF24 (base 2400 MHz) ─────────────────────────
+// ── Tabela: canal WiFi → offset NRF24 (base 2400 MHz) ─────────────────────────
 static const uint8_t wifiToNrf[14] = {
     0,  12, 17, 22, 27, 32, 37, 42, 47, 52, 57, 62, 67, 72
 };
 
-// ── Payload de ruido máximo 32 bytes ─────────────────────────────────────────
+// ── Payload de ruído máximo 32 bytes ─────────────────────────────────────────
 static const uint8_t noise_payload[32] = {
     0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA,
     0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA,
@@ -23,8 +23,8 @@ static const uint8_t noise_payload[32] = {
     0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA
 };
 
-// ── Solo los 14 canales WiFi 2.4GHz (centros exactos en offset NRF24) ─────────
-// Menos canales = más tiempo por canal = mayor saturación efectiva
+// ── Só os 14 canais WiFi 2.4GHz (centros exatos em offset NRF24) ─────────
+// Menos canais = mais tempo por canal = maior saturação efetiva
 static const uint8_t sweep_list[] = {
     12,  // WiFi CH1  → 2412 MHz
     17,  // WiFi CH2  → 2417 MHz
@@ -44,7 +44,7 @@ static const uint8_t sweep_list[] = {
 static const int sweep_total = sizeof(sweep_list);
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Inicializa el NRF24 reiniciando el bus SPI limpiamente
+// Inicializa o NRF24 reiniciando o barramento SPI de forma limpa
 // ─────────────────────────────────────────────────────────────────────────────
 static bool initRadio() {
     SPI.end();
@@ -64,7 +64,7 @@ static bool initRadio() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Animación de barras
+// Animação de barras
 // ─────────────────────────────────────────────────────────────────────────────
 static void drawBars() {
     int baseY = 205;
@@ -79,27 +79,27 @@ static void drawBars() {
 // ─────────────────────────────────────────────────────────────────────────────
 //  NÚCLEOS DE ATAQUE
 //
-//  attackTurbo()  — Máxima densidad en un solo canal.
-//                   Todo el tiempo del radio concentrado en el canal exacto.
-//                   Más efectivo para tumbar un canal WiFi específico.
+//  attackTurbo()  — Máxima densidade em um único canal.
+//                   Todo o tempo do rádio concentrado no canal exato.
+//                   Mais efetivo para derrubar um canal WiFi específico.
 //
-//  attackWide()   — Canal central ±2 (5 canales NRF = ~10 MHz de ancho).
-//                   Balance entre cobertura y densidad.
-//                   Útil si el AP salta entre canales adyacentes.
+//  attackWide()   — Canal central ±2 (5 canais NRF = ~10 MHz de largura).
+//                   Equilíbrio entre cobertura e densidade.
+//                   Útil se o AP pula entre canais adjacentes.
 //
-//  attackSweep()  — Recorre toda la lista de canales WiFi + BT.
-//                   Menor densidad por canal pero cobertura total.
+//  attackSweep()  — Percorre toda a lista de canais WiFi + BT.
+//                   Menor densidade por canal, mas cobertura total.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Turbo: 500 paquetes seguidos en un solo canal — máxima saturación
+// Turbo: 500 pacotes seguidos em um único canal — máxima saturação
 static void attackTurbo(uint8_t nrfChannel) {
     radioJam.setChannel(nrfChannel);
     for (int i = 0; i < 500; i++)
         radioJam.startWrite(noise_payload, 32, true);
 }
 
-// Wide: ±2 canales NRF alrededor del centro (5 canales total, ~10 MHz BW)
-// Cada canal recibe 100 paquetes → densidad alta con algo de cobertura lateral
+// Wide: ±2 canais NRF ao redor do centro (5 canais no total, ~10 MHz BW)
+// Cada canal recebe 100 pacotes → densidade alta com alguma cobertura lateral
 static void attackWide(uint8_t center) {
     for (int offset = -2; offset <= 2; offset++) {
         int ch = (int)center + offset;
@@ -110,23 +110,23 @@ static void attackWide(uint8_t center) {
     }
 }
 
-// Sweep: ataca cada canal con BURST_PER_CH paquetes antes de pasar al siguiente.
-// Recorre un canal completo por llamada para que el analizador lo detecte
-// y el AP no pueda usarlo durante el tiempo de ataque en ese canal.
+// Sweep: ataca cada canal com BURST_PER_CH pacotes antes de passar ao próximo.
+// Percorre um canal completo por chamada para que o analisador o detecte
+// e o AP não possa usá-lo durante o tempo de ataque nesse canal.
 #define SWEEP_BURST_PER_CH 80
 static void attackSweepStep(int& idx) {
-    // Atacar el canal actual con densidad alta
+    // Ataca o canal atual com densidade alta
     radioJam.setChannel(sweep_list[idx]);
     for (int i = 0; i < SWEEP_BURST_PER_CH; i++)
         radioJam.startWrite(noise_payload, 32, true);
-    // Avanzar al siguiente canal
+    // Avança para o próximo canal
     idx = (idx + 1) % sweep_total;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MODO 1: Canal WiFi fijo — tres sub-modos de ataque seleccionables
+// MODO 1: Canal WiFi fixo — três sub-modos de ataque selecionáveis
 //
-// Navegación (sin atacar):
+// Navegação (sem atacar):
 //   UP/DOWN   → cambia canal WiFi
 //   OK        → si foco en canal → cicla modo de ataque (OFF→TURBO→WIDE→OFF)
 //               si foco en BACK  → vuelve al menú del jammer
@@ -146,19 +146,19 @@ static void runChannelJammer() {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, TFT_WHITE);
 
-        // Cabecera — color según modo activo
+        // Cabeçalho — cor conforme o modo ativo
         uint16_t hdrBg = (attackMode == 0) ? TFT_WHITE :
                          (attackMode == 1) ? TFT_RED : 0xFBE0; // naranja oscuro
         tft.fillRect(1, 1, 318, 42, hdrBg);
 
         if (attackMode == 0)
-            drawStringCustom(10, 10, "CANAL FIJO", TFT_BLACK, 3);
+            drawStringCustom(10, 10, "CANAL FIXO", TFT_BLACK, 3);
         else if (attackMode == 1)
             drawStringCustom(10, 10, "TURBO JAM!", TFT_WHITE, 3);
         else
             drawStringCustom(10, 10, "WIDE  JAM!", TFT_WHITE, 3);
 
-        // Canal seleccionado
+        // Canal selecionado
         uint16_t chBg = (sel == 0 && attackMode == 0) ? TFT_WHITE : TFT_BLACK;
         uint16_t chFg = (sel == 0 && attackMode == 0) ? TFT_BLACK : TFT_YELLOW;
         tft.fillRect(5, 50, 310, 28, chBg);
@@ -171,14 +171,14 @@ static void runChannelJammer() {
         drawStringCustom(10, 88, "MODO: ", TFT_WHITE, 2);
         drawStringCustom(80, 88, modeLabels[attackMode], modeColors[attackMode], 2);
 
-        // Info según modo
+        // Info conforme o modo
         if (attackMode == 0) {
             drawStringCustom(10, 115, "OK: TURBO → WIDE → OFF", UI_ACCENT, 1);
         } else if (attackMode == 1) {
-            drawStringCustom(10, 115, "500 pkt/iter canal exacto", TFT_RED, 1);
-            drawStringCustom(10, 132, "Maxima densidad. 1 canal.", TFT_RED, 1);
+            drawStringCustom(10, 115, "500 pkt/iter canal exato", TFT_RED, 1);
+            drawStringCustom(10, 132, "Maxima densidade. 1 canal.", TFT_RED, 1);
         } else {
-            drawStringCustom(10, 115, "100 pkt x 5 canales (+/-2)", TFT_ORANGE, 1);
+            drawStringCustom(10, 115, "100 pkt x 5 canais (+/-2)", TFT_ORANGE, 1);
             drawStringCustom(10, 132, "Cubre ~10 MHz de ancho.", TFT_ORANGE, 1);
         }
 
@@ -195,7 +195,7 @@ static void runChannelJammer() {
         if (attackMode == 0)
             drawStringCustom(5, 220, "UP/DOWN:CANAL/NAV  OK:SELEC", UI_ACCENT, 1);
         else
-            drawStringCustom(5, 220, "UP/DOWN:CANAL  OK:CAMBIAR MODO", UI_ACCENT, 1);
+            drawStringCustom(5, 220, "UP/DOWN:CANAL  OK:TROCAR MODO", UI_ACCENT, 1);
     };
 
     redraw();
@@ -230,7 +230,7 @@ static void runChannelJammer() {
         // ── OK ───────────────────────────────────────────────────────────────
         if (digitalRead(BTN_OK) == LOW) {
             if (sel == 1 && attackMode == 0) {
-                // BACK seleccionado
+                // BACK selecionado
                 exitMode = true;
                 delay(200);
                 break;
@@ -269,15 +269,15 @@ static void runSweepJammer() {
         tft.drawRect(0, 0, 320, 240, TFT_WHITE);
 
         tft.fillRect(1, 1, 318, 42, isAttacking ? TFT_RED : TFT_WHITE);
-        drawStringCustom(10, 10, isAttacking ? "BARRIDO ACTIVO" : "BARRIDO TOTAL",
+        drawStringCustom(10, 10, isAttacking ? "VARREDURA ATIVA" : "BARRIDO TOTAL",
                          isAttacking ? TFT_WHITE : TFT_BLACK, 2);
 
         if (isAttacking) {
             drawStringCustom(10, 55, "WiFi CH1-13 + Bluetooth", TFT_RED, 2);
-            drawStringCustom(10, 80, String(sweep_total) + " canales en bucle", TFT_YELLOW, 2);
+            drawStringCustom(10, 80, String(sweep_total) + " canais em loop", TFT_YELLOW, 2);
         } else {
             drawStringCustom(10, 55, "WiFi 2.4GHz + Bluetooth", TFT_WHITE, 2);
-            drawStringCustom(10, 80, "ESTADO: LISTO", TFT_GREEN, 2);
+            drawStringCustom(10, 80, "ESTADO: PRONTO", TFT_GREEN, 2);
 
             uint16_t iBg = (sel == 0) ? TFT_WHITE : TFT_BLACK;
             tft.fillRect(5, 115, 140, 30, iBg);
@@ -302,11 +302,11 @@ static void runSweepJammer() {
         if (isAttacking) {
             attackSweepStep(sweepIdx);
 
-            // Redibujar barra y canal cada 5 canales para feedback visual fluido
+            // Redesenha a barra e o canal a cada 5 canais para feedback visual fluido
             if (++animCtr >= 5) {
                 animCtr = 0;
                 drawBars();
-                // Mostrar canal NRF actual en tiempo real
+                // Mostra o canal NRF atual em tempo real
                 tft.fillRect(10, 155, 250, 18, TFT_BLACK);
                 drawStringCustom(10, 157,
                     "NRF CH: " + String(sweep_list[sweepIdx]) +
@@ -343,7 +343,7 @@ static void runSweepJammer() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Menú principal del jammer (0=Canal Fijo, 1=Barrido, 2=Back)
+// Menu principal do jammer (0=Canal Fixo, 1=Varredura, 2=Back)
 // ─────────────────────────────────────────────────────────────────────────────
 static void drawModeMenu(int sel) {
     tft.fillScreen(TFT_BLACK);
@@ -353,8 +353,8 @@ static void drawModeMenu(int sel) {
 
     tft.fillRect(10, 52,  300, 46, sel == 0 ? TFT_WHITE : TFT_BLACK);
     tft.drawRect( 10, 52,  300, 46, TFT_WHITE);
-    drawStringCustom(20, 58,  "1. CANAL FIJO",          sel == 0 ? TFT_BLACK : TFT_WHITE, 2);
-    drawStringCustom(20, 82,  "TURBO o WIDE por canal",  sel == 0 ? TFT_BLACK : UI_ACCENT, 1);
+    drawStringCustom(20, 58,  "1. CANAL FIXO",          sel == 0 ? TFT_BLACK : TFT_WHITE, 2);
+    drawStringCustom(20, 82,  "TURBO ou WIDE por canal",  sel == 0 ? TFT_BLACK : UI_ACCENT, 1);
 
     tft.fillRect(10, 106, 300, 46, sel == 1 ? TFT_WHITE : TFT_BLACK);
     tft.drawRect( 10, 106, 300, 46, TFT_WHITE);

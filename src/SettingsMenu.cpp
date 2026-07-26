@@ -6,27 +6,27 @@
 #include "SoundUtils.h"
 
 static int cursor = 0;
-static const int MENU_ITEMS = 4;   // antes 3, ahora 4 con FORGET WIFI
+static const int MENU_ITEMS = 4;   // antes 3, agora 4 com FORGET WIFI
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  OLVIDAR RED WIFI · borra credenciales guardadas en NVS
+//  ESQUECER REDE WIFI · apaga as credenciais salvas no NVS
 // ═══════════════════════════════════════════════════════════════════════════
 static void runForgetWifi() {
-    // Esperar liberación de OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
-    // Caso 1: no hay red guardada
+    // Caso 1: não há rede salva
     if (!wifiConfigHasSaved()) {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, TFT_WHITE);
         drawStringCustom(30, 10, "WIFI CONFIG", TFT_WHITE, 3);
         tft.drawFastHLine(0, 45, 320, TFT_WHITE);
 
-        drawStringCustom(40, 90, "SIN RED GUARDADA", UI_ACCENT, 2);
-        drawStringCustom(40, 130, "No hay credenciales WiFi", TFT_WHITE, 1);
-        drawStringCustom(40, 145, "guardadas en este momento.", TFT_WHITE, 1);
-        drawStringCustom(10, 222, "OK: Volver", UI_ACCENT, 1);
+        drawStringCustom(40, 90, "SEM REDE SALVA", UI_ACCENT, 2);
+        drawStringCustom(40, 130, "Nao ha credenciais WiFi", TFT_WHITE, 1);
+        drawStringCustom(40, 145, "salvas neste momento.", TFT_WHITE, 1);
+        drawStringCustom(10, 222, "OK: Voltar", UI_ACCENT, 1);
 
         beep(1500, 60);
 
@@ -37,29 +37,29 @@ static void runForgetWifi() {
         return;
     }
 
-    // Caso 2: hay red guardada → confirmar
+    // Caso 2: há rede salva → confirmar
     String savedSSID = wifiConfigGetSavedSSID();
 
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, TFT_RED);
     tft.drawRect(1, 1, 318, 238, TFT_RED);
 
-    drawStringCustom(40, 12, "OLVIDAR WIFI", TFT_RED, 3);
+    drawStringCustom(40, 12, "ESQUECER WIFI", TFT_RED, 3);
     tft.drawFastHLine(0, 50, 320, TFT_RED);
 
-    drawStringCustom(20, 70, "Red guardada:", TFT_WHITE, 1);
+    drawStringCustom(20, 70, "Rede salva:", TFT_WHITE, 1);
 
     String ssidDisp = savedSSID;
     if (ssidDisp.length() > 26) ssidDisp = ssidDisp.substring(0, 24) + "..";
     drawStringCustom(20, 90, ssidDisp, UI_SELECT, 2);
 
-    drawStringCustom(20, 130, "Eliminar credenciales?", TFT_WHITE, 1);
-    drawStringCustom(20, 144, "La proxima vez que uses una", UI_ACCENT, 1);
-    drawStringCustom(20, 156, "herramienta con WiFi tendras", UI_ACCENT, 1);
-    drawStringCustom(20, 168, "que escoger una red de nuevo.", UI_ACCENT, 1);
+    drawStringCustom(20, 130, "Apagar credenciais?", TFT_WHITE, 1);
+    drawStringCustom(20, 144, "Na proxima vez que usar uma", UI_ACCENT, 1);
+    drawStringCustom(20, 156, "ferramenta com WiFi sera", UI_ACCENT, 1);
+    drawStringCustom(20, 168, "preciso escolher a rede.", UI_ACCENT, 1);
 
     tft.drawFastHLine(0, 210, 320, TFT_RED);
-    drawStringCustom(10, 220, "OK: SI BORRAR   UP/DN: CANCELAR", UI_ACCENT, 1);
+    drawStringCustom(10, 220, "OK: SIM APAGAR  UP/DN: CANCELAR", UI_ACCENT, 1);
 
     while (true) {
         if (digitalRead(BTN_OK) == LOW) {
@@ -67,14 +67,14 @@ static void runForgetWifi() {
             while (digitalRead(BTN_OK) == LOW) delay(5);
             delay(100);
 
-            // Borrar credenciales
+            // Apaga as credenciais
             wifiConfigForget();
 
-            // Pantalla de confirmación
+            // Tela de confirmação
             tft.fillScreen(TFT_BLACK);
             tft.drawRect(0, 0, 320, 240, TFT_WHITE);
-            drawStringCustom(40, 90, "RED OLVIDADA", TFT_GREEN, 3);
-            drawStringCustom(40, 140, "Credenciales eliminadas.", TFT_WHITE, 1);
+            drawStringCustom(40, 90, "REDE ESQUECIDA", TFT_GREEN, 3);
+            drawStringCustom(40, 140, "Credenciais apagadas.", TFT_WHITE, 1);
 
             beep(2400, 50); delay(30);
             beep(3000, 80);
@@ -134,7 +134,7 @@ void runSettings() {
 
     cursor = 0;
 
-    // Evitar doble OK
+    // Evita OK duplo
     while (digitalRead(BTN_OK) == LOW);
     delay(150);
 
@@ -168,7 +168,7 @@ void runSettings() {
                 nvsSetInt("sound_vol", soundVolume);
             }
             else if (cursor == 2) {
-                // Esperar liberación antes de entrar a la sub-pantalla
+                // Espera a liberação antes de entrar na sub-tela
                 while (digitalRead(BTN_OK) == LOW);
                 delay(100);
                 runForgetWifi();

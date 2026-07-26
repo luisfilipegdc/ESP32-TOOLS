@@ -9,7 +9,7 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MODO 1: MEXIPICANTE 🌶️ (tu lista, la estrella del show)
+//  MODO 1: MEXIPICANTE 🌶️ (sua lista, a estrela do show)
 // ═══════════════════════════════════════════════════════════════════════════
 static const char* SSIDS_MEXI[] = {
     "👹Eres_Un_Pendejo", "💀Wifi_Para_Pendejos", "😈Wifi_Gratis",
@@ -32,7 +32,7 @@ static const char* SSIDS_MEXI[] = {
 static const int COUNT_MEXI = sizeof(SSIDS_MEXI) / sizeof(char*);
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MODO 2: MEMES CLÁSICOS
+//  MODO 2: MEMES CLÁSSICOS
 // ═══════════════════════════════════════════════════════════════════════════
 static const char* SSIDS_MEMES[] = {
     "Camioneta_FBI_07",
@@ -86,7 +86,7 @@ static const char* SSIDS_PARANOIA[] = {
 static const int COUNT_PARANOIA = sizeof(SSIDS_PARANOIA) / sizeof(char*);
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MODO 4: CHAOS UTF-8 (puros emojis y caracteres raros)
+//  MODO 4: CHAOS UTF-8 (só emojis e caracteres estranhos)
 // ═══════════════════════════════════════════════════════════════════════════
 static const char* SSIDS_CHAOS[] = {
     "💀💀💀💀💀",
@@ -113,7 +113,7 @@ static const char* SSIDS_CHAOS[] = {
 static const int COUNT_CHAOS = sizeof(SSIDS_CHAOS) / sizeof(char*);
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SELECCIÓN DE MODO
+//  SELEÇÃO DE MODO
 // ═══════════════════════════════════════════════════════════════════════════
 enum SpamMode {
     MODE_MEXI     = 0,
@@ -131,7 +131,7 @@ static const char* MODE_NAMES[] = {
     "Mix Total (all)"
 };
 static const char* MODE_DESCS[] = {
-    "40 SSIDs en español",
+    "40 SSIDs em espanhol",
     "Los clasicos de internet",
     "Pone nervioso a cualquiera",
     "Solo emojis y simbolos",
@@ -149,7 +149,7 @@ static SpamMode activeMode = MODE_MEXI;
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  FRAME 802.11 BEACON RAW
-//  Plantilla base que luego rellenamos con SSID/BSSID/channel dinámicos
+//  Template base que depois preenchemos com SSID/BSSID/channel dinâmicos
 // ═══════════════════════════════════════════════════════════════════════════
 static uint8_t beaconFrame[200] = {
     // Frame Control (2 bytes): Beacon type 0x80
@@ -158,7 +158,7 @@ static uint8_t beaconFrame[200] = {
     0x00, 0x00,
     // Destination (6 bytes): broadcast FF:FF:FF:FF:FF:FF
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-    // Source / BSSID (6 bytes): se llena dinámicamente
+    // Source / BSSID (6 bytes): preenchido dinamicamente
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     // BSSID duplicado (6 bytes)
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -172,17 +172,17 @@ static uint8_t beaconFrame[200] = {
     // Capability info (2 bytes): 0x0401 = ESS + Short Preamble
     0x01, 0x04,
     // ── Tagged parameters ──
-    // SSID tag: tag=0x00, length=N, luego bytes del SSID
+    // SSID tag: tag=0x00, length=N, depois os bytes do SSID
     0x00, 0x00,        // placeholder (length en [37])
-    // (aquí va el SSID, desde offset 38)
+    // (aqui vai o SSID, a partir do offset 38)
 };
 
-// Offset dentro del frame donde comienza el SSID length tag
+// Offset dentro do frame onde começa o SSID length tag
 static const int SSID_LENGTH_OFFSET = 37;
 static const int SSID_START_OFFSET  = 38;
 
 // Tail: "supported rates" + "DS parameter" (channel)
-// Se construye dinámicamente después del SSID
+// Construído dinamicamente depois do SSID
 static const uint8_t FRAME_TAIL[] = {
     // Supported rates (tag=0x01, length=8)
     0x01, 0x08,
@@ -196,7 +196,7 @@ static const int FRAME_TAIL_SIZE = sizeof(FRAME_TAIL);
 //  HELPERS
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Obtiene el número de SSIDs disponibles para un modo
+// Obtém o número de SSIDs disponíveis para um modo
 static int countSSIDsForMode(SpamMode mode) {
     switch (mode) {
         case MODE_MEXI:     return COUNT_MEXI;
@@ -209,7 +209,7 @@ static int countSSIDsForMode(SpamMode mode) {
     }
 }
 
-// Obtiene el SSID de un modo por índice
+// Obtém o SSID de um modo por índice
 static const char* getSSIDForMode(SpamMode mode, int idx) {
     switch (mode) {
         case MODE_MEXI:     return SSIDS_MEXI[idx];
@@ -234,14 +234,14 @@ static const char* getSSIDForMode(SpamMode mode, int idx) {
     }
 }
 
-// Construye y transmite un beacon con el SSID y canal dados
+// Constrói e transmite um beacon com o SSID e o canal dados
 static void sendBeacon(const char* ssid, int channel) {
     int ssidLen = strlen(ssid);
     if (ssidLen > 32) ssidLen = 32;   // 802.11 limit
 
-    // ── BSSID aleatorio (MAC del "router" falso) ───────────────────────
-    // Los primeros 2 bits del primer byte los ponemos a 0 para que
-    // parezca una MAC unicast normal, no multicast
+    // ── BSSID aleatório (MAC do "router" falso) ───────────────────────
+    // Os primeiros 2 bits do primeiro byte colocamos em 0 para que
+    // pareça uma MAC unicast normal, não multicast
     for (int i = 0; i < 6; i++) {
         beaconFrame[10 + i] = (uint8_t)random(0, 256);
         beaconFrame[16 + i] = beaconFrame[10 + i];   // BSSID duplicado
@@ -252,7 +252,7 @@ static void sendBeacon(const char* ssid, int channel) {
     beaconFrame[SSID_LENGTH_OFFSET] = (uint8_t)ssidLen;
     memcpy(&beaconFrame[SSID_START_OFFSET], ssid, ssidLen);
 
-    // ── Tail con canal ─────────────────────────────────────────────────
+    // ── Tail com canal ─────────────────────────────────────────────────
     int tailOffset = SSID_START_OFFSET + ssidLen;
     memcpy(&beaconFrame[tailOffset], FRAME_TAIL, FRAME_TAIL_SIZE);
     beaconFrame[tailOffset + FRAME_TAIL_SIZE - 1] = (uint8_t)channel;
@@ -260,7 +260,7 @@ static void sendBeacon(const char* ssid, int channel) {
     int frameLen = tailOffset + FRAME_TAIL_SIZE;
 
     // ── Transmitir ──────────────────────────────────────────────────────
-    // Canal 0 = interfaz WIFI_IF_STA (requiere que el canal ya esté fijado)
+    // Canal 0 = interface WIFI_IF_STA (requer que o canal já esteja fixado)
     esp_wifi_80211_tx(WIFI_IF_STA, beaconFrame, frameLen, false);
 
     beaconsSent++;
@@ -278,16 +278,16 @@ static bool showDisclaimer() {
 
     int y = 62;
     drawStringCustom(10, y, "Transmite redes WiFi falsas", UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "que aparecen en tu lista WiFi.", UI_MAIN, 1); y += 20;
+    drawStringCustom(10, y, "que aparecem na sua lista WiFi.", UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "No interfiere conexiones reales,", UI_ACCENT, 1); y += 12;
-    drawStringCustom(10, y, "solo agrega redes ficticias.", UI_ACCENT, 1); y += 20;
+    drawStringCustom(10, y, "so adiciona redes ficticias.", UI_ACCENT, 1); y += 20;
 
-    drawStringCustom(10, y, "Usalo con responsabilidad:", UI_MAIN, 1); y += 12;
-    drawStringCustom(20, y, "- Diviertete con amigos", UI_ACCENT, 1); y += 12;
+    drawStringCustom(10, y, "Use com responsabilidade:", UI_MAIN, 1); y += 12;
+    drawStringCustom(20, y, "- Divirta-se com amigos", UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- NO en lugares sensibles", UI_ACCENT, 1); y += 20;
 
-    drawStringCustom(10, y, "Tu eres responsable del uso.", UI_MAIN, 1);
+    drawStringCustom(10, y, "Voce e responsavel pelo uso.", UI_MAIN, 1);
 
     tft.drawFastHLine(0, 210, 320, UI_MAIN);
     drawStringCustom(10, 218, "OK: ACEPTAR   UP/DN: CANCELAR", UI_ACCENT, 1);
@@ -311,7 +311,7 @@ static bool showDisclaimer() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MENÚ DE SELECCIÓN DE MODO
+//  MENU DE SELEÇÃO DE MODO
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawModeMenu(int cursor) {
     tft.fillScreen(TFT_BLACK);
@@ -375,7 +375,7 @@ static int selectMode() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA DE ATAQUE
+//  TELA DE ATAQUE
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawAttackFrame() {
     tft.fillScreen(TFT_BLACK);
@@ -407,7 +407,7 @@ static void drawAttackStats(unsigned long pkts, float rate) {
     tft.fillRect(80, 58, 230, 14, TFT_BLACK);
     drawStringCustom(80, 62, "CH " + String(currentChannel), TFT_YELLOW, 1);
 
-    // Current SSID (puede tener emojis = más ancho, truncar visualmente)
+    // Current SSID (pode ter emojis = mais largo, truncar visualmente)
     tft.fillRect(10, 95, 300, 18, TFT_BLACK);
     String s = currentSSID;
     if (s.length() > 30) s = s.substring(0, 28) + "..";
@@ -438,7 +438,7 @@ static void runAttackLoop() {
     beep(3000, 60); delay(20);
     beep(3600, 80);
 
-    // ── Setup WiFi para raw tx ──────────────────────────────────────────
+    // ── Setup do WiFi para raw tx ──────────────────────────────────────────
     WiFi.mode(WIFI_MODE_NULL);
     esp_wifi_set_promiscuous(false);
 
@@ -460,7 +460,7 @@ static void runAttackLoop() {
     unsigned long lastPktCount    = 0;
     float rate = 0;
 
-    // Channels que vamos a rotar: 1, 6, 11 (los no-overlapping en 2.4GHz)
+    // Channels que vamos girar: 1, 6, 11 (os não-sobrepostos em 2.4GHz)
     const int channels[] = {1, 6, 11};
     int channelIdx = 0;
 
@@ -471,7 +471,7 @@ static void runAttackLoop() {
     bool okHeld = false;
 
     while (!stopAttack) {
-        // ── Enviar un beacon ──────────────────────────────────────────
+        // ── Envia um beacon ──────────────────────────────────────────
         const char* ssid = getSSIDForMode(activeMode, ssidIdx);
         currentSSID = String(ssid);
         sendBeacon(ssid, currentChannel);
@@ -497,7 +497,7 @@ static void runAttackLoop() {
             drawAttackStats(beaconsSent, rate);
         }
 
-        // ── Detectar OK HOLD ───────────────────────────────────────────
+        // ── Detecta OK HOLD ───────────────────────────────────────────
         if (digitalRead(BTN_OK) == LOW) {
             if (!okHeld) {
                 okPressStart = millis();
@@ -509,7 +509,7 @@ static void runAttackLoop() {
             okHeld = false;
         }
 
-        // yield al watchdog + pequeño delay para rate ~150-200 pkt/s
+        // yield ao watchdog + pequeno delay para rate ~150-200 pkt/s
         yield();
         delay(5);
     }
@@ -531,7 +531,7 @@ static void runAttackLoop() {
 //  MAIN
 // ═══════════════════════════════════════════════════════════════════════════
 void runBeaconSpam() {
-    // Esperar liberación de OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 

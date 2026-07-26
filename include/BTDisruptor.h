@@ -4,10 +4,10 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  BT DISRUPTOR · ataque dirigido a un dispositivo BLE específico
+//  BT DISRUPTOR · ataque dirigido a um dispositivo BLE específico
 //  · Scan → Select target → Select mode → Attack
 //  · 4 modos: Connect Flood, L2CAP Ping Storm, Spoof Identity, Chaos
-//  · Uso educativo/demo — usar con responsabilidad
+//  · Uso educativo/demo — usar com responsabilidade
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runBTDisruptor();

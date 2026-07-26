@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ESP32-TOOLS · Web Installer</title>
-<meta name="description" content="Flashea ESP32-TOOLS directamente desde tu navegador. Por PepeAngell." />
+<meta name="description" content="Flasheie o ESP32-TOOLS direto do seu navegador. Por PepeAngell." />
 <meta name="theme-color" content="#0a0a0a" />
 
 <!-- Open Graph -->
 <meta property="og:title" content="ESP32-TOOLS · Web Installer" />
-<meta property="og:description" content="Firmware multi-herramienta de seguridad WiFi + Bluetooth para ESP32. Flashea directo desde el navegador." />
+<meta property="og:description" content="Firmware multiferramenta de segurança WiFi + Bluetooth para ESP32. Flasheie direto do navegador." />
 <meta property="og:type" content="website" />
 
 <!-- ESP Web Tools -->
@@ -51,7 +51,7 @@ body {
     position: relative;
 }
 
-/* Scanline effect en el fondo */
+/* Efeito de scanline no fundo */
 body::before {
     content: '';
     position: fixed;
@@ -70,7 +70,7 @@ body::before {
     z-index: 1;
 }
 
-/* CRT flicker sutil */
+/* Flicker de CRT sutil */
 body::after {
     content: '';
     position: fixed;
@@ -187,7 +187,7 @@ h1.title {
     margin-bottom: 32px;
 }
 
-/* MASCOTA ASCII */
+/* MASCOTE ASCII */
 .mascot {
     text-align: center;
     color: var(--cyan);
@@ -219,7 +219,7 @@ h1.title {
     text-shadow: 0 0 5px var(--green);
 }
 
-/* BOTÓN INSTALAR */
+/* BOTÃO INSTALAR */
 .install-section {
     text-align: center;
     margin: 32px 0;
@@ -363,12 +363,12 @@ esp-web-install-button {
     .mascot { font-size: 10px; }
 }
 
-/* HIDE DOM elements based on language */
+/* Esconde elementos do DOM conforme o idioma */
 .lang-en { display: none; }
-html[lang="en"] .lang-es { display: none; }
+html[lang="en"] .lang-pt { display: none; }
 html[lang="en"] .lang-en { display: inline; }
 html[lang="en"] .lang-en.block { display: block; }
-.lang-es.block { display: block; }
+.lang-pt.block { display: block; }
 </style>
 </head>
 <body>
@@ -378,30 +378,30 @@ html[lang="en"] .lang-en.block { display: block; }
     <!-- TOP BAR -->
     <div class="topbar">
         <span class="topbar-left">
-            <span class="lang-es">ESP32-TOOLS v2.0 | INSTALADOR WEB</span>
+            <span class="lang-pt">ESP32-TOOLS v2.0 | INSTALADOR WEB</span>
             <span class="lang-en">ESP32-TOOLS v2.0 | WEB INSTALLER</span>
         </span>
         <button class="lang-toggle" onclick="toggleLang()">
-            <span class="lang-es">EN</span>
-            <span class="lang-en">ES</span>
+            <span class="lang-pt">EN</span>
+            <span class="lang-en">PT</span>
         </button>
     </div>
 
     <!-- TERMINAL PRINCIPAL -->
     <div class="terminal">
         <div class="terminal-prompt">
-            <span class="lang-es">TERMINAL v2.0</span>
+            <span class="lang-pt">TERMINAL v2.0</span>
             <span class="lang-en">TERMINAL v2.0</span>
         </div>
 
         <h1 class="title">ESP32-TOOLS</h1>
 
         <div class="subtitle">
-            <span class="lang-es">Multi-herramienta de seguridad WiFi + Bluetooth</span>
+            <span class="lang-pt">Multiferramenta de segurança WiFi + Bluetooth</span>
             <span class="lang-en">WiFi + Bluetooth security multi-tool</span>
         </div>
 
-        <!-- AJOLOTE ASCII ART -->
+        <!-- AXOLOTE ASCII ART -->
 <pre class="mascot">
        _____
       /     \
@@ -412,22 +412,22 @@ html[lang="en"] .lang-en.block { display: block; }
       //   \\
 </pre>
 
-        <!-- INSTRUCCIONES (BILINGÜE) -->
+        <!-- INSTRUÇÕES (BILÍNGUE) -->
         <div class="warnings">
 
-            <!-- ESPAÑOL -->
-            <div class="lang-es">
+            <!-- PORTUGUÊS -->
+            <div class="lang-pt">
                 <div class="line">
-                    <span class="bracket">[!]</span> CONECTA EL ESP32 VÍA USB
+                    <span class="bracket">[!]</span> CONECTE O ESP32 VIA USB
                 </div>
                 <div class="line">
-                    <span class="bracket">[!]</span> CIERRA VS CODE / MONITOR SERIE
+                    <span class="bracket">[!]</span> FECHE O VS CODE / MONITOR SERIAL
                 </div>
                 <div class="line">
-                    <span class="bracket">[!]</span> SI EL FLASH FALLA: MANTÉN BOTÓN <strong>BOOT</strong>
+                    <span class="bracket">[!]</span> SE O FLASH FALHAR: SEGURE O BOTÃO <strong>BOOT</strong>
                 </div>
                 <div class="line">
-                    <span class="bracket">[!]</span> USA CHROME / EDGE / OPERA EN ESCRITORIO
+                    <span class="bracket">[!]</span> USE CHROME / EDGE / OPERA NO COMPUTADOR
                 </div>
             </div>
 
@@ -448,17 +448,17 @@ html[lang="en"] .lang-en.block { display: block; }
             </div>
         </div>
 
-        <!-- BOTÓN INSTALAR -->
+        <!-- BOTÃO INSTALAR -->
         <div class="install-section">
             <esp-web-install-button manifest="manifest.json">
                 <button slot="activate" class="btn-install">
-                    <span class="lang-es">⚡ INSTALAR AHORA ⚡</span>
+                    <span class="lang-pt">⚡ INSTALAR AGORA ⚡</span>
                     <span class="lang-en">⚡ INSTALL NOW ⚡</span>
                 </button>
                 <span slot="unsupported" class="compat-notice browser-unsupported">
-                    <span class="lang-es">
-                        [X] NAVEGADOR NO COMPATIBLE<br>
-                        Usa Chrome, Edge u Opera en escritorio.
+                    <span class="lang-pt">
+                        [X] NAVEGADOR NÃO COMPATÍVEL<br>
+                        Use Chrome, Edge ou Opera no computador.
                     </span>
                     <span class="lang-en">
                         [X] BROWSER NOT SUPPORTED<br>
@@ -466,9 +466,9 @@ html[lang="en"] .lang-en.block { display: block; }
                     </span>
                 </span>
                 <span slot="not-allowed" class="compat-notice browser-unsupported">
-                    <span class="lang-es">
-                        [X] PÁGINA NO SEGURA<br>
-                        El sitio debe servirse vía HTTPS.
+                    <span class="lang-pt">
+                        [X] PÁGINA NÃO SEGURA<br>
+                        O site precisa ser servido via HTTPS.
                     </span>
                     <span class="lang-en">
                         [X] PAGE NOT SECURE<br>
@@ -482,7 +482,7 @@ html[lang="en"] .lang-en.block { display: block; }
 
     <!-- TAGLINE -->
     <div class="tagline">
-        <span class="lang-es">— AUDITORÍA WIFI + BT —</span>
+        <span class="lang-pt">— AUDITORIA WIFI + BT —</span>
         <span class="lang-en">— WIFI + BT AUDIT —</span>
     </div>
 
@@ -499,7 +499,7 @@ html[lang="en"] .lang-en.block { display: block; }
         </div>
 
         <div class="copyright">
-            <span class="lang-es">Hecho con ❤️ y 🌶️ en Los Mochis, Sinaloa, México</span>
+            <span class="lang-pt">Feito com ❤️ e 🌶️ em Los Mochis, Sinaloa, México</span>
             <span class="lang-en">Made with ❤️ and 🌶️ in Los Mochis, Sinaloa, México</span>
         </div>
     </div>
@@ -510,22 +510,22 @@ html[lang="en"] .lang-en.block { display: block; }
 function toggleLang() {
     const html = document.documentElement;
     const current = html.getAttribute('lang');
-    html.setAttribute('lang', current === 'es' ? 'en' : 'es');
-    // Persistir en localStorage
+    html.setAttribute('lang', current === 'pt' ? 'en' : 'pt');
+    // Persistir no localStorage
     try {
         localStorage.setItem('esp32tools_lang',
-            current === 'es' ? 'en' : 'es');
+            current === 'pt' ? 'en' : 'pt');
     } catch (e) {}
 }
 
-// Cargar idioma guardado
+// Carregar idioma salvo
 try {
     const saved = localStorage.getItem('esp32tools_lang');
     if (saved) {
         document.documentElement.setAttribute('lang', saved);
     } else {
-        // Auto-detectar idioma del navegador (default español)
-        const browserLang = (navigator.language || 'es').toLowerCase();
+        // Auto-detectar idioma do navegador (default português)
+        const browserLang = (navigator.language || 'pt').toLowerCase();
         if (browserLang.startsWith('en')) {
             document.documentElement.setAttribute('lang', 'en');
         }

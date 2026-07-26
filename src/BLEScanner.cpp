@@ -11,14 +11,14 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
 #define MAX_DEVICES     30      // tope de dispositivos mostrados
 #define SCAN_TIME_S     3       // segundos por ciclo de scan (luego itera)
 #define VISIBLE_ROWS    6       // filas visibles en la lista
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ESTRUCTURA DE DISPOSITIVO
+//  ESTRUTURA DE DISPOSITIVO
 // ═══════════════════════════════════════════════════════════════════════════
 struct BLEDev {
     String   name;
@@ -29,15 +29,15 @@ struct BLEDev {
     uint16_t vendorId;      // primeros 2 bytes de manufacturer data
     String   manufHex;      // manufacturer data en hex (máx 16 bytes mostrados)
     int      serviceCount;
-    String   serviceSummary; // nombre del primer servicio o "Services: N"
+    String   serviceSummary; // nome do primeiro serviço ou "Services: N"
 };
 
 static BLEDev devices[MAX_DEVICES];
 static int deviceCount = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  VENDOR LOOKUP · por los primeros 2 bytes del manufacturer data (Company ID)
-//  Lista oficial Bluetooth SIG. Los más comunes.
+//  VENDOR LOOKUP · pelos primeiros 2 bytes do manufacturer data (Company ID)
+//  Lista oficial Bluetooth SIG. Os mais comuns.
 // ═══════════════════════════════════════════════════════════════════════════
 static const char* bleVendorName(uint16_t id) {
     switch (id) {
@@ -72,7 +72,7 @@ static const char* bleVendorName(uint16_t id) {
 //  HELPERS
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Categoriza RSSI en descripción humana
+// Categoriza o RSSI numa descrição humana
 static const char* rssiLabel(int rssi) {
     if (rssi >= -50) return "VERY CLOSE";
     if (rssi >= -65) return "CLOSE";
@@ -80,7 +80,7 @@ static const char* rssiLabel(int rssi) {
     return "FAR";
 }
 
-// Convierte RSSI a 4 barras de señal
+// Converte o RSSI em 4 barras de sinal
 static int rssiBars(int rssi) {
     if (rssi >= -55) return 4;
     if (rssi >= -70) return 3;
@@ -102,7 +102,7 @@ static String formatHex(const uint8_t* data, size_t len, size_t maxBytes) {
     return out;
 }
 
-// Tipo de dirección BLE → string
+// Tipo de endereço BLE → string
 static const char* addrTypeLabel(int t) {
     switch (t) {
         case 0:  return "Public";
@@ -113,7 +113,7 @@ static const char* addrTypeLabel(int t) {
     }
 }
 
-// Busca si una MAC ya está en la lista. Devuelve índice o -1.
+// Verifica se uma MAC já está na lista. Retorna o índice ou -1.
 static int findDevice(const String& mac) {
     for (int i = 0; i < deviceCount; i++) {
         if (devices[i].mac == mac) return i;
@@ -121,7 +121,7 @@ static int findDevice(const String& mac) {
     return -1;
 }
 
-// Inserta o actualiza un dispositivo
+// Insere ou atualiza um dispositivo
 static void upsertDevice(BLEAdvertisedDevice& ad) {
     String mac = String(ad.getAddress().toString().c_str());
     String name = ad.haveName() ? String(ad.getName().c_str()) : "";
@@ -139,7 +139,7 @@ static void upsertDevice(BLEAdvertisedDevice& ad) {
     d.rssi = ad.getRSSI();
     d.addrType = (int)ad.getAddressType();
 
-    // Guardar nombre solo si llegó (los BLE devices a veces advertisean sin nombre)
+    // Salva o nome só se veio (dispositivos BLE às vezes anunciam sem nome)
     if (name.length() > 0) d.name = name;
     else if (d.name.length() == 0) d.name = "";
 
@@ -168,13 +168,13 @@ static void upsertDevice(BLEAdvertisedDevice& ad) {
         d.manufHex = "";
     }
 
-    // Beep sutil cuando encontramos un dispositivo nuevo
+    // Beep sutil quando encontramos um dispositivo novo
     if (isNew) beep(2200, 20);
 }
 
-// Ordena por RSSI descendente (los más cercanos primero)
+// Ordena por RSSI descendente (os mais próximos primeiro)
 static void sortDevices() {
-    // Bubble sort — deviceCount es máx 30, es suficiente
+    // Bubble sort — deviceCount é no máx 30, é suficiente
     for (int i = 0; i < deviceCount - 1; i++) {
         for (int j = 0; j < deviceCount - 1 - i; j++) {
             if (devices[j].rssi < devices[j + 1].rssi) {
@@ -196,7 +196,7 @@ class BLEScanCallback : public BLEAdvertisedDeviceCallbacks {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  DIBUJO · LISTA PRINCIPAL
+//  DESENHO · LISTA PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawListFrame() {
     tft.fillScreen(TFT_BLACK);
@@ -212,9 +212,9 @@ static void drawListFrame() {
                      UI_ACCENT, 1);
 }
 
-// Dibuja la lista de dispositivos + contador
+// Desenha a lista de dispositivos + contador
 static void drawList(int cursor, int scrollOffset, int totalSeen) {
-    // Limpiar área de contador (sin redibujar todo el header)
+    // Limpa a área do contador (sem redesenhar todo o header)
     tft.fillRect(140, 8, 175, 16, TFT_BLACK);
 
     // Contador "FOUND: N"
@@ -228,7 +228,7 @@ static void drawList(int cursor, int scrollOffset, int totalSeen) {
         tft.fillRect(235, 10, 75, 10, TFT_BLACK);
     }
 
-    // Área de lista (y=36 a y=212)
+    // Área da lista (y=36 a y=212)
     tft.fillRect(1, 33, 318, 180, TFT_BLACK);
 
     if (deviceCount == 0) {
@@ -255,21 +255,21 @@ static void drawList(int cursor, int scrollOffset, int totalSeen) {
 
         BLEDev& d = devices[idx];
 
-        // Nombre (o "<unnamed>")
+        // Nome (ou "<unnamed>")
         String displayName = d.name.length() > 0 ? d.name : "<unnamed>";
         if (displayName.length() > 20) {
             displayName = displayName.substring(0, 18) + "..";
         }
         drawStringCustom(10, y + 4, displayName, colMain, 2);
 
-        // MAC (debajo, más pequeño)
+        // MAC (abaixo, menor)
         drawStringCustom(10, y + 18, d.mac, colSub, 1);
 
-        // RSSI + barras a la derecha
+        // RSSI + barras à direita
         String rssiStr = String(d.rssi) + "dBm";
         drawStringCustom(210, y + 4, rssiStr, colMain, 2);
 
-        // Barras de señal
+        // Barras de sinal
         int bars = rssiBars(d.rssi);
         int bx = 280, by = 20;
         for (int b = 0; b < 4; b++) {
@@ -286,7 +286,7 @@ static void drawList(int cursor, int scrollOffset, int totalSeen) {
         }
     }
 
-    // Scroll bar lateral si hay más que VISIBLE_ROWS
+    // Barra de rolagem lateral se houver mais que VISIBLE_ROWS
     if (deviceCount > VISIBLE_ROWS) {
         int total = deviceCount;
         int barH = (VISIBLE_ROWS * 176) / total;
@@ -296,7 +296,7 @@ static void drawList(int cursor, int scrollOffset, int totalSeen) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  DIBUJO · PANTALLA DE DETALLES
+//  DESENHO · TELA DE DETALHES
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawDetails(const BLEDev& d) {
     tft.fillScreen(TFT_BLACK);
@@ -318,18 +318,18 @@ static void drawDetails(const BLEDev& d) {
     drawStringCustom(10, y, "MAC:     " + d.mac, UI_MAIN, 1);
     y += lineH;
 
-    // RSSI con categoría
+    // RSSI com categoria
     String rssiLine = "RSSI:    " + String(d.rssi) + " dBm  (" +
                       String(rssiLabel(d.rssi)) + ")";
     drawStringCustom(10, y, rssiLine, UI_MAIN, 1);
     y += lineH;
 
-    // Tipo de dirección
+    // Tipo de endereço
     drawStringCustom(10, y, "AddrType: " + String(addrTypeLabel(d.addrType)),
                      UI_MAIN, 1);
     y += lineH;
 
-    // Vendor (si pudimos identificar)
+    // Vendor (se conseguimos identificar)
     const char* vendor = nullptr;
     if (d.hasManufData && d.vendorId != 0) {
         vendor = bleVendorName(d.vendorId);
@@ -386,7 +386,7 @@ static void drawDetails(const BLEDev& d) {
 // ═══════════════════════════════════════════════════════════════════════════
 void runBLEScanner() {
 
-    // Esperar que suelten OK del menú anterior
+    // Espera soltar o OK do menu anterior
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -395,7 +395,7 @@ void runBLEScanner() {
     int cursor = 0;
     int scrollOffset = 0;
 
-    // Pantalla inicial
+    // Tela inicial
     drawListFrame();
     drawList(cursor, scrollOffset, 0);
 
@@ -404,7 +404,7 @@ void runBLEScanner() {
     delay(20);
     beep(2100, 60);
 
-    // Inicializar BLE
+    // Inicializa o BLE
     BLEDevice::init("");
     BLEScan* scanner = BLEDevice::getScan();
     scanner->setAdvertisedDeviceCallbacks(new BLEScanCallback(), false);
@@ -421,29 +421,29 @@ void runBLEScanner() {
     unsigned long okPressStart = 0;
     bool okHeld = false;
 
-    // Arrancar primer scan asíncrono
+    // Inicia o primeiro scan assíncrono
     scanner->start(SCAN_TIME_S, nullptr, false);
     lastScanStart = millis();
 
     while (!exitScreen) {
 
-        // Re-iniciar scan periódicamente (continuo)
+        // Reinicia o scan periodicamente (contínuo)
         if (millis() - lastScanStart > (SCAN_TIME_S * 1000UL + 200)) {
             scanner->clearResults();   // libera memoria del ciclo anterior
             scanner->start(SCAN_TIME_S, nullptr, false);
             lastScanStart = millis();
             sortDevices();
-            // Asegurar que el cursor siga válido tras re-ordenar
+            // Garante que o cursor siga válido após reordenar
             if (cursor >= deviceCount && deviceCount > 0) cursor = deviceCount - 1;
         }
 
-        // Redraw periódico si estamos en lista (cada 400 ms)
+        // Redraw periódico se estamos na lista (cada 400 ms)
         if (!inDetails && millis() - lastRedraw > 400) {
             drawList(cursor, scrollOffset, deviceCount);
             lastRedraw = millis();
         }
 
-        // ── Controles en modo LISTA ────────────────────────────────────
+        // ── Controles no modo LISTA ────────────────────────────────────
         if (!inDetails) {
 
             // UP
@@ -474,13 +474,13 @@ void runBLEScanner() {
                 delay(180);
             }
 
-            // OK: press corto = entrar a detalles; press largo = salir
+            // OK: press curto = entrar nos detalhes; press longo = sair
             if (digitalRead(BTN_OK) == LOW) {
                 if (!okHeld) {
                     okPressStart = millis();
                     okHeld = true;
                 } else if (millis() - okPressStart > 400) {
-                    // HOLD: salir
+                    // HOLD: sair
                     exitScreen = true;
                 }
             } else {
@@ -494,9 +494,9 @@ void runBLEScanner() {
                 okHeld = false;
             }
 
-        // ── Controles en modo DETAILS ──────────────────────────────────
+        // ── Controles no modo DETAILS ──────────────────────────────────
         } else {
-            // Cualquier OK vuelve a la lista
+            // Qualquer OK volta à lista
             if (digitalRead(BTN_OK) == LOW) {
                 delay(200);
                 while (digitalRead(BTN_OK) == LOW) delay(5);
@@ -520,7 +520,7 @@ void runBLEScanner() {
     delay(20);
     beep(1200, 60);
 
-    // Esperar liberación
+    // Espera a liberação
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 }

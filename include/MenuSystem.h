@@ -5,33 +5,33 @@
 #include "Icons.h"
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MENU SYSTEM · carrusel principal + submenús jerárquicos
+//  MENU SYSTEM · carrossel principal + submenus hierárquicos
 //
-//  Uso desde main.cpp:
-//      runMainMenu();   // bucle infinito, jamás regresa
+//  Uso a partir do main.cpp:
+//      runMainMenu();   // loop infinito, nunca retorna
 //
-//  Uso desde tools que necesiten listas/submenús propios:
+//  Uso a partir de ferramentas que precisem de listas/submenus próprios:
 //      int sel = runSubMenu("WIFI TOOLS", items, 4);
-//      if (sel == -1) return;   // usuario eligió BACK
+//      if (sel == -1) return;   // usuário escolheu BACK
 //      switch (sel) { ... }
 // ═══════════════════════════════════════════════════════════════════════════
 
-// ── Entrada del carrusel principal ────────────────────────────────────────
+// ── Entrada do carrossel principal ────────────────────────────────────────
 struct MainMenuEntry {
-    const char* title;           // Nombre de la categoría (ej: "WIFI TOOLS")
-    const char* subtitle;        // Descripción corta (ej: "Scan, Deauth, ...")
-    IconID      icon;            // ID del ícono a mostrar
-    void        (*handler)();    // Función a llamar al presionar OK
+    const char* title;           // Nome da categoria (ex: "WIFI TOOLS")
+    const char* subtitle;        // Descrição curta (ex: "Scan, Deauth, ...")
+    IconID      icon;            // ID do ícone a mostrar
+    void        (*handler)();    // Função a chamar ao pressionar OK
 };
 
 // ── API pública ───────────────────────────────────────────────────────────
 
-// Carrusel principal. Llámalo desde el loop() o setup() y no regresa.
+// Carrossel principal. Chame-o do loop() ou setup(); não retorna.
 void runMainMenu();
 
-// Submenu tipo lista (scroll vertical). Devuelve:
-//   · -1 si el usuario eligió BACK o mantuvo OK
-//   · índice 0..count-1 del item seleccionado
+// Submenu tipo lista (scroll vertical). Retorna:
+//   · -1 se o usuário escolheu BACK ou segurou o OK
+//   · índice 0..count-1 do item selecionado
 int  runSubMenu(const char* title, const char* items[], int count);
 
 #endif

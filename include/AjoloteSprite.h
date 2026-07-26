@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  AJOLOTE SPRITE · mascota oficial del firmware
-//  · Bitmap monocromático 96x80 píxeles (960 bytes en PROGMEM)
+//  AXOLOTE SPRITE · mascote oficial do firmware
+//  · Bitmap monocromático 96x80 pixels (960 bytes em PROGMEM)
 //  · Compartido entre SplashScreen, About y Screensaver
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -13,22 +13,22 @@
 #define AJOLOTE_HEIGHT  80
 #define AJOLOTE_BYTES   960
 
-// Bitmap exportado (definido en AjoloteSprite.cpp)
+// Bitmap exportado (definido em AjoloteSprite.cpp)
 extern const uint8_t AJOLOTE_BMP[AJOLOTE_BYTES];
 
-// Dibuja una sola fila del ajolote en (x0, y0+row) usando el color dado.
-// Usado por la animación scan-in del splash.
+// Desenha uma única linha do axolote em (x0, y0+row) usando a cor dada.
+// Usado pela animação scan-in do splash.
 void drawAjoloteRow(int x0, int y0, int row, uint16_t color);
 
-// Dibuja el ajolote completo en tamaño original (96x80) en (x0, y0).
+// Desenha o axolote completo em tamanho original (96x80) em (x0, y0).
 void drawAjoloteFull(int x0, int y0, uint16_t color);
 
-// Dibuja el ajolote escalado por un factor entero (1=normal, 2=doble, etc).
-// Para escalas menores a 1.0, usa drawAjoloteHalf (más eficiente).
+// Desenha o axolote escalado por um fator inteiro (1=normal, 2=dobro, etc).
+// Para escalas menores que 1.0, usa drawAjoloteHalf (mais eficiente).
 void drawAjoloteScaled(int x0, int y0, uint16_t color, int scale);
 
-// Dibuja el ajolote a la mitad del tamaño (48x40) — versión optimizada
-// que toma 1 de cada 2 píxeles en cada eje.
+// Desenha o axolote pela metade do tamanho (48x40) — versão otimizada
+// que pega 1 a cada 2 pixels em cada eixo.
 void drawAjoloteHalf(int x0, int y0, uint16_t color);
 
 #endif

@@ -52,12 +52,12 @@ static unsigned long g_lastSecondTick = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  IANA TIMEZONE → POSIX TZ STRING
-//  Mapea los timezones más comunes (especialmente de Mexico) a sus
-//  reglas POSIX correspondientes para configTzTime().
-//  Si no encuentra match, retorna un genérico basado en offset.
+//  Mapeia os timezones mais comuns (especialmente do México) para suas
+//  regras POSIX correspondentes para configTzTime().
+//  Se não encontrar match, retorna um genérico baseado no offset.
 // ═══════════════════════════════════════════════════════════════════════════
 static String ianaToPosix(const String& iana, int offsetSec) {
-    // Mexico (con DST sí/no según zona)
+    // México (com DST sim/não conforme a zona)
     if (iana == "America/Mexico_City")    return "CST6CDT,M4.1.0,M10.5.0";
     if (iana == "America/Cancun")         return "EST5";              // sin DST
     if (iana == "America/Merida")         return "CST6CDT,M4.1.0,M10.5.0";
@@ -84,7 +84,7 @@ static String ianaToPosix(const String& iana, int offsetSec) {
     if (iana == "America/Buenos_Aires")   return "ART3";
     if (iana == "Europe/Madrid")          return "CET-1CEST,M3.5.0,M10.5.0/3";
 
-    // Fallback: armar string genérico desde el offset (sin DST)
+    // Fallback: monta uma string genérica a partir do offset (sem DST)
     int hours = -offsetSec / 3600;   // signo invertido en POSIX
     char buf[16];
     if (hours >= 0) snprintf(buf, sizeof(buf), "UTC%d", hours);
@@ -98,13 +98,13 @@ static String ianaToPosix(const String& iana, int offsetSec) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 static const char* DAYS_ES[] = {
-    "Domingo", "Lunes", "Martes", "Miercoles",
-    "Jueves", "Viernes", "Sabado"
+    "Domingo", "Segunda", "Terca", "Quarta",
+    "Quinta", "Sexta", "Sabado"
 };
 
 static const char* MONTHS_ES[] = {
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 };
 
 static String formatHHMMSS(struct tm* t) {
@@ -120,7 +120,7 @@ static String formatHHMMSS(struct tm* t) {
     return String(buf);
 }
 
-// Helper que retorna "AM" o "PM" según la hora
+// Helper que retorna "AM" ou "PM" conforme a hora
 static String getAmPm(struct tm* t) {
     return (t->tm_hour < 12) ? "AM" : "PM";
 }
@@ -145,7 +145,7 @@ static String formatDate(struct tm* t) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ICONOS DEL CLIMA (pixel art 32x32)
+//  ÍCONES DO CLIMA (pixel art 32x32)
 //  Códigos WMO de Open-Meteo:
 //    0       = clear sky
 //    1,2,3   = mainly clear, partly cloudy, overcast
@@ -156,7 +156,7 @@ static String formatDate(struct tm* t) {
 //    95-99   = thunderstorm
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Categorización del weather code
+// Categorização do weather code
 enum WeatherIcon {
     ICON_SUN,
     ICON_PARTLY_CLOUDY,
@@ -180,23 +180,23 @@ static WeatherIcon weatherCodeToIcon(int code) {
 }
 
 static String weatherCodeToDescES(int code) {
-    if (code == 0) return "Despejado";
-    if (code == 1) return "Mayormente despejado";
+    if (code == 0) return "Limpo";
+    if (code == 1) return "Quase limpo";
     if (code == 2) return "Parcialmente nublado";
     if (code == 3) return "Nublado";
-    if (code == 45 || code == 48) return "Niebla";
-    if (code == 51 || code == 53 || code == 55) return "Llovizna";
-    if (code == 61 || code == 63) return "Lluvia ligera";
-    if (code == 65) return "Lluvia fuerte";
-    if (code == 71 || code == 73 || code == 75) return "Nieve";
-    if (code == 80 || code == 81) return "Chubascos";
-    if (code == 82) return "Chubascos fuertes";
-    if (code == 95) return "Tormenta";
-    if (code >= 96) return "Tormenta granizo";
-    return "Desconocido";
+    if (code == 45 || code == 48) return "Nevoa";
+    if (code == 51 || code == 53 || code == 55) return "Garoa";
+    if (code == 61 || code == 63) return "Chuva leve";
+    if (code == 65) return "Chuva forte";
+    if (code == 71 || code == 73 || code == 75) return "Neve";
+    if (code == 80 || code == 81) return "Pancadas";
+    if (code == 82) return "Pancadas fortes";
+    if (code == 95) return "Tempestade";
+    if (code >= 96) return "Tempestade granizo";
+    return "Desconhecido";
 }
 
-// Dibuja sol
+// Desenha o sol
 static void drawSunIcon(int cx, int cy, int size, uint16_t color) {
     int r = size / 4;
     tft.fillCircle(cx, cy, r, color);
@@ -211,7 +211,7 @@ static void drawSunIcon(int cx, int cy, int size, uint16_t color) {
     }
 }
 
-// Dibuja nube
+// Desenha a nuvem
 static void drawCloudIcon(int cx, int cy, uint16_t color) {
     tft.fillCircle(cx - 8, cy + 2, 7, color);
     tft.fillCircle(cx + 6, cy + 2, 8, color);
@@ -219,7 +219,7 @@ static void drawCloudIcon(int cx, int cy, uint16_t color) {
     tft.fillRect(cx - 12, cy + 2, 22, 6, color);
 }
 
-// Dibuja gotas de lluvia
+// Desenha gotas de chuva
 static void drawRainDrops(int cx, int cy, uint16_t color) {
     for (int i = -1; i <= 1; i++) {
         int x = cx + i * 6;
@@ -229,7 +229,7 @@ static void drawRainDrops(int cx, int cy, uint16_t color) {
     }
 }
 
-// Dibuja rayo
+// Desenha o raio
 static void drawLightning(int cx, int cy, uint16_t color) {
     tft.drawLine(cx - 2, cy + 5, cx, cy + 12, color);
     tft.drawLine(cx, cy + 12, cx - 3, cy + 12, color);
@@ -237,7 +237,7 @@ static void drawLightning(int cx, int cy, uint16_t color) {
     tft.drawLine(cx + 1, cy + 18, cx + 3, cy + 14, color);
 }
 
-// Dibuja copos de nieve
+// Desenha flocos de neve
 static void drawSnowflakes(int cx, int cy, uint16_t color) {
     for (int i = -1; i <= 1; i++) {
         int x = cx + i * 8;
@@ -314,7 +314,7 @@ static bool fetchGeolocation() {
     g_city = doc["city"].as<String>();
     g_country = doc["country"].as<String>();
 
-    // offset viene en segundos
+    // o offset vem em segundos
     if (!doc["offset"].isNull()) {
         g_tzOffset = doc["offset"].as<int>();
     }
@@ -381,10 +381,10 @@ static bool fetchWeather() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 static bool syncNTP() {
-    // Mapear IANA timezone a POSIX TZ string para manejar DST correctamente
+    // Mapeia o IANA timezone para POSIX TZ string para tratar o DST corretamente
     String posixTz = ianaToPosix(g_timezone, g_tzOffset);
 
-    // configTzTime usa POSIX TZ → respeta DST automáticamente según las reglas
+    // configTzTime usa POSIX TZ → respeita o DST automaticamente conforme as regras
     configTzTime(posixTz.c_str(), NTP_SERVER_1, NTP_SERVER_2);
 
     struct tm timeinfo;
@@ -397,7 +397,7 @@ static bool syncNTP() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA DE LOADING
+//  TELA DE LOADING
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawLoadingStep(const String& step, int progress) {
@@ -406,7 +406,7 @@ static void drawLoadingStep(const String& step, int progress) {
     drawStringBig(40, 20, "CLOCK & WEATHER", UI_MAIN, 1);
     tft.drawFastHLine(0, 50, 320, UI_ACCENT);
 
-    drawStringCustom(20, 100, "Cargando...", UI_ACCENT, 1);
+    drawStringCustom(20, 100, "Carregando...", UI_ACCENT, 1);
     drawStringBig(20, 120, step, UI_SELECT, 1);
 
     int barX = 20, barY = 180, barW = 280, barH = 14;
@@ -416,7 +416,7 @@ static void drawLoadingStep(const String& step, int progress) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA PRINCIPAL: RELOJ + CLIMA
+//  TELA PRINCIPAL: RELÓGIO + CLIMA
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawMainScreenFrame() {
@@ -425,10 +425,10 @@ static void drawMainScreenFrame() {
 
     // City + day indicator (sun/moon)
     drawStringCustom(10, 8, g_city + ", " + g_country, UI_ACCENT, 1);
-    drawStringCustom(260, 8, g_isDay ? "DIA" : "NOCHE", UI_ACCENT, 1);
+    drawStringCustom(260, 8, g_isDay ? "DIA" : "NOITE", UI_ACCENT, 1);
     tft.drawFastHLine(0, 22, 320, UI_ACCENT);
 
-    // Separador entre reloj y clima
+    // Separador entre relógio e clima
     tft.drawFastHLine(0, 130, 320, UI_ACCENT);
 
     // Footer
@@ -437,24 +437,24 @@ static void drawMainScreenFrame() {
 }
 
 static void drawClock(struct tm* t) {
-    // Borrar área del reloj
+    // Limpa a área do relógio
     tft.fillRect(2, 24, 316, 105, TFT_BLACK);
 
-    // Hora gigante centrada
+    // Hora gigante centralizada
     String timeStr = formatHHMMSS(t);
     int timeW = getTextWidth(timeStr, 4, FONT_BIG);
 
-    // AM/PM al lado en tamaño menor
+    // AM/PM ao lado em tamanho menor
     String ampmStr = getAmPm(t);
     int ampmW = getTextWidth(ampmStr, 2, FONT_BIG);
 
-    // Centrado considerando hora + espacio + AM/PM
+    // Centralizado considerando hora + espaço + AM/PM
     int totalW = timeW + 8 + ampmW;
     int timeX = (320 - totalW) / 2;
     int ampmX = timeX + timeW + 8;
 
     drawStringBig(timeX, 35, timeStr, UI_MAIN, 4);
-    // AM/PM con color distinto y un poco más abajo (alineado al baseline)
+    // AM/PM com cor distinta e um pouco mais abaixo (alinhado ao baseline)
     uint16_t ampmColor = (t->tm_hour < 12) ? TFT_CYAN : TFT_ORANGE;
     drawStringBig(ampmX, 55, ampmStr, ampmColor, 2);
 
@@ -465,7 +465,7 @@ static void drawClock(struct tm* t) {
     if (dateX < 5) dateX = 5;
     drawStringCustom(dateX, 100, dateStr, UI_ACCENT, 1);
 
-    // Año
+    // Ano
     char yearBuf[8];
     snprintf(yearBuf, sizeof(yearBuf), "%d", t->tm_year + 1900);
     int yearW = getTextWidth(String(yearBuf), 1, FONT_SMALL);
@@ -473,28 +473,28 @@ static void drawClock(struct tm* t) {
 }
 
 static void drawWeather() {
-    // Borrar área del clima
+    // Limpa a área do clima
     tft.fillRect(2, 132, 316, 86, TFT_BLACK);
 
-    // Icono del clima a la izquierda
+    // Ícone do clima à esquerda
     WeatherIcon icon = weatherCodeToIcon(g_weatherCode);
     drawWeatherIcon(48, 168, icon);
 
-    // Temperatura grande al centro-derecha
+    // Temperatura grande ao centro-direita
     char tempBuf[16];
     snprintf(tempBuf, sizeof(tempBuf), "%.0fC", g_tempC);
     drawStringBig(110, 145, String(tempBuf), TFT_YELLOW, 3);
 
-    // Sensación térmica
+    // Sensação térmica
     char feelsBuf[24];
-    snprintf(feelsBuf, sizeof(feelsBuf), "Sensacion: %.0fC", g_feelsLikeC);
+    snprintf(feelsBuf, sizeof(feelsBuf), "Sensacao: %.0fC", g_feelsLikeC);
     drawStringCustom(110, 178, String(feelsBuf), UI_MAIN, 1);
 
-    // Descripción del clima
+    // Descrição do clima
     String desc = weatherCodeToDescES(g_weatherCode);
     drawStringCustom(110, 192, desc, UI_ACCENT, 1);
 
-    // Humedad y viento (lado derecho)
+    // Umidade e vento (lado direito)
     char humBuf[16];
     snprintf(humBuf, sizeof(humBuf), "%d%% hum", g_humidity);
     drawStringCustom(245, 145, String(humBuf), TFT_CYAN, 1);
@@ -534,7 +534,7 @@ static void mainLoop() {
     bool okHeld = false;
 
     while (!stop) {
-        // Update clock cada segundo
+        // Atualiza o relógio a cada segundo
         if (millis() - g_lastSecondTick >= 1000) {
             if (getLocalTime(&timeinfo)) {
                 drawClock(&timeinfo);
@@ -557,7 +557,7 @@ static void mainLoop() {
             g_lastWeatherFetch = millis();
         }
 
-        // OK hold para salir
+        // OK hold para sair
         if (digitalRead(BTN_OK) == LOW) {
             if (!okHeld) {
                 okPressStart = millis();
@@ -581,17 +581,17 @@ void runClockWeather() {
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
-    // 1. Conectar WiFi (módulo reusable)
+    // 1. Conecta o WiFi (módulo reutilizável)
     drawLoadingStep("Conectando WiFi...", 5);
     delay(500);
 
     if (!wifiConfigConnect()) {
-        // Usuario canceló o falló
+        // Usuário cancelou ou falhou
         return;
     }
 
     // 2. IP geolocation
-    drawLoadingStep("Detectando ubicacion...", 30);
+    drawLoadingStep("Detectando localizacao...", 30);
     bool geoOk = fetchGeolocation();
     if (!geoOk) {
         // Usar fallback
@@ -607,10 +607,10 @@ void runClockWeather() {
     if (!syncNTP()) {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, TFT_RED);
-        drawStringBig(50, 90, "NTP FALLO", TFT_RED, 2);
-        drawStringCustom(40, 130, "No se pudo sincronizar la hora.",
+        drawStringBig(50, 90, "NTP FALHOU", TFT_RED, 2);
+        drawStringCustom(40, 130, "Nao foi possivel sincronizar a hora.",
                          UI_MAIN, 1);
-        drawStringCustom(40, 220, "OK: salir", UI_MAIN, 1);
+        drawStringCustom(40, 220, "OK: sair", UI_MAIN, 1);
         beep(800, 100);
         while (digitalRead(BTN_OK) == HIGH) delay(20);
         while (digitalRead(BTN_OK) == LOW) delay(5);
@@ -620,7 +620,7 @@ void runClockWeather() {
     }
 
     // 4. Weather
-    drawLoadingStep("Obteniendo clima...", 80);
+    drawLoadingStep("Obtendo clima...", 80);
     if (!fetchWeather()) {
         // Default values si falla
         g_tempC = 0;
@@ -631,7 +631,7 @@ void runClockWeather() {
         g_sunset = "19:00";
     }
 
-    drawLoadingStep("Listo!", 100);
+    drawLoadingStep("Pronto!", 100);
     beep(2400, 50); delay(30);
     beep(3000, 50); delay(30);
     beep(3600, 80);

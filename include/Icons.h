@@ -4,17 +4,17 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ICONS · Bitmaps pixel-art para el menú principal
+//  ICONS · Bitmaps pixel-art para o menu principal
 //  · Formato: 64x64 pixels monocromo
-//  · Cada byte = 8 pixels horizontales (bit MSB = izquierda)
-//  · 64 * 64 / 8 = 512 bytes por ícono
-//  · Dibujables con color personalizado (blanco normal, naranja al seleccionar)
+//  · Cada byte = 8 pixels horizontais (bit MSB = esquerda)
+//  · 64 * 64 / 8 = 512 bytes por ícone
+//  · Desenháveis com cor personalizada (branco normal, laranja ao selecionar)
 // ═══════════════════════════════════════════════════════════════════════════
 
 #define ICON_SIZE       64
 #define ICON_BYTES      (ICON_SIZE * ICON_SIZE / 8)   // 512 bytes
 
-// ── IDs de íconos ─────────────────────────────────────────────────────────
+// ── IDs dos ícones ─────────────────────────────────────────────────────────
 enum IconID {
     ICON_WIFI = 0,
     ICON_RADIO,
@@ -24,8 +24,8 @@ enum IconID {
     ICON_COUNT
 };
 
-// Dibuja un ícono centrado en (cx, cy) con el color dado.
-// Los pixels fuera del rango vertical [yMin, yMax] se descartan (clipping).
+// Desenha um ícone centralizado em (cx, cy) com a cor dada.
+// Os pixels fora do range vertical [yMin, yMax] são descartados (clipping).
 // Usa drawIcon(..., 0, 239) si no necesitas clipping.
 void drawIcon(int cx, int cy, IconID id, uint16_t color,
               int yMin = 0, int yMax = 239);

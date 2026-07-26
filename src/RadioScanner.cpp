@@ -4,13 +4,13 @@
 #include "SoundUtils.h"
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═════════════════════════════════════════════════════════════════════════════
 #define SCAN_LIMIT       80      // 80 canales NRF (2.400 - 2.480 GHz)
 #define SAMPLES_PER_CH   30      // muestras por canal para promediar
 #define MAX_SAMPLE       30      // tope teórico de testCarrier hits
 
-// ── Layout general ────────────────────────────────────────────────────────
+// ── Layout geral ────────────────────────────────────────────────────────
 #define HEADER_H         28
 #define FOOTER_H         22
 
@@ -38,9 +38,9 @@
 #define CH_BAR_GAP       2
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  TABLA CANAL WIFI → CANAL NRF (idéntica a la de RadioJammer.cpp)
-//  Índice 0 es placeholder (los canales WiFi empiezan en 1).
-//  Usar la misma tabla garantiza que jammer y analyzer estén sincronizados.
+//  TABELA CANAL WIFI → CANAL NRF (idêntica à do RadioJammer.cpp)
+//  Índice 0 é placeholder (os canais WiFi começam em 1).
+//  Usar a mesma tabela garante que jammer e analyzer fiquem sincronizados.
 // ═════════════════════════════════════════════════════════════════════════════
 static const uint8_t wifiToNrfMap[14] = {
     0,  12, 17, 22, 27, 32, 37, 42, 47, 52, 57, 62, 67, 72
@@ -71,7 +71,7 @@ static uint8_t wfBuffer[WF_ROWS][WF_COLS];   // 0-255 intensidad por pixel
 static int wfWriteRow = 0;
 static bool wfFilled = false;
 
-// Channel analyzer (13 canales WiFi)
+// Channel analyzer (13 canais WiFi)
 static int wifiChanLevels[13];
 static int bestWifiChannel = 1;
 static int lastRecommendedCh = -1;
@@ -83,11 +83,11 @@ static unsigned long frameCount = 0;
 //  HELPERS
 // ═════════════════════════════════════════════════════════════════════════════
 
-// NRF channel → frecuencia MHz
+// NRF channel → frequência MHz
 static inline int nrfFreq(int ch) { return 2400 + ch; }
 
-// NRF channel → canal WiFi (1-13) o 0 si fuera de rango.
-// Usa wifiToNrfMap[] para consistencia con el jammer.
+// NRF channel → canal WiFi (1-13) ou 0 se fora do range.
+// Usa wifiToNrfMap[] para consistência com o jammer.
 static int nrfToWifiCh(int nrfCh) {
     int bestCh = 0;
     int bestDist = 999;
@@ -113,7 +113,7 @@ static uint16_t sampleToColor(int s) {
     return TFT_RED;
 }
 
-// Color según altura relativa dentro de una barra (para gradient vertical)
+// Cor conforme a altura relativa dentro de uma barra (para gradient vertical)
 static uint16_t heightGradient(float ratio) {
     if (ratio < 0.33) return TFT_GREEN;
     if (ratio < 0.66) return TFT_YELLOW;
@@ -121,7 +121,7 @@ static uint16_t heightGradient(float ratio) {
     return TFT_RED;
 }
 
-// Texto descriptor del estado de un canal WiFi según su nivel
+// Texto descritor do estado de um canal WiFi conforme o seu nível
 static const char* wifiStatus(int level) {
     if (level < 4)   return "CLEAN";
     if (level < 10)  return "OK";
@@ -136,7 +136,7 @@ static uint16_t wifiStatusColor(int level) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  SNIFFING DEL ESPECTRO (una pasada completa)
+//  SNIFFING DO ESPECTRO (uma passada completa)
 // ═════════════════════════════════════════════════════════════════════════════
 static void doFullSweep() {
     long totalHits = 0;
@@ -157,7 +157,7 @@ static void doFullSweep() {
 
         samples[i] = s;
 
-        // Peak hold con decay lento
+        // Peak hold com decay lento
         if (s > peaks[i]) peaks[i] = s;
         else if (peaks[i] > 0 && (frameCount % 4 == 0)) peaks[i]--;
 
@@ -166,17 +166,17 @@ static void doFullSweep() {
         if (s > peakValue) { peakValue = s; peakChannel = i; }
     }
 
-    // Ruido global como porcentaje (max teórico = SCAN_LIMIT * MAX_SAMPLE)
+    // Ruído global como porcentagem (max teórico = SCAN_LIMIT * MAX_SAMPLE)
     long maxPossible = (long)SCAN_LIMIT * MAX_SAMPLE;
     globalNoise = (int)((totalHits * 100L) / maxPossible);
     if (globalNoise > 100) globalNoise = 100;
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  CÁLCULO DE NIVELES POR CANAL WIFI
-//  - Ventana ampliada a ±3 canales NRF con pesos (centro pesa más)
-//  - Toma max(promedio_ponderado, pico) para que ataques puntuales no se diluyan
-//  - Usa wifiToNrfMap[] para sincronía exacta con el jammer
+//  CÁLCULO DE NÍVEIS POR CANAL WIFI
+//  - Janela ampliada a ±3 canais NRF com pesos (o centro pesa mais)
+//  - Toma max(média_ponderada, pico) para que ataques pontuais não se diluam
+//  - Usa wifiToNrfMap[] para sincronia exata com o jammer
 // ═════════════════════════════════════════════════════════════════════════════
 static void computeWifiChannels() {
     long best = 0x7FFFFFFF;
@@ -209,7 +209,7 @@ static void computeWifiChannels() {
         int level = (maxInWindow > avg) ? maxInWindow : avg;
         wifiChanLevels[w - 1] = level;
 
-        // El "mejor canal" es el de menor actividad ponderada total
+        // O "melhor canal" é o de menor atividade ponderada total
         if (weighted < best) {
             best = weighted;
             bestWifiChannel = w;
@@ -218,7 +218,7 @@ static void computeWifiChannels() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  SONIDO
+//  SOM
 // ═════════════════════════════════════════════════════════════════════════════
 static unsigned long lastGeigerTick = 0;
 
@@ -239,7 +239,7 @@ static void playExit() {
     beep(1200, 80);
 }
 
-// Geiger ambient (solo en SPECTRUM). Se llama desde el loop principal.
+// Geiger ambient (só no SPECTRUM). Chamado a partir do loop principal.
 static void geigerAmbient(int intensity) {
     if (!soundEnabled || intensity < 2) {
         ledcWriteTone(0, 0);
@@ -248,7 +248,7 @@ static void geigerAmbient(int intensity) {
     int duty = map(soundVolume, 1, 5, 50, 255);
     ledcWrite(0, duty);
 
-    // Frecuencia base en el sweet spot del piezo
+    // Frequência base no sweet spot do piezo
     int freq;
     if      (intensity < 6)  freq = 1300;
     else if (intensity < 12) freq = 1600;
@@ -256,7 +256,7 @@ static void geigerAmbient(int intensity) {
     else                     freq = 2200;
     freq += random(-80, 120);
 
-    // Clicks a bajo nivel, continuo a alto nivel
+    // Clicks em nível baixo, contínuo em nível alto
     int interval = map(intensity, 2, MAX_SAMPLE, 180, 8);
     if (interval > 40) {
         if (millis() - lastGeigerTick > (unsigned long)interval) {
@@ -271,19 +271,19 @@ static void geigerAmbient(int intensity) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  HEADER COMÚN (a todos los modos)
+//  HEADER COMUM (a todos os modos)
 // ═════════════════════════════════════════════════════════════════════════════
 static void drawHeader(const char* title, int modeNum) {
     tft.fillRect(1, 1, 318, HEADER_H - 2, TFT_BLACK);
 
-    // Title con fuente BIG
+    // Title com fonte BIG
     drawStringBig(6, 6, title, TFT_WHITE, 1);
 
     // Mode indicator
     String modeTag = "MODE " + String(modeNum) + "/3";
     drawStringCustom(140, 11, modeTag, UI_ACCENT, 1);
 
-    // Meter de ruido global (4 bloques) a la derecha
+    // Meter de ruído global (4 blocos) à direita
     int bars = (globalNoise * 4) / 100;
     if (bars > 4) bars = 4;
     uint16_t col = (globalNoise < 30) ? TFT_GREEN :
@@ -299,7 +299,7 @@ static void drawHeader(const char* title, int modeNum) {
     String noisePct = String(globalNoise) + "%";
     drawStringCustom(235, 11, "NOISE:" + noisePct, col, 1);
 
-    // Línea divisoria
+    // Linha divisória
     tft.drawFastHLine(0, HEADER_H, 320, UI_ACCENT);
 }
 
@@ -327,7 +327,7 @@ static void drawSpectrumFrame() {
         }
     }
 
-    // Labels de canales WiFi (1, 6, 11 destacados)
+    // Labels dos canais WiFi (1, 6, 11 destacados)
     int labelY = SPEC_Y_BOTTOM + 2;
     tft.drawFastHLine(SPEC_X_LEFT, SPEC_Y_BOTTOM, SPEC_W, TFT_WHITE);
 
@@ -351,7 +351,7 @@ static void drawSpectrumBars() {
         int target = map(s, 0, MAX_SAMPLE, 0, SPEC_H);
         if (target > SPEC_H) target = SPEC_H;
 
-        // Smoothing: subida instantánea, bajada suave
+        // Smoothing: subida instantânea, descida suave
         int ph = prevHeights[i];
         if (target > ph) ph = target;
         else             ph -= (ph / 6) + 1;
@@ -362,10 +362,10 @@ static void drawSpectrumBars() {
         int barW = (SPEC_W / SCAN_LIMIT);
         if (barW < 2) barW = 2;
 
-        // Borrar área completa encima de la barra
+        // Limpa a área completa acima da barra
         tft.fillRect(x, SPEC_Y_TOP, barW, SPEC_H - ph, TFT_BLACK);
 
-        // Redibujar grid horizontal en la zona negra
+        // Redesenha o grid horizontal na zona preta
         for (int g = 1; g < 4; g++) {
             int gy = SPEC_Y_TOP + (SPEC_H * g) / 4;
             if (gy < SPEC_Y_TOP + (SPEC_H - ph)) {
@@ -375,7 +375,7 @@ static void drawSpectrumBars() {
             }
         }
 
-        // Dibujar barra con gradient vertical
+        // Desenha a barra com gradient vertical
         if (ph > 0) {
             for (int py = 0; py < ph; py++) {
                 float ratio = (float)py / SPEC_H;
@@ -384,7 +384,7 @@ static void drawSpectrumBars() {
             }
         }
 
-        // Peak hold (línea blanca)
+        // Peak hold (linha branca)
         int peakH = map(peaks[i], 0, MAX_SAMPLE, 0, SPEC_H);
         if (peakH > ph + 2) {
             tft.drawFastHLine(x, SPEC_Y_BOTTOM - peakH, barW, TFT_WHITE);
@@ -419,7 +419,7 @@ static void drawWaterfallFrame() {
     wfFilled = false;
 }
 
-// Push fila nueva al waterfall (ring buffer)
+// Push de uma linha nova no waterfall (ring buffer)
 static void waterfallPush() {
     for (int i = 0; i < WF_COLS; i++) {
         int s = samples[i];
@@ -431,7 +431,7 @@ static void waterfallPush() {
     if (wfWriteRow == 0) wfFilled = true;
 }
 
-// Renderizar waterfall completo (más nueva arriba, más vieja abajo)
+// Renderiza o waterfall completo (mais nova em cima, mais velha embaixo)
 static void waterfallRender() {
     int wfPxWidth = WF_X_RIGHT - WF_X_LEFT;
     int barW = wfPxWidth / SCAN_LIMIT;
@@ -474,7 +474,7 @@ static void drawChannelFrame() {
 
     tft.drawFastHLine(CH_X_LEFT - 4, CH_Y_BOTTOM, 13*(CH_BAR_W+CH_BAR_GAP)+4, TFT_WHITE);
 
-    // Labels de canales (1-13)
+    // Labels dos canais (1-13)
     for (int w = 1; w <= 13; w++) {
         int cx = CH_X_LEFT + (w-1)*(CH_BAR_W + CH_BAR_GAP);
         String lbl = String(w);
@@ -493,7 +493,7 @@ static void drawChannelBars() {
 
         tft.fillRect(cx, CH_Y_TOP, CH_BAR_W, CH_H, TFT_BLACK);
 
-        // Redibujar grid en la zona no cubierta
+        // Redesenha o grid na zona não coberta
         for (int g = 1; g < 4; g++) {
             int gy = CH_Y_TOP + (CH_H * g) / 4;
             if (gy < CH_Y_BOTTOM - h) {
@@ -503,7 +503,7 @@ static void drawChannelBars() {
             }
         }
 
-        // Dibujar barra con gradient
+        // Desenha a barra com gradient
         if (h > 0) {
             for (int py = 0; py < h; py++) {
                 float ratio = (float)py / CH_H;
@@ -512,13 +512,13 @@ static void drawChannelBars() {
             }
         }
 
-        // Marcar el mejor canal con borde cyan
+        // Marca o melhor canal com borda cyan
         if (w == bestWifiChannel) {
             tft.drawRect(cx - 1, CH_Y_TOP - 1, CH_BAR_W + 2, CH_H + 2, TFT_CYAN);
         }
     }
 
-    // Recomendación debajo
+    // Recomendação abaixo
     tft.fillRect(5, 200, 310, 14, TFT_BLACK);
     int bestLevel = wifiChanLevels[bestWifiChannel - 1];
     String rec = "BEST: CH " + String(bestWifiChannel) +
@@ -576,7 +576,7 @@ static void drawCurrentData() {
     }
 }
 
-// Cambio de modo
+// Troca de modo
 static void switchMode(ScanMode newMode) {
     currentMode = newMode;
     memset(prevHeights, 0, sizeof(prevHeights));
@@ -644,7 +644,7 @@ void runRadioScanner() {
         // Sweep completo
         doFullSweep();
 
-        // Compute WiFi channel levels (usado por modo 3 y por el header)
+        // Compute WiFi channel levels (usado pelo modo 3 e pelo header)
         computeWifiChannels();
 
         // ── Render ───────────────────────────────────────────────────
@@ -652,7 +652,7 @@ void runRadioScanner() {
         drawCurrentData();
         drawCurrentFooter();
 
-        // ── Sonido ───────────────────────────────────────────────────
+        // ── Som ───────────────────────────────────────────────────
         if (currentMode == MODE_SPECTRUM) {
             geigerAmbient(peakValue);
         } else if (currentMode == MODE_CHANNEL) {

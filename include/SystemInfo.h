@@ -4,13 +4,13 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SYSTEM INFO · pantalla de diagnóstico del dispositivo
-//  · Muestra firmware, hardware y runtime stats en vivo
+//  SYSTEM INFO · tela de diagnóstico do dispositivo
+//  · Mostra firmware, hardware e runtime stats ao vivo
 //  · Auto-refresh cada 500ms (uptime, heap, temperatura)
-//  · Salir con OK mantenido ~300ms
+//  · Sair com OK segurado ~300ms
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Versión del firmware (cambiar al lanzar releases nuevas)
+// Versão do firmware (mudar ao lançar novas releases)
 #define FW_NAME     "ESP32-TOOLS"
 #define FW_VERSION  "v1.0"
 

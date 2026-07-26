@@ -5,10 +5,10 @@
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  BLE SCANNER · descubre dispositivos Bluetooth Low Energy cercanos
-//  · Scan continuo (hasta que usuario sale con OK-hold)
-//  · Lista ordenada por RSSI (más cercanos arriba)
+//  · Scan contínuo (até o usuário sair com OK-hold)
+//  · Lista ordenada por RSSI (mais próximos no topo)
 //  · Vendor lookup por OUI (Apple, Samsung, Xiaomi, etc.)
-//  · Detalles por dispositivo: MAC, RSSI, servicios, manufacturer data
+//  · Detalhes por dispositivo: MAC, RSSI, serviços, manufacturer data
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runBLEScanner();
