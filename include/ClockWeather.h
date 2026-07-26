@@ -13,4 +13,8 @@
 
 void runClockWeather();
 
+// Seletor manual de fuso horário (chamado a partir de SYSTEM -> Settings).
+// Salva a escolha em NVS; o Clock & Weather aplica na próxima abertura.
+void runTimezoneSelector();
+
 #endif
