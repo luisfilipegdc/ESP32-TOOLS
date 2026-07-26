@@ -8,9 +8,9 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  BITMAP DEL AJOLOTE CON LENTES · 96x80 píxeles monochrome
-//  · 80 filas × 12 bytes = 960 bytes
-//  · Mascota oficial del firmware
+//  BITMAP DO AXOLOTE COM ÓCULOS · 96x80 pixels monochrome
+//  · 80 linhas × 12 bytes = 960 bytes
+//  · Mascote oficial do firmware
 // ═══════════════════════════════════════════════════════════════════════════
 #define AJOLOTE_WIDTH   96
 #define AJOLOTE_HEIGHT  80
@@ -100,7 +100,7 @@ static const uint8_t AJOLOTE_BMP[AJOLOTE_BYTES] PROGMEM = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HELPERS DE DIBUJO
+//  HELPERS DE DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawAjoloteRow(int x0, int y0, int row, uint16_t color) {
     int bytesPerRow = AJOLOTE_WIDTH / 8;
@@ -123,7 +123,7 @@ static void drawAjoloteFull(int x0, int y0, uint16_t color) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ANIMACIÓN SCAN-IN
+//  ANIMAÇÃO SCAN-IN
 // ═══════════════════════════════════════════════════════════════════════════
 static void animateScanIn(int x0, int y0) {
     const int SCAN_LINE_HEIGHT = 2;
@@ -141,7 +141,7 @@ static void animateScanIn(int x0, int y0) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ANIMACIÓN TYPE-ON
+//  ANIMAÇÃO TYPE-ON
 // ═══════════════════════════════════════════════════════════════════════════
 static void typeOn(int x, int y, const String& txt, uint16_t color,
                    int size, FontType font, int msPerChar) {
@@ -186,7 +186,7 @@ void runSplashScreen() {
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_MAIN);
 
-    // FASE 1: Scan-in del ajolote
+    // FASE 1: Scan-in do axolote
     int ajoX = (320 - AJOLOTE_WIDTH) / 2;
     int ajoY = 15;
     animateScanIn(ajoX, ajoY);
@@ -221,7 +221,7 @@ void runSplashScreen() {
     drawLoadingStep("Ready.",                  100,  2600);
     delay(300);
 
-    // FASE 4: Boot count + esperar OK
+    // FASE 4: Boot count + espera o OK
     unsigned long bootCount = nvsGetULong("boot_cnt", 0);
     String bootInfo = "Boot #" + String(bootCount);
     drawStringCustom(10, 215, bootInfo, UI_ACCENT, 1);

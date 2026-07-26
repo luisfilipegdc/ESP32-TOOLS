@@ -5,12 +5,12 @@ extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  BITMAPS 64x64 MONOCROMO
-//  Cada fila = 8 bytes (64 bits). MSB = pixel más a la izquierda.
-//  1 = pixel encendido, 0 = transparente.
-//  Cada ícono = 64 filas × 8 bytes = 512 bytes exactos.
+//  Cada linha = 8 bytes (64 bits). MSB = pixel mais à esquerda.
+//  1 = pixel aceso, 0 = transparente.
+//  Cada ícone = 64 linhas × 8 bytes = 512 bytes exatos.
 // ═══════════════════════════════════════════════════════════════════════════
 
-// ── ICON_WIFI · router con ondas hacia arriba ─────────────────────────────
+// ── ICON_WIFI · router com ondas para cima ─────────────────────────────
 static const uint8_t ICON_WIFI_BMP[ICON_BYTES] PROGMEM = {
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -78,7 +78,7 @@ static const uint8_t ICON_WIFI_BMP[ICON_BYTES] PROGMEM = {
     0,0,0,0,0,0,0,0,
 };
 
-// ── ICON_RADIO · torre con ondas concéntricas ─────────────────────────────
+// ── ICON_RADIO · torre com ondas concêntricas ─────────────────────────────
 static const uint8_t ICON_RADIO_BMP[ICON_BYTES] PROGMEM = {
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -214,7 +214,7 @@ static const uint8_t ICON_BT_BMP[ICON_BYTES] PROGMEM = {
     0,0,0,0,0,0,0,0,
 };
 
-// ── ICON_MONITOR · osciloscopio con onda ──────────────────────────────────
+// ── ICON_MONITOR · osciloscópio com onda ──────────────────────────────────
 static const uint8_t ICON_MONITOR_BMP[ICON_BYTES] PROGMEM = {
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -351,7 +351,7 @@ static const uint8_t ICON_SYSTEM_BMP[ICON_BYTES] PROGMEM = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  TABLA DE PUNTEROS · acceso rápido por IconID
+//  TABELA DE PONTEIROS · acesso rápido por IconID
 // ═══════════════════════════════════════════════════════════════════════════
 static const uint8_t* const ICON_TABLE[ICON_COUNT] = {
     ICON_WIFI_BMP,
@@ -362,8 +362,8 @@ static const uint8_t* const ICON_TABLE[ICON_COUNT] = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  drawIcon · dibuja el bitmap centrado en (cx, cy)
-//  Los pixels "encendidos" se pintan con `color`, los apagados son transparentes
+//  drawIcon · desenha o bitmap centralizado em (cx, cy)
+//  Os pixels "acesos" são pintados com `color`; os apagados são transparentes
 // ═══════════════════════════════════════════════════════════════════════════
 void drawIcon(int cx, int cy, IconID id, uint16_t color,
               int yMin, int yMax) {
@@ -375,7 +375,7 @@ void drawIcon(int cx, int cy, IconID id, uint16_t color,
 
     for (int row = 0; row < ICON_SIZE; row++) {
         int py = y0 + row;
-        // ── Clipping vertical: descartar filas fuera del área permitida ──
+        // ── Clipping vertical: descarta linhas fora da área permitida ──
         if (py < yMin || py > yMax) continue;
 
         for (int byteIdx = 0; byteIdx < ICON_SIZE / 8; byteIdx++) {

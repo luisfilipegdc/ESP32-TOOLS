@@ -7,10 +7,10 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  LAYOUT DEL TECLADO
+//  LAYOUT DO TECLADO
 // ═══════════════════════════════════════════════════════════════════════════
 
-// 4 filas alfanuméricas × 10 columnas
+// 4 linhas alfanuméricas × 10 colunas
 static const char* KB_ROWS_LOWER[] = {
     "1234567890",
     "qwertyuiop",
@@ -25,7 +25,7 @@ static const char* KB_ROWS_UPPER[] = {
     "ZXCVBNM,/+"           // shift de la última fila → más símbolos
 };
 
-// Especiales en fila 4 (índices 0-4)
+// Especiais na linha 4 (índices 0-4)
 enum SpecialKey {
     KEY_SHIFT = 0,
     KEY_SPACE = 1,
@@ -39,7 +39,7 @@ static const char* SPECIAL_LABELS[] = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  GEOMETRÍA
+//  GEOMETRIA
 // ═══════════════════════════════════════════════════════════════════════════
 #define KB_KEY_W      28        // ancho de tecla normal
 #define KB_KEY_H      22        // alto de tecla
@@ -47,8 +47,8 @@ static const char* SPECIAL_LABELS[] = {
 #define KB_START_X    10        // X del inicio del teclado
 #define KB_START_Y    96        // Y del inicio del teclado
 
-// Total ancho = 10 * (28 + 2) - 2 = 298 → cabe en 320 con margen
-// Total alto = 5 filas × 24 + algunos pixeles = ~120
+// Largura total = 10 * (28 + 2) - 2 = 298 → cabe em 320 com margem
+// Altura total = 5 linhas × 24 + alguns pixels = ~120
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESTADO
@@ -64,13 +64,13 @@ static bool    g_maskInput = false;
 //  HELPERS
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Dada una columna alfanumérica (0-9), devuelve el índice de la tecla
-// especial correspondiente en la fila 4 (0-4)
+// Dada uma coluna alfanumérica (0-9), retorna o índice da tecla
+// especial correspondente na linha 4 (0-4)
 static int alphaColToSpecialCol(int col) {
     return col / 2;   // cols 0,1 → SHIFT; 2,3 → SPACE; 4,5 → DEL; 6,7 → OK; 8,9 → CANCEL
 }
 
-// Dada una tecla especial (0-4), devuelve la columna alfanumérica de inicio (0-9)
+// Dada uma tecla especial (0-4), retorna a coluna alfanumérica inicial (0-9)
 static int specialColToAlphaCol(int specialIdx) {
     return specialIdx * 2;
 }
@@ -83,7 +83,7 @@ static char getCharAt(int row, int col) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  DIBUJO
+//  DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawKey(int row, int col, bool selected) {
@@ -131,7 +131,7 @@ static void drawSpecialKey(int specialIdx, bool selected) {
         fg = UI_MAIN;
         border = UI_ACCENT;
 
-        // Color especial para OK y CANCEL
+        // Cor especial para OK e CANCEL
         if (specialIdx == KEY_OK)     border = TFT_GREEN;
         if (specialIdx == KEY_CANCEL) border = TFT_RED;
     }
@@ -149,7 +149,7 @@ static void drawSpecialKey(int specialIdx, bool selected) {
 static void drawAllKeys() {
     bool inSpecialRow = (g_cursorRow == 4);
 
-    // Dibujar 40 teclas alfanuméricas
+    // Desenha as 40 teclas alfanuméricas
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 10; col++) {
             bool sel = !inSpecialRow && (row == g_cursorRow) && (col == g_cursorCol);
@@ -157,7 +157,7 @@ static void drawAllKeys() {
         }
     }
 
-    // Dibujar 5 teclas especiales
+    // Desenha as 5 teclas especiais
     int specialSelectedIdx = inSpecialRow ? alphaColToSpecialCol(g_cursorCol) : -1;
     for (int s = 0; s < 5; s++) {
         drawSpecialKey(s, s == specialSelectedIdx);
@@ -165,11 +165,11 @@ static void drawAllKeys() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  TEXTBOX (donde se muestra lo que estás escribiendo)
+//  TEXTBOX (onde é mostrado o que você está escrevendo)
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawTextBox() {
-    // Limpiar área
+    // Limpa a área
     tft.fillRect(10, 56, 300, 32, TFT_BLACK);
     tft.drawRect(10, 56, 300, 32, UI_MAIN);
 
@@ -219,16 +219,16 @@ static void drawFooter() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  NAVEGACIÓN
-//  Lógica: UP/DOWN cicla verticalmente. Cuando llegas al final/principio
-//  de la columna, saltas a la columna siguiente/anterior y vuelves al inicio
+//  NAVEGAÇÃO
+//  Lógica: UP/DOWN circula verticalmente. Quando chega ao fim/início
+//  da coluna, pula para a coluna seguinte/anterior e volta ao início
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void cursorDown() {
     if (g_cursorRow < 4) {
         g_cursorRow++;
     } else {
-        // En fila especial. Avanzar columna por columna (sin saltar).
+        // Na linha especial. Avança coluna por coluna (sem pular).
         g_cursorCol = (g_cursorCol + 1) % 10;
         g_cursorRow = 0;
     }
@@ -238,7 +238,7 @@ static void cursorDown() {
     if (g_cursorRow > 0) {
         g_cursorRow--;
     } else {
-        // En fila 0. Retroceder columna por columna y saltar a fila 4.
+        // Na linha 0. Retrocede coluna por coluna e pula para a linha 4.
         g_cursorCol = (g_cursorCol + 9) % 10;
         g_cursorRow = 4;
     }
@@ -248,10 +248,10 @@ static void cursorDown() {
 //  ACCIONES
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Ejecuta la tecla actual. Retorna:
-//   0 = continúa
-//   1 = OK confirmado (terminar con buffer)
-//   2 = CANCEL (terminar con string vacío)
+// Executa a tecla atual. Retorna:
+//   0 = continua
+//   1 = OK confirmado (terminar com o buffer)
+//   2 = CANCEL (terminar com string vazia)
 static int executeCurrentKey() {
     if (g_cursorRow < 4) {
         // Tecla alfanumérica
@@ -259,7 +259,7 @@ static int executeCurrentKey() {
         if (c == 0) return 0;
         if ((int)g_buffer.length() < g_maxLen) {
             g_buffer += c;
-            // Después de teclear con shift, desactivar shift (como teclados móviles)
+            // Depois de digitar com shift, desativa o shift (como teclados móveis)
             if (g_shiftActive) {
                 g_shiftActive = false;
             }
@@ -270,7 +270,7 @@ static int executeCurrentKey() {
         return 0;
     }
 
-    // Fila especial
+    // Linha especial
     int specialIdx = alphaColToSpecialCol(g_cursorCol);
     switch (specialIdx) {
         case KEY_SHIFT:
@@ -309,7 +309,7 @@ String virtualKeyboardInput(const String& title,
                             const String& subtitle,
                             int maxLen,
                             bool maskInput) {
-    // Esperar liberación de OK (por si venimos presionando)
+    // Espera a liberação do OK (caso estejamos vindo pressionando)
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -367,7 +367,7 @@ String virtualKeyboardInput(const String& title,
                 return "";
             }
 
-            // Continúa: redibujar todo (puede haber cambiado shift, buffer, etc.)
+            // Continua: redesenha tudo (shift, buffer, etc. podem ter mudado)
             drawTextBox();
             drawAllKeys();
             lastBtn = millis();

@@ -1,16 +1,16 @@
 #include "PepeDraw.h"
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ESTRUCTURAS DE FUENTE
-//  · bit 0 de cada byte = pixel más a la izquierda
-//  · `width` = ancho efectivo del glifo (para kerning)
+//  ESTRUTURAS DE FONTE
+//  · bit 0 de cada byte = pixel mais à esquerda
+//  · `width` = largura efetiva do glifo (para kerning)
 // ═══════════════════════════════════════════════════════════════════════════
 struct GlyphS { uint8_t width; uint8_t rows[7]; };     // SMALL 5x7
 struct GlyphB { uint8_t width; uint8_t rows[12]; };    // BIG   8x12
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  FUENTE SMALL 5x7  (95 chars ASCII 0x20-0x7E)
-//  Diseñadas con descenders reales para g j p q y (pixel en fila 6)
+//  FONTE SMALL 5x7  (95 chars ASCII 0x20-0x7E)
+//  Desenhadas com descenders reais para g j p q y (pixel na linha 6)
 // ═══════════════════════════════════════════════════════════════════════════
 static const GlyphS FONT_S_ASCII[95] PROGMEM = {
     // 0x20 ' '
@@ -206,7 +206,7 @@ static const GlyphS FONT_S_ASCII[95] PROGMEM = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  FUENTE SMALL — Extensión Español (Latin-1 supplement + puntuación invertida)
+//  FONTE SMALL — Extensão Espanhol (Latin-1 supplement + pontuação invertida)
 // ═══════════════════════════════════════════════════════════════════════════
 struct ExtEntryS { uint16_t codepoint; GlyphS g; };
 
@@ -247,8 +247,8 @@ static const ExtEntryS FONT_S_EXT[] PROGMEM = {
 static const int FONT_S_EXT_COUNT = sizeof(FONT_S_EXT) / sizeof(ExtEntryS);
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  FUENTE BIG 8x12  (95 chars ASCII 0x20-0x7E)
-//  Trazo grueso (2px), ideal para títulos y headers
+//  FONTE BIG 8x12  (95 chars ASCII 0x20-0x7E)
+//  Traço grosso (2px), ideal para títulos e headers
 // ═══════════════════════════════════════════════════════════════════════════
 static const GlyphB FONT_B_ASCII[95] PROGMEM = {
     // 0x20 ' '
@@ -444,7 +444,7 @@ static const GlyphB FONT_B_ASCII[95] PROGMEM = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  FUENTE BIG — Extensión Español
+//  FONTE BIG — Extensão Espanhol
 // ═══════════════════════════════════════════════════════════════════════════
 struct ExtEntryB { uint16_t codepoint; GlyphB g; };
 
@@ -486,7 +486,7 @@ static const int FONT_B_EXT_COUNT = sizeof(FONT_B_EXT) / sizeof(ExtEntryB);
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  UTF-8 DECODER
-//  Devuelve el codepoint Unicode (0-0xFFFF) y avanza `idx` los bytes leídos
+//  Retorna o codepoint Unicode (0-0xFFFF) e avança `idx` pelos bytes lidos
 // ═══════════════════════════════════════════════════════════════════════════
 static uint16_t nextCodepoint(const String& s, int& idx) {
     if (idx >= (int)s.length()) return 0;
@@ -522,15 +522,15 @@ static uint16_t nextCodepoint(const String& s, int& idx) {
 //  LOOKUP DE GLIFOS
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Busca glifo SMALL. Devuelve puntero al glifo (del array PROGMEM) o nullptr.
-// Llena `outGlyph` con una copia RAM si no es nullptr.
+// Busca o glifo SMALL. Retorna ponteiro para o glifo (do array PROGMEM) ou nullptr.
+// Preenche `outGlyph` com uma cópia em RAM se não for nullptr.
 static bool lookupSmall(uint16_t cp, GlyphS& out) {
     // ASCII directo
     if (cp >= 0x20 && cp <= 0x7E) {
         memcpy_P(&out, &FONT_S_ASCII[cp - 0x20], sizeof(GlyphS));
         return true;
     }
-    // Extensión español
+    // Extensão espanhol
     for (int i = 0; i < FONT_S_EXT_COUNT; i++) {
         uint16_t entryCp = pgm_read_word(&FONT_S_EXT[i].codepoint);
         if (entryCp == cp) {
@@ -558,7 +558,7 @@ static bool lookupBig(uint16_t cp, GlyphB& out) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  RENDERIZADO DE GLIFO (bit 0 = columna izquierda)
+//  RENDERIZAÇÃO DO GLIFO (bit 0 = coluna esquerda)
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawGlyphS(int x, int y, const GlyphS& g, uint16_t color, int size) {
     for (int r = 0; r < 7; r++) {
@@ -588,8 +588,8 @@ static void drawGlyphB(int x, int y, const GlyphB& g, uint16_t color, int size) 
 //  API PÚBLICA
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Ancho lógico de un carácter (en píxeles base, antes de multiplicar por size)
-// Incluye 1 px de separación a la derecha
+// Largura lógica de um caractere (em pixels base, antes de multiplicar por size)
+// Inclui 1 px de separação à direita
 static int charAdvanceS(uint16_t cp) {
     GlyphS g;
     if (!lookupSmall(cp, g)) return 4;   // placeholder
@@ -617,7 +617,7 @@ int getFontHeight(int size, FontType font) {
     return (font == FONT_SMALL ? 7 : 12) * size;
 }
 
-// Renderizado genérico
+// Renderização genérica
 static void drawStringGeneric(int x, int y, const String& txt,
                               uint16_t color, int size, FontType font) {
     int idx = 0;
@@ -644,9 +644,9 @@ static void drawStringGeneric(int x, int y, const String& txt,
     }
 }
 
-// ── Compatibilidad hacia atrás ────────────────────────────────────────────
+// ── Compatibilidade retroativa ────────────────────────────────────────────
 void drawCharCustom(int x, int y, char c, uint16_t color, int size) {
-    // Para chars simples (ASCII). Para acentos usar drawStringCustom.
+    // Para chars simples (ASCII). Para acentos, usar drawStringCustom.
     GlyphS g;
     if (lookupSmall((uint16_t)(uint8_t)c, g)) {
         drawGlyphS(x, y, g, color, size);
