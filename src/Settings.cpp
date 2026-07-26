@@ -1,12 +1,12 @@
 #include "Settings.h"
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  Variables globales de configuración del usuario.
+//  Variáveis globais de configuração do usuário.
 //
-//  IMPORTANTE: estos valores "iniciales" son solo fallback.
-//  El valor real se carga desde NVS en setup() mediante loadSettings().
-//  Cualquier cambio durante runtime debe guardarse con saveSettings().
+//  IMPORTANTE: estes valores "iniciais" são apenas fallback.
+//  O valor real é carregado do NVS em setup() via loadSettings().
+//  Qualquer mudança em runtime deve ser salva com saveSettings().
 // ═══════════════════════════════════════════════════════════════════════════
 
 bool soundEnabled = true;
-int  soundVolume  = 3;   // rango 1-5
+int  soundVolume  = 3;   // faixa 1-5
