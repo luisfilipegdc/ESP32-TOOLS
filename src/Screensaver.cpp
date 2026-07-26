@@ -3,20 +3,20 @@
 #include "PepeDraw.h"
 #include "Pins.h"
 #include "SoundUtils.h"
-#include "AjoloteSprite.h"   // <-- usa el sprite compartido (mismo del splash)
+#include "AjoloteSprite.h"   // <-- usa o sprite compartilhado (o mesmo do splash)
 
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  AJOLOTE A MEDIA ESCALA (48x40)
-//  · Reusa el bitmap 96x80 del módulo AjoloteSprite
-//  · Se dibuja con drawAjoloteHalf() — toma 1 de cada 2 pixeles en cada eje
+//  AXOLOTE EM MEIA ESCALA (48x40)
+//  · Reusa o bitmap 96x80 do módulo AjoloteSprite
+//  · Desenhado com drawAjoloteHalf() — pega 1 a cada 2 pixels em cada eixo
 // ═══════════════════════════════════════════════════════════════════════════
 #define AJ_W  48
 #define AJ_H  40
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ESTADO DE LA ANIMACIÓN
+//  ESTADO DA ANIMAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
 
 #define MAX_STARS  20
@@ -24,18 +24,18 @@ extern TFT_eSPI tft;
 struct Star {
     int16_t x, y;
     uint8_t brightness;   // 0..255
-    int8_t  fadeDir;      // +1 o -1
+    int8_t  fadeDir;      // +1 ou -1
 };
 
 static Star stars[MAX_STARS];
 
-// Posición del ajolote
+// Posição do axolote
 static int16_t ajX = 100;
 static int16_t ajY = 80;
 static int8_t  ajVX = 1;
 static int8_t  ajVY = 1;
 
-// Para el texto rotativo
+// Para o texto rotativo
 static const char* TEXTS[] = {
     "ESP32-TOOLS",
     "by PepeAngell",
@@ -47,10 +47,10 @@ static int currentTextIdx = 0;
 static unsigned long lastTextChange = 0;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HELPERS DE DIBUJO
+//  HELPERS DE DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Dibuja el ajolote (48x40, escalado del bitmap 96x80) en (x, y) con color
+// Desenha o axolote (48x40, escalado do bitmap 96x80) em (x, y) com cor
 static void drawAjolote(int x, int y, uint16_t color) {
     int bytesPerRow = AJOLOTE_WIDTH / 8;   // 96/8 = 12
     for (int r = 0; r < AJOLOTE_HEIGHT; r += 2) {
@@ -69,12 +69,12 @@ static void drawAjolote(int x, int y, uint16_t color) {
     }
 }
 
-// Borra el ajolote pintándolo en negro (mismo bitmap, mismo escalado)
+// Apaga o axolote pintando de preto (mesmo bitmap, mesma escala)
 static void eraseAjolote(int x, int y) {
     drawAjolote(x, y, TFT_BLACK);
 }
 
-// Inicializa estrellitas en posiciones aleatorias
+// Inicializa as estrelinhas em posições aleatórias
 static void initStars() {
     for (int i = 0; i < MAX_STARS; i++) {
         stars[i].x = random(5, 315);
@@ -84,13 +84,13 @@ static void initStars() {
     }
 }
 
-// Actualiza brillo de cada estrella y la dibuja
+// Atualiza o brilho de cada estrela e a desenha
 static void updateStars() {
     for (int i = 0; i < MAX_STARS; i++) {
-        // Borrar posición anterior
+        // Apaga a posição anterior
         tft.drawPixel(stars[i].x, stars[i].y, TFT_BLACK);
 
-        // Actualizar brillo
+        // Atualiza o brilho
         int b = stars[i].brightness + stars[i].fadeDir * 8;
         if (b >= 250) {
             b = 255;
@@ -99,7 +99,7 @@ static void updateStars() {
         if (b <= 30) {
             b = 30;
             stars[i].fadeDir = 1;
-            // Reposicionar de vez en cuando para variar
+            // Reposiciona de vez em quando para variar
             if (random(100) < 30) {
                 stars[i].x = random(5, 315);
                 stars[i].y = random(5, 235);
@@ -107,7 +107,7 @@ static void updateStars() {
         }
         stars[i].brightness = b;
 
-        // Convertir brillo a color RGB565 (gris azulado)
+        // Converte o brilho para cor RGB565 (cinza azulado)
         uint16_t r5 = (b >> 3) & 0x1F;
         uint16_t g6 = (b >> 2) & 0x3F;
         uint16_t b5 = (b >> 3) & 0x1F;
@@ -124,9 +124,9 @@ static void updateStars() {
 static int prevTextX = -1, prevTextY = -1, prevTextW = 0, prevTextH = 0;
 
 static void updateText(unsigned long startMs) {
-    // Cambiar texto cada 4 segundos
+    // Troca o texto a cada 4 segundos
     if (millis() - lastTextChange > 4000) {
-        // Borrar texto anterior
+        // Apaga o texto anterior
         if (prevTextX >= 0) {
             tft.fillRect(prevTextX, prevTextY, prevTextW, prevTextH, TFT_BLACK);
         }
@@ -140,7 +140,7 @@ static void updateText(unsigned long startMs) {
         int textH = 24;
 
         int x, y;
-        // 4 zonas: arriba-izq, arriba-der, abajo-izq, abajo-der
+        // 4 zonas: cima-esq, cima-dir, baixo-esq, baixo-dir
         int zone = random(4);
         switch (zone) {
             case 0: x = 20;               y = 20;  break;
@@ -154,12 +154,12 @@ static void updateText(unsigned long startMs) {
         prevTextW = textW;
         prevTextH = textH;
 
-        // Color que cambia con el texto
+        // Cor que muda com o texto
         uint16_t colors[] = {UI_MAIN, UI_SELECT, TFT_CYAN, TFT_GREEN};
         drawStringBig(x, y, text, colors[currentTextIdx % 4], 2);
     }
 
-    // Mostrar uptime en una zona fija (esquina inferior izquierda pequeño)
+    // Mostra o uptime numa zona fixa (canto inferior esquerdo, pequeno)
     static unsigned long lastUptimeUpdate = 0;
     if (millis() - lastUptimeUpdate > 1000) {
         unsigned long sec = (millis() - startMs) / 1000;
@@ -175,18 +175,18 @@ static void updateText(unsigned long startMs) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ANIMACIÓN PRINCIPAL
+//  ANIMAÇÃO PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void updateAjolote() {
-    // Borrar posición anterior
+    // Apaga a posição anterior
     eraseAjolote(ajX, ajY);
 
-    // Actualizar posición
+    // Atualiza a posição
     ajX += ajVX;
     ajY += ajVY;
 
-    // Rebotar en bordes
+    // Quica nas bordas
     bool bounced = false;
     if (ajX < 5) {
         ajX = 5;
@@ -209,12 +209,12 @@ static void updateAjolote() {
         bounced = true;
     }
 
-    // Cuando rebota, beep sutil
+    // Quando quica, beep sutil
     if (bounced) {
         beep(2400, 8);
     }
 
-    // Color del ajolote: alterna entre blanco y cian para efecto sutil
+    // Cor do axolote: alterna entre branco e ciano para um efeito sutil
     uint16_t color = ((millis() / 600) % 2) ? UI_MAIN : TFT_CYAN;
     drawAjolote(ajX, ajY, color);
 }
@@ -224,7 +224,7 @@ static void updateAjolote() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runScreensaver() {
-    // Esperar liberación de cualquier botón presionado
+    // Espera a liberação de qualquer botão pressionado
     while (digitalRead(BTN_UP) == LOW || digitalRead(BTN_DOWN) == LOW ||
            digitalRead(BTN_OK) == LOW) delay(5);
     delay(50);
@@ -233,16 +233,16 @@ void runScreensaver() {
     tft.fillScreen(TFT_BLACK);
     initStars();
 
-    // Posición inicial aleatoria del ajolote (centrada-ish)
+    // Posição inicial aleatória do axolote (mais ou menos centrada)
     ajX = random(50, 270 - AJ_W);
     ajY = random(50, 200 - AJ_H);
 
-    // Dirección aleatoria
+    // Direção aleatória
     ajVX = random(2) ? 1 : -1;
     ajVY = random(2) ? 1 : -1;
 
     currentTextIdx = 0;
-    lastTextChange = millis() - 4000;   // forzar primer texto inmediato
+    lastTextChange = millis() - 4000;   // força o primeiro texto imediato
     prevTextX = -1;
 
     unsigned long startMs = millis();
@@ -250,12 +250,12 @@ void runScreensaver() {
     const unsigned long FRAME_MS = 50;   // ~20 FPS
 
     while (true) {
-        // Detectar cualquier botón → salir
+        // Detecta qualquer botão → sair
         if (digitalRead(BTN_UP) == LOW ||
             digitalRead(BTN_DOWN) == LOW ||
             digitalRead(BTN_OK) == LOW) {
             beep(1800, 30);
-            // Esperar liberación de TODOS los botones
+            // Espera a liberação de TODOS os botões
             while (digitalRead(BTN_UP) == LOW ||
                    digitalRead(BTN_DOWN) == LOW ||
                    digitalRead(BTN_OK) == LOW) delay(5);

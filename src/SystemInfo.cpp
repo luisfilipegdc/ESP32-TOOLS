@@ -12,9 +12,9 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  LECTURA DE TEMPERATURA INTERNA
-//  El ESP32 tiene un sensor de temperatura interno accesible vía ROM
-//  function (no documentada oficialmente pero estable y ampliamente usada).
+//  LEITURA DA TEMPERATURA INTERNA
+//  O ESP32 tem um sensor de temperatura interno acessível via função
+//  ROM (não documentada oficialmente, mas estável e amplamente usada).
 // ═══════════════════════════════════════════════════════════════════════════
 #ifdef __cplusplus
 extern "C" {
@@ -25,17 +25,17 @@ uint8_t temprature_sens_read();
 #endif
 
 static float readChipTemperatureC() {
-    // Lectura raw (resultado en °F aproximado, convertimos a °C)
+    // Leitura raw (resultado em °F aproximado, convertemos para °C)
     uint8_t raw = temprature_sens_read();
     float fahrenheit = (float)raw;
     return (fahrenheit - 32.0f) * 5.0f / 9.0f;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  FORMATEADORES
+//  FORMATADORES
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Uptime formateado HH:MM:SS
+// Uptime formatado HH:MM:SS
 static String formatUptime(unsigned long ms) {
     unsigned long totalSec = ms / 1000;
     unsigned long hours = totalSec / 3600;
@@ -47,7 +47,7 @@ static String formatUptime(unsigned long ms) {
     return String(buf);
 }
 
-// Formatea un MAC address en AA:BB:CC:DD:EE:FF
+// Formata um endereço MAC em AA:BB:CC:DD:EE:FF
 static String formatMAC(const uint8_t mac[6]) {
     char buf[18];
     snprintf(buf, sizeof(buf), "%02X:%02X:%02X:%02X:%02X:%02X",
@@ -55,7 +55,7 @@ static String formatMAC(const uint8_t mac[6]) {
     return String(buf);
 }
 
-// Nombre del chip según esp_chip_info_t
+// Nome do chip conforme esp_chip_info_t
 static const char* chipModelName(esp_chip_model_t model) {
     switch (model) {
         case CHIP_ESP32:    return "ESP32";
@@ -67,7 +67,7 @@ static const char* chipModelName(esp_chip_model_t model) {
     }
 }
 
-// Formatea KB con 0 decimales
+// Formata KB com 0 casas decimais
 static String formatKB(uint32_t bytes) {
     return String(bytes / 1024) + " KB";
 }
@@ -77,11 +77,11 @@ static String formatMB(uint32_t bytes) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  DIBUJO
+//  DESENHO
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Dibuja el marco estático (título, separadores, section headers, footer).
-// Solo se llama una vez al entrar.
+// Desenha a moldura estática (título, separadores, section headers, footer).
+// Chamado apenas uma vez ao entrar.
 static void drawStaticLayout() {
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, UI_MAIN);
@@ -100,7 +100,7 @@ static void drawStaticLayout() {
     drawStringCustom(10, 225, "OK (HOLD): BACK TO MENU", UI_ACCENT, 1);
 }
 
-// Dibuja la información estática (no cambia en runtime)
+// Desenha a informação estática (não muda em runtime)
 static void drawStaticInfo() {
     esp_chip_info_t chip;
     esp_chip_info(&chip);
@@ -142,19 +142,19 @@ static void drawStaticInfo() {
         UI_MAIN, 1);
 }
 
-// Redibuja solo los valores dinámicos (se llama periódicamente)
+// Redesenha apenas os valores dinâmicos (chamado periodicamente)
 static void drawDynamicInfo(unsigned long sessionStartMs) {
-    // Valores a mostrar
+    // Valores a exibir
     unsigned long uptimeMs   = millis() - sessionStartMs;
     unsigned long bootCount  = nvsGetULong("boot_cnt", 0);
     uint32_t heapFree        = ESP.getFreeHeap();
     uint32_t heapTotal       = ESP.getHeapSize();
     float    tempC           = readChipTemperatureC();
 
-    // Sanear temperatura (a veces el sensor devuelve valores absurdos al inicio)
+    // Sanear a temperatura (às vezes o sensor retorna valores absurdos no início)
     if (tempC < 0 || tempC > 125) tempC = 0;
 
-    // Área dinámica: y 170-212 (borrar antes de redibujar)
+    // Área dinâmica: y 170-212 (limpar antes de redesenhar)
     tft.fillRect(18, 170, 294, 44, TFT_BLACK);
 
     drawStringCustom(20, 170,
@@ -183,7 +183,7 @@ static void drawDynamicInfo(unsigned long sessionStartMs) {
 // ═══════════════════════════════════════════════════════════════════════════
 void runSystemInfo() {
 
-    // Esperar a que se libere OK del menú anterior
+    // Espera a liberação do OK do menu anterior
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -202,13 +202,13 @@ void runSystemInfo() {
     bool okHeld = false;
 
     while (!exitScreen) {
-        // Refresh periódico de valores dinámicos
+        // Refresh periódico dos valores dinâmicos
         if (millis() - lastRefresh > REFRESH_MS) {
             drawDynamicInfo(sessionStart);
             lastRefresh = millis();
         }
 
-        // Detectar hold de OK (~300ms) para salir
+        // Detecta hold do OK (~300ms) para sair
         if (digitalRead(BTN_OK) == LOW) {
             if (!okHeld) {
                 okPressStart = millis();
@@ -227,7 +227,7 @@ void runSystemInfo() {
     delay(20);
     beep(1800, 40);
 
-    // Esperar liberación
+    // Espera a liberação
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 }
