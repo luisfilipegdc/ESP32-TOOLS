@@ -7,15 +7,15 @@ extern TFT_eSPI tft;
 
 static RF24 radioJam(CE_PIN, CSN_PIN);
 
-// ── Canal WiFi seleccionado (1-13) ────────────────────────────────────────────
+// ── Canal WiFi selecionado (1-13) ────────────────────────────────────────────
 static int jamChannel = 6;
 
-// ── Tabla: canal WiFi → offset NRF24 (base 2400 MHz) ─────────────────────────
+// ── Tabela: canal WiFi → offset NRF24 (base 2400 MHz) ─────────────────────────
 static const uint8_t wifiToNrf[14] = {
     0,  12, 17, 22, 27, 32, 37, 42, 47, 52, 57, 62, 67, 72
 };
 
-// ── Payload de ruido máximo 32 bytes ─────────────────────────────────────────
+// ── Payload de ruído máximo 32 bytes ─────────────────────────────────────────
 static const uint8_t noise_payload[32] = {
     0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA,
     0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA,
@@ -23,8 +23,8 @@ static const uint8_t noise_payload[32] = {
     0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA
 };
 
-// ── Solo los 14 canales WiFi 2.4GHz (centros exactos en offset NRF24) ─────────
-// Menos canales = más tiempo por canal = mayor saturación efectiva
+// ── Só os 14 canais WiFi 2.4GHz (centros exatos em offset NRF24) ─────────
+// Menos canais = mais tempo por canal = maior saturação efetiva
 static const uint8_t sweep_list[] = {
     12,  // WiFi CH1  → 2412 MHz
     17,  // WiFi CH2  → 2417 MHz
@@ -44,7 +44,7 @@ static const uint8_t sweep_list[] = {
 static const int sweep_total = sizeof(sweep_list);
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Inicializa el NRF24 reiniciando el bus SPI limpiamente
+// Inicializa o NRF24 reiniciando o barramento SPI de forma limpa
 // ─────────────────────────────────────────────────────────────────────────────
 static bool initRadio() {
     SPI.end();
@@ -64,7 +64,7 @@ static bool initRadio() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Animación de barras
+// Animação de barras
 // ─────────────────────────────────────────────────────────────────────────────
 static void drawBars() {
     int baseY = 205;
@@ -79,27 +79,27 @@ static void drawBars() {
 // ─────────────────────────────────────────────────────────────────────────────
 //  NÚCLEOS DE ATAQUE
 //
-//  attackTurbo()  — Máxima densidad en un solo canal.
-//                   Todo el tiempo del radio concentrado en el canal exacto.
-//                   Más efectivo para tumbar un canal WiFi específico.
+//  attackTurbo()  — Máxima densidade em um único canal.
+//                   Todo o tempo do rádio concentrado no canal exato.
+//                   Mais efetivo para derrubar um canal WiFi específico.
 //
-//  attackWide()   — Canal central ±2 (5 canales NRF = ~10 MHz de ancho).
+//  attackWide()   — Canal central ±2 (5 canais NRF = ~10 MHz de largura).
 //                   Balance entre cobertura y densidad.
-//                   Útil si el AP salta entre canales adyacentes.
+//                   Útil se o AP pula entre canais adjacentes.
 //
-//  attackSweep()  — Recorre toda la lista de canales WiFi + BT.
-//                   Menor densidad por canal pero cobertura total.
+//  attackSweep()  — Percorre toda a lista de canais WiFi + BT.
+//                   Menor densidade por canal, mas cobertura total.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Turbo: 500 paquetes seguidos en un solo canal — máxima saturación
+// Turbo: 500 pacotes seguidos em um único canal — máxima saturação
 static void attackTurbo(uint8_t nrfChannel) {
     radioJam.setChannel(nrfChannel);
     for (int i = 0; i < 500; i++)
         radioJam.startWrite(noise_payload, 32, true);
 }
 
-// Wide: ±2 canales NRF alrededor del centro (5 canales total, ~10 MHz BW)
-// Cada canal recibe 100 paquetes → densidad alta con algo de cobertura lateral
+// Wide: ±2 canais NRF ao redor do centro (5 canais no total, ~10 MHz BW)
+// Cada canal recebe 100 pacotes → densidade alta com alguma cobertura lateral
 static void attackWide(uint8_t center) {
     for (int offset = -2; offset <= 2; offset++) {
         int ch = (int)center + offset;
@@ -110,12 +110,12 @@ static void attackWide(uint8_t center) {
     }
 }
 
-// Sweep: ataca cada canal con BURST_PER_CH paquetes antes de pasar al siguiente.
-// Recorre un canal completo por llamada para que el analizador lo detecte
-// y el AP no pueda usarlo durante el tiempo de ataque en ese canal.
+// Sweep: ataca cada canal com BURST_PER_CH pacotes antes de passar ao próximo.
+// Percorre um canal completo por chamada para que o analisador o detecte
+// e o AP não possa usá-lo durante o tempo de ataque nesse canal.
 #define SWEEP_BURST_PER_CH 80
 static void attackSweepStep(int& idx) {
-    // Atacar el canal actual con densidad alta
+    // Ataca o canal atual com densidade alta
     radioJam.setChannel(sweep_list[idx]);
     for (int i = 0; i < SWEEP_BURST_PER_CH; i++)
         radioJam.startWrite(noise_payload, 32, true);

