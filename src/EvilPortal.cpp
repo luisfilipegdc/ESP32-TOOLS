@@ -13,7 +13,7 @@
 extern TFT_eSPI tft;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
 #define MAX_APS_SCAN    30
 #define VISIBLE_ROWS    6
@@ -56,7 +56,7 @@ static String       g_lastCaptureEmail = "";
 static String       g_lastCapturePassword = "";
 static unsigned long g_lastCaptureTime = 0;
 
-// Deauth frame (igual al del Deauther)
+// Deauth frame (igual ao do Deauther)
 static uint8_t deauthFrame[26] = {
     0xC0, 0x00, 0x00, 0x00,
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -280,7 +280,7 @@ static bool showDisclaimer() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  MENÚ PRINCIPAL
+//  MENU PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawMainMenu(int cursor) {
@@ -620,7 +620,7 @@ static int selectCloneTarget() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  DASHBOARD DE ATAQUE ACTIVO
+//  DASHBOARD DE ATAQUE ATIVO
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void drawDashboardFrame() {
@@ -683,7 +683,7 @@ static void drawDashboardStats() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  LOOP PRINCIPAL DEL PORTAL
+//  LOOP PRINCIPAL DO PORTAL
 // ═══════════════════════════════════════════════════════════════════════════
 
 static void runPortalLoop() {
@@ -897,7 +897,7 @@ static void viewLogs() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  CONFIRMAR BORRAR LOGS
+//  CONFIRMAR APAGAR LOGS
 // ═══════════════════════════════════════════════════════════════════════════
 
 static bool confirmClearLogs() {

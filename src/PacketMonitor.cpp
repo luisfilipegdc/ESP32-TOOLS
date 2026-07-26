@@ -6,13 +6,13 @@
 #include "SoundUtils.h"
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN
+//  CONFIGURAÇÃO
 // ═════════════════════════════════════════════════════════════════════════════
 #define HISTORY_SIZE    60        // 60 segundos de historial
 #define BAR_WIDTH       5         // px por cada barra
 
-// Tope para escalar el meter y el history.
-// Calibrado para entornos reales (ESP32 solo cuenta frames 802.11 válidos).
+// Limite para escalar o meter e o history.
+// Calibrado para ambientes reais (o ESP32 só conta frames 802.11 válidos).
 #define PPS_MAX_SCALE   500
 
 // ── Layout ─────────────────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ static int  history[HISTORY_SIZE];
 static int  historyIdx   = 0;
 static bool historyFull  = false;
 
-// Estadísticas
+// Estatísticas
 static unsigned long totalEver   = 0;
 static unsigned long sampleCount = 0;
 static unsigned long sumPps      = 0;
@@ -70,9 +70,9 @@ static void sniffer_callback(void* buf, wifi_promiscuous_pkt_type_t type) {
 //  HELPERS
 // ═════════════════════════════════════════════════════════════════════════════
 
-// 🔧 UMBRALES RECALIBRADOS para entornos reales
-//    Max típico en entorno normal: ~100-200 pps
-//    Max con jammer activo: 250-500+ pps
+// 🔧 LIMIARES RECALIBRADOS para ambientes reais
+//    Max típico em ambiente normal: ~100-200 pps
+//    Max com jammer ativo: 250-500+ pps
 static ActivityLevel classify(int pps) {
     if (pps < 5)    return LVL_QUIET;
     if (pps < 25)   return LVL_LOW;
@@ -119,7 +119,7 @@ static int scaleToHeight(int pps, int maxH) {
 static int channelFreq(int ch) { return 2407 + ch * 5; }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  SONIDOS CORTOS (eventos)
+//  SONS CURTOS (eventos)
 // ═════════════════════════════════════════════════════════════════════════════
 static void playStartupChirp() {
     beep(1200, 70); delay(30);
@@ -138,9 +138,9 @@ static void playChannelBlip() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  SONIDO AMBIENTE (llamado continuamente en el loop)
-//  🎵 Nueva lógica: patrones distintos por nivel, frecuencias en el sweet spot
-//     del piezo para máxima intensidad percibida.
+//  SOM AMBIENTE (chamado continuamente no loop)
+//  🎵 Nova lógica: padrões distintos por nível, frequências no sweet spot
+//     do piezo para máxima intensidade percebida.
 // ═════════════════════════════════════════════════════════════════════════════
 static void updateAmbientSound(int pps) {
     static uint32_t phase = 0;
@@ -159,7 +159,7 @@ static void updateAmbientSound(int pps) {
         ledcWriteTone(0, 1300 + random(-40, 60));
     }
     else if (pps < 80) {
-        // ACTIVE: tono medio escalando con actividad
+        // ACTIVE: tom médio escalando com a atividade
         int freq = map(pps, 25, 80, 1100, 1500);
         ledcWriteTone(0, freq + random(-50, 70));
     }
@@ -172,15 +172,15 @@ static void updateAmbientSound(int pps) {
         else                ledcWriteTone(0, 0);
     }
     else if (pps < 250) {
-        // HEAVY: wobble rápido 8Hz, tono fuerte alarmante
+        // HEAVY: wobble rápido 8Hz, tom forte e alarmante
         bool hi = (phase / 6) % 2 == 0;
         int freq = hi ? 1800 : 1200;
         ledcWriteTone(0, freq + random(-50, 50));
     }
     else {
         // FLOODED: SIRENA tipo ambulancia (~12Hz)
-        // Las dos frecuencias (900 y 2400 Hz) están en el sweet spot del piezo
-        // para máxima sonoridad → se escucha INTENSO y urgente.
+        // As duas frequências (900 e 2400 Hz) estão no sweet spot do piezo
+        // para máxima sonoridade → soa INTENSO e urgente.
         bool hi = (phase / 4) % 2 == 0;
         int freq = hi ? 2400 : 900;
         ledcWriteTone(0, freq + random(-80, 80));
@@ -188,7 +188,7 @@ static void updateAmbientSound(int pps) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-//  DIBUJO
+//  DESENHO
 // ═════════════════════════════════════════════════════════════════════════════
 static void drawFrame() {
     tft.fillScreen(TFT_BLACK);
@@ -227,7 +227,7 @@ static void drawStatus() {
     tft.fillRect(6, 100, 270, 28, TFT_BLACK);
     uint16_t col = levelColor(currentLevel);
 
-    // Blink del círculo cuando FLOODED
+    // Blink do círculo quando FLOODED
     bool showDot = true;
     if (currentLevel == LVL_FLOODED && (frameCount / 10) % 2 == 0) {
         showDot = false;
@@ -358,7 +358,7 @@ void runPacketMonitor() {
     while (!exitMonitor) {
         frameCount++;
 
-        // ─── Cada segundo: capturar y actualizar displays ─────────────
+        // ─── Cada segundo: captura e atualiza os displays ─────────────
         if (millis() - lastUpdate > 1000) {
             currentPps = totalPacketsSec;
             totalPacketsSec = 0;
@@ -383,13 +383,13 @@ void runPacketMonitor() {
             drawStats();
         }
 
-        // ─── Sonido ambiente (cada loop, crea patrones) ───────────────
+        // ─── Som ambiente (cada loop, cria padrões) ───────────────
         updateAmbientSound(currentPps);
 
-        // ─── Animación del meter (~33 fps) ────────────────────────────
+        // ─── Animação do meter (~33 fps) ────────────────────────────
         if (frameCount % 3 == 0) drawMeter(currentPps);
 
-        // ─── Blink del status en FLOODED ──────────────────────────────
+        // ─── Blink do status em FLOODED ──────────────────────────────
         if (currentLevel == LVL_FLOODED && frameCount % 10 == 0) {
             drawStatus();
         }
