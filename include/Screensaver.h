@@ -5,15 +5,15 @@
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  SCREENSAVER · ajolote caminando estilo "DVD logo"
-//  · Se activa desde el menú principal después de IDLE_TIMEOUT_MS sin input
-//  · Sale con cualquier botón (UP/DOWN/OK)
+//  · É ativado pelo menu principal após IDLE_TIMEOUT_MS sem input
+//  · Sai com qualquer botão (UP/DOWN/OK)
 //  · Estrellitas titilando + textos rotativos
 // ═══════════════════════════════════════════════════════════════════════════
 
 #define SCREENSAVER_IDLE_MS  30000   // 30 segundos
 
-// Ejecuta el screensaver. Bloquea hasta que el usuario toque un botón.
-// Cuando regresa, debe redibujarse el menú actual.
+// Executa o screensaver. Bloqueia até o usuário tocar num botão.
+// Ao retornar, o menu atual deve ser redesenhado.
 void runScreensaver();
 
 #endif

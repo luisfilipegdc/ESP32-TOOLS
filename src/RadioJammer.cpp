@@ -84,7 +84,7 @@ static void drawBars() {
 //                   Mais efetivo para derrubar um canal WiFi específico.
 //
 //  attackWide()   — Canal central ±2 (5 canais NRF = ~10 MHz de largura).
-//                   Balance entre cobertura y densidad.
+//                   Equilíbrio entre cobertura e densidade.
 //                   Útil se o AP pula entre canais adjacentes.
 //
 //  attackSweep()  — Percorre toda a lista de canais WiFi + BT.
@@ -119,14 +119,14 @@ static void attackSweepStep(int& idx) {
     radioJam.setChannel(sweep_list[idx]);
     for (int i = 0; i < SWEEP_BURST_PER_CH; i++)
         radioJam.startWrite(noise_payload, 32, true);
-    // Avanzar al siguiente canal
+    // Avança para o próximo canal
     idx = (idx + 1) % sweep_total;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MODO 1: Canal WiFi fijo — tres sub-modos de ataque seleccionables
+// MODO 1: Canal WiFi fixo — três sub-modos de ataque selecionáveis
 //
-// Navegación (sin atacar):
+// Navegação (sem atacar):
 //   UP/DOWN   → cambia canal WiFi
 //   OK        → si foco en canal → cicla modo de ataque (OFF→TURBO→WIDE→OFF)
 //               si foco en BACK  → vuelve al menú del jammer
@@ -146,7 +146,7 @@ static void runChannelJammer() {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, TFT_WHITE);
 
-        // Cabecera — color según modo activo
+        // Cabeçalho — cor conforme o modo ativo
         uint16_t hdrBg = (attackMode == 0) ? TFT_WHITE :
                          (attackMode == 1) ? TFT_RED : 0xFBE0; // naranja oscuro
         tft.fillRect(1, 1, 318, 42, hdrBg);
@@ -158,7 +158,7 @@ static void runChannelJammer() {
         else
             drawStringCustom(10, 10, "WIDE  JAM!", TFT_WHITE, 3);
 
-        // Canal seleccionado
+        // Canal selecionado
         uint16_t chBg = (sel == 0 && attackMode == 0) ? TFT_WHITE : TFT_BLACK;
         uint16_t chFg = (sel == 0 && attackMode == 0) ? TFT_BLACK : TFT_YELLOW;
         tft.fillRect(5, 50, 310, 28, chBg);
@@ -171,7 +171,7 @@ static void runChannelJammer() {
         drawStringCustom(10, 88, "MODO: ", TFT_WHITE, 2);
         drawStringCustom(80, 88, modeLabels[attackMode], modeColors[attackMode], 2);
 
-        // Info según modo
+        // Info conforme o modo
         if (attackMode == 0) {
             drawStringCustom(10, 115, "OK: TURBO → WIDE → OFF", UI_ACCENT, 1);
         } else if (attackMode == 1) {
@@ -230,7 +230,7 @@ static void runChannelJammer() {
         // ── OK ───────────────────────────────────────────────────────────────
         if (digitalRead(BTN_OK) == LOW) {
             if (sel == 1 && attackMode == 0) {
-                // BACK seleccionado
+                // BACK selecionado
                 exitMode = true;
                 delay(200);
                 break;
@@ -302,11 +302,11 @@ static void runSweepJammer() {
         if (isAttacking) {
             attackSweepStep(sweepIdx);
 
-            // Redibujar barra y canal cada 5 canales para feedback visual fluido
+            // Redesenha a barra e o canal a cada 5 canais para feedback visual fluido
             if (++animCtr >= 5) {
                 animCtr = 0;
                 drawBars();
-                // Mostrar canal NRF actual en tiempo real
+                // Mostra o canal NRF atual em tempo real
                 tft.fillRect(10, 155, 250, 18, TFT_BLACK);
                 drawStringCustom(10, 157,
                     "NRF CH: " + String(sweep_list[sweepIdx]) +
@@ -343,7 +343,7 @@ static void runSweepJammer() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Menú principal del jammer (0=Canal Fijo, 1=Barrido, 2=Back)
+// Menu principal do jammer (0=Canal Fixo, 1=Varredura, 2=Back)
 // ─────────────────────────────────────────────────────────────────────────────
 static void drawModeMenu(int sel) {
     tft.fillScreen(TFT_BLACK);

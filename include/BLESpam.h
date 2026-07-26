@@ -6,8 +6,8 @@
 // ═══════════════════════════════════════════════════════════════════════════
 //  BLE SPAM · transmite advertisements BLE falsos
 //  · 4 protocolos: Apple Continuity, Samsung, Microsoft Swift Pair, Google
-//  · CHAOS MODE: rota entre los 4 aleatoriamente
-//  · Propósito educativo/demo — usar con responsabilidad
+//  · CHAOS MODE: gira entre os 4 aleatoriamente
+//  · Propósito educativo/demo — usar com responsabilidade
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runBLESpam();

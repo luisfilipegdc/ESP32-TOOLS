@@ -31,7 +31,7 @@ static const char* MODE_NAMES[] = {
 static const int MODE_COUNT = 5;
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  APPLE CONTINUITY · modelos de producto y sus nombres legibles
+//  APPLE CONTINUITY · modelos de produto e seus nomes legíveis
 //  Format: sub-type 0x07 (pairing) + length + flags + product_id (2B) + etc
 // ═══════════════════════════════════════════════════════════════════════════
 struct AppleModel {

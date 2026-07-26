@@ -29,7 +29,7 @@ struct BLEDev {
     uint16_t vendorId;      // primeros 2 bytes de manufacturer data
     String   manufHex;      // manufacturer data en hex (máx 16 bytes mostrados)
     int      serviceCount;
-    String   serviceSummary; // nombre del primer servicio o "Services: N"
+    String   serviceSummary; // nome do primeiro serviço ou "Services: N"
 };
 
 static BLEDev devices[MAX_DEVICES];
@@ -255,7 +255,7 @@ static void drawList(int cursor, int scrollOffset, int totalSeen) {
 
         BLEDev& d = devices[idx];
 
-        // Nombre (o "<unnamed>")
+        // Nome (ou "<unnamed>")
         String displayName = d.name.length() > 0 ? d.name : "<unnamed>";
         if (displayName.length() > 20) {
             displayName = displayName.substring(0, 18) + "..";
@@ -474,13 +474,13 @@ void runBLEScanner() {
                 delay(180);
             }
 
-            // OK: press corto = entrar a detalles; press largo = salir
+            // OK: press curto = entrar nos detalhes; press longo = sair
             if (digitalRead(BTN_OK) == LOW) {
                 if (!okHeld) {
                     okPressStart = millis();
                     okHeld = true;
                 } else if (millis() - okPressStart > 400) {
-                    // HOLD: salir
+                    // HOLD: sair
                     exitScreen = true;
                 }
             } else {

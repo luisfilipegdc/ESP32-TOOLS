@@ -4,15 +4,15 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SPLASH SCREEN · pantalla de bienvenida al arrancar el dispositivo
+//  SPLASH SCREEN · tela de boas-vindas ao ligar o dispositivo
 //
 //  Muestra:
-//    · Ajolote pixel-art con lentes (mascota del proyecto)
-//    · Título "ESP32-TOOLS" con animación type-on
+//    · Axolote pixel-art com óculos (mascote do projeto)
+//    · Título "ESP32-TOOLS" com animação type-on
 //    · Autor "BY: PepeAngell"
-//    · Secuencia de "loading steps" con beeps ascendentes
-//    · Mensaje "PRESS OK" parpadeante al final
-//    · Espera hasta que el usuario presione OK para continuar
+//    · Sequência de "loading steps" com beeps ascendentes
+//    · Mensagem "PRESS OK" piscando no final
+//    · Espera até o usuário pressionar OK para continuar
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runSplashScreen();

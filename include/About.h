@@ -4,10 +4,10 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ABOUT · pantalla de información del firmware y autor
-//  · Muestra ajolote pixel art + nombre/versión + datos del autor + redes
-//  · Scroll vertical con UP/DOWN
-//  · Lee FW_VERSION desde SystemInfo
+//  ABOUT · tela de informações do firmware e do autor
+//  · Mostra o axolote pixel art + nome/versão + dados do autor + redes
+//  · Scroll vertical com UP/DOWN
+//  · Lê FW_VERSION do SystemInfo
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runAbout();

@@ -494,7 +494,7 @@ static void drawWeather() {
     String desc = weatherCodeToDescES(g_weatherCode);
     drawStringCustom(110, 192, desc, UI_ACCENT, 1);
 
-    // Humedad y viento (lado derecho)
+    // Umidade e vento (lado direito)
     char humBuf[16];
     snprintf(humBuf, sizeof(humBuf), "%d%% hum", g_humidity);
     drawStringCustom(245, 145, String(humBuf), TFT_CYAN, 1);

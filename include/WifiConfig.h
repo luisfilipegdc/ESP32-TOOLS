@@ -4,28 +4,28 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  WIFI CONFIG · módulo reusable de conexión WiFi
-//  · Guarda SSID/password en NVS (namespace "wificonfig")
-//  · Intenta auto-conexión si hay credenciales
-//  · UI de scan + selección + teclado virtual para password
-//  · Reusable: cualquier herramienta puede llamar wifiConfigConnect()
+//  WIFI CONFIG · módulo reutilizável de conexão WiFi
+//  · Salva SSID/password no NVS (namespace "wificonfig")
+//  · Tenta auto-conexão se houver credenciais
+//  · UI de scan + seleção + teclado virtual para a password
+//  · Reutilizável: qualquer ferramenta pode chamar wifiConfigConnect()
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Conecta a WiFi mostrando UI según sea necesario.
-// Intenta credenciales guardadas primero. Si falla o no hay, abre UI.
+// Conecta ao WiFi mostrando a UI conforme necessário.
+// Tenta as credenciais salvas primeiro. Se falhar ou não houver, abre a UI.
 //
 // Returns:
 //   true  = conectado (WiFi.status() == WL_CONNECTED)
-//   false = usuario canceló o error irrecuperable
+//   false = usuário cancelou ou erro irrecuperável
 bool wifiConfigConnect();
 
-// Borra credenciales guardadas en NVS (útil para "Olvidar red")
+// Apaga as credenciais salvas no NVS (útil para "Esquecer rede")
 void wifiConfigForget();
 
-// Retorna el SSID guardado en NVS, o "" si no hay
+// Retorna o SSID salvo no NVS, ou "" se não houver
 String wifiConfigGetSavedSSID();
 
-// True si hay credenciales guardadas (no necesariamente válidas)
+// True se houver credenciais salvas (não necessariamente válidas)
 bool wifiConfigHasSaved();
 
 #endif

@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "PepeDraw.h"
 
-// Función principal para iniciar el monitor de paquetes
+// Função principal para iniciar o monitor de pacotes
 void runPacketMonitor();
 
 #endif

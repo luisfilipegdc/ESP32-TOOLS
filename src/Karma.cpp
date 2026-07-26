@@ -16,7 +16,7 @@ extern TFT_eSPI tft;
 #define BEACON_INTERVAL_MS 100     // un beacon cada 100ms entre los SSIDs
 #define HOP_INTERVAL_MS    600     // cambio de canal cada 600ms
 #define UI_REFRESH_MS      500
-#define SCAN_TIME_S        15      // duración del scan inicial de probes
+#define SCAN_TIME_S        15      // duração do scan inicial de probes
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESTADO
@@ -487,7 +487,7 @@ void runKarma() {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, UI_MAIN);
         drawStringBig(20, 80, "NO PROBES CAUGHT", TFT_RED, 1);
-        drawStringCustom(20, 120, "No se capturo ningun probe.", UI_ACCENT, 1);
+        drawStringCustom(20, 120, "Nenhum probe capturado.", UI_ACCENT, 1);
         drawStringCustom(20, 134, "Causas posibles:", UI_ACCENT, 1);
         drawStringCustom(30, 148, "- Nao ha celulares perto", UI_ACCENT, 1);
         drawStringCustom(30, 160, "- Estao conectados a redes", UI_ACCENT, 1);

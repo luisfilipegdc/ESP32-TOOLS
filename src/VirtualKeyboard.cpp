@@ -41,9 +41,9 @@ static const char* SPECIAL_LABELS[] = {
 // ═══════════════════════════════════════════════════════════════════════════
 //  GEOMETRIA
 // ═══════════════════════════════════════════════════════════════════════════
-#define KB_KEY_W      28        // ancho de tecla normal
-#define KB_KEY_H      22        // alto de tecla
-#define KB_GAP        2         // separación entre teclas
+#define KB_KEY_W      28        // largura da tecla normal
+#define KB_KEY_H      22        // altura da tecla
+#define KB_GAP        2         // separação entre teclas
 #define KB_START_X    10        // X del inicio del teclado
 #define KB_START_Y    96        // Y del inicio del teclado
 
@@ -101,7 +101,7 @@ static void drawKey(int row, int col, bool selected) {
     if (c == 0) return;
 
     char buf[2] = {c, 0};
-    int charW = 6 * 2;   // size 2, ancho aprox 6px por char
+    int charW = 6 * 2;   // size 2, largura aprox 6px por char
     int tx = x + (KB_KEY_W - charW) / 2 + 1;
     int ty = y + (KB_KEY_H - 12) / 2;
     drawStringCustom(tx, ty, String(buf), fg, 2);
@@ -111,7 +111,7 @@ static void drawSpecialKey(int specialIdx, bool selected) {
     int startCol = specialColToAlphaCol(specialIdx);
     int x = KB_START_X + startCol * (KB_KEY_W + KB_GAP);
     int y = KB_START_Y + 4 * (KB_KEY_H + KB_GAP);
-    int w = (KB_KEY_W * 2) + KB_GAP;   // 2 columnas de ancho
+    int w = (KB_KEY_W * 2) + KB_GAP;   // 2 colunas de largura
     int h = KB_KEY_H + 4;              // un poquito más alto
 
     bool isShift = (specialIdx == KEY_SHIFT);

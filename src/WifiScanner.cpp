@@ -184,8 +184,8 @@ static uint16_t barsColor(int bars) {
 
 // Desenha 4 blocos verticais tipo sinal de celular
 static void drawSignalBars(int x, int y, int bars) {
-    const int bw = 3;       // ancho de cada bloque
-    const int gap = 2;      // separación
+    const int bw = 3;       // largura de cada bloco
+    const int gap = 2;      // separação
     const int heights[4] = {4, 8, 12, 16};
     uint16_t onColor = barsColor(bars);
     for (int i = 0; i < 4; i++) {

@@ -6,7 +6,7 @@
 #include <RF24.h>
 #include "PepeDraw.h"
 
-// Prototipo de la función principal
+// Protótipo da função principal
 void runRadioScanner();
 
 #endif

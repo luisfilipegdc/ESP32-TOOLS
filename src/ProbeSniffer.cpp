@@ -11,9 +11,9 @@ extern TFT_eSPI tft;
 // ═══════════════════════════════════════════════════════════════════════════
 //  CONFIGURAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════
-#define MAX_PROBES         50      // máx SSIDs únicos guardados
+#define MAX_PROBES         50      // máx de SSIDs únicos salvos
 #define VISIBLE_ROWS       6
-#define CHANNEL_HOP_MS     2000    // cambiar canal cada 2s
+#define CHANNEL_HOP_MS     2000    // troca de canal a cada 2s
 #define UI_REFRESH_MS      300
 
 // ═══════════════════════════════════════════════════════════════════════════

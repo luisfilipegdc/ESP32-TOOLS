@@ -54,8 +54,8 @@ static int        clientCount = 0;
 static volatile unsigned long deauthPackets = 0;
 static APInfo     activeAP;
 static uint8_t    activeTargetMac[6];
-static bool       broadcastMode = false;    // true = todos los clientes del AP
-static bool       ramboMode     = false;    // true = TODAS las APs (channel hop)
+static bool       broadcastMode = false;    // true = todos os clientes do AP
+static bool       ramboMode     = false;    // true = TODAS as APs (channel hop)
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  DEAUTH FRAME TEMPLATE
@@ -385,7 +385,7 @@ static bool confirmRambo() {
     drawStringCustom(10, y, "!! VECINOS, OFICINAS, ETC !!",    TFT_RED, 1); y += 20;
 
     drawStringCustom(10, y, "So usar na sua propria",          UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "espacio fisico aislado.",         UI_MAIN, 1); y += 20;
+    drawStringCustom(10, y, "espaco fisico isolado.",         UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "Responsabilidad 100% tuya.",      TFT_YELLOW, 1);
 

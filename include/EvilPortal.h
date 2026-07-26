@@ -4,13 +4,13 @@
 #include <Arduino.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  EVIL PORTAL · captura credenciales con AP falso + portal cautivo
-//  · 10 SSIDs predefinidos (ISPs, cafeterías, públicos)
-//  · Modo SIMPLE: AP fijo con SSID elegido
-//  · Modo CLONE: clona red real + deauth simultáneo
+//  EVIL PORTAL · captura credenciais com AP falso + portal cativo
+//  · 10 SSIDs predefinidos (ISPs, cafeterias, públicos)
+//  · Modo SIMPLE: AP fixo com o SSID escolhido
+//  · Modo CLONE: clona a rede real + deauth simultâneo
 //  · 4 plataformas de phishing (FB, Google, IG, TikTok)
-//  · Logs persistentes en NVS, ver/borrar desde el menú
-//  · USO EDUCATIVO/PENTESTING ÚNICAMENTE
+//  · Logs persistentes em NVS, ver/apagar pelo menu
+//  · USO EDUCATIVO/PENTESTING SOMENTE
 // ═══════════════════════════════════════════════════════════════════════════
 
 void runEvilPortal();

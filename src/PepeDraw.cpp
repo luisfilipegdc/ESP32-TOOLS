@@ -513,7 +513,7 @@ static uint16_t nextCodepoint(const String& s, int& idx) {
         return ((b0 & 0x0F) << 12) | ((b1 & 0x3F) << 6) | (b2 & 0x3F);
     }
 
-    // Byte raro: avanzar y devolver '?'
+    // Byte estranho: avança e retorna '?'
     idx += 1;
     return '?';
 }
@@ -593,7 +593,7 @@ static void drawGlyphB(int x, int y, const GlyphB& g, uint16_t color, int size) 
 static int charAdvanceS(uint16_t cp) {
     GlyphS g;
     if (!lookupSmall(cp, g)) return 4;   // placeholder
-    return g.width + 1;   // +1 px de separación
+    return g.width + 1;   // +1 px de separação
 }
 
 static int charAdvanceB(uint16_t cp) {
@@ -630,7 +630,7 @@ static void drawStringGeneric(int x, int y, const String& txt,
                 drawGlyphS(cx, y, g, color, size);
                 cx += (g.width + 1) * size;
             } else {
-                cx += 4 * size;   // carácter desconocido = espacio
+                cx += 4 * size;   // caractere desconhecido = espaço
             }
         } else {
             GlyphB g;
