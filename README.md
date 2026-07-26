@@ -2,11 +2,11 @@
 
 # 🦎 ESP32-TOOLS
 
-### Firmware multi-herramienta de seguridad WiFi + Bluetooth para ESP32
+### Firmware multiferramenta de segurança WiFi + Bluetooth para ESP32
 
-*Inspirado en Flipper Zero, Bruce y ESP32 Marauder — hecho desde cero en México*
+*Inspirado no Flipper Zero, Bruce e ESP32 Marauder — feito do zero no México*
 
-<img src="img/splash.jpg" width="400" alt="Splash screen con el ajolote"/>
+<img src="img/splash.jpg" width="400" alt="Tela de splash com o axolote"/>
 
 **By PepeAngell** · [Instagram](https://instagram.com/esp32_tools) · [Facebook](https://www.facebook.com/esp32tools/) · [GitHub](https://github.com/pepeangell5)
 
@@ -20,86 +20,86 @@
 
 ---
 
-## 🎬 Demo en vivo
+## 🎬 Demo ao vivo
 
 <div align="center">
-<img src="img/ESP32.gif" width="500" alt="Demo del firmware navegando todas las herramientas"/>
+<img src="img/ESP32.gif" width="500" alt="Demo do firmware navegando por todas as ferramentas"/>
 
-*Recorrido completo por los menús y herramientas del firmware*
+*Passeio completo pelos menus e ferramentas do firmware*
 
 </div>
 
 ---
 
-## 🆕 Novedades en la versión 2.0
+## 🆕 Novidades na versão 2.0
 
-La v2.0 expande masivamente el firmware con **6 herramientas nuevas**, un **sistema completo de configuración WiFi** con teclado virtual, y varios extras de calidad de vida:
+A v2.0 expande massivamente o firmware com **6 ferramentas novas**, um **sistema completo de configuração WiFi** com teclado virtual, e vários extras de qualidade de vida:
 
-- 🌐 **Evil Portal** — portal cautivo con AP falso, DNS spoofing y captura de credenciales (modo SIMPLE + modo CLONE+Deauth)
-- 🎭 **KARMA Attack** — captura probes y los anuncia como redes existentes para atraer dispositivos
-- 📡 **Probe Request Sniffer** — descubre las redes que buscan celulares cercanos
-- 🌤️ **Clock & Weather** — reloj NTP + clima en vivo con detección de ubicación por IP
-- ⌨️ **Teclado Virtual QWERTY** — entrada de texto reutilizable con ñ y símbolos
-- 🌙 **Screensaver** — el ajolote rebotando estilo DVD logo con estrellitas
-- 🔧 **WiFi Config persistente** — escribe tu red una sola vez, queda guardada
-- 🗑️ **Forget WiFi** — opción en Settings para olvidar la red guardada
+- 🌐 **Evil Portal** — portal cativo com AP falso, DNS spoofing e captura de credenciais (modo SIMPLE + modo CLONE+Deauth)
+- 🎭 **KARMA Attack** — captura probes e os anuncia como redes existentes para atrair dispositivos
+- 📡 **Probe Request Sniffer** — descobre as redes que os celulares próximos estão procurando
+- 🌤️ **Clock & Weather** — relógio NTP + clima ao vivo com detecção de localização por IP
+- ⌨️ **Teclado Virtual QWERTY** — entrada de texto reutilizável com ñ e símbolos
+- 🌙 **Screensaver** — o axolote quicando estilo logo do DVD, com estrelinhas
+- 🔧 **WiFi Config persistente** — escreva sua rede uma única vez, fica salva
+- 🗑️ **Forget WiFi** — opção em Settings para esquecer a rede salva
 
 ---
 
-## 📖 ¿Qué es ESP32-TOOLS?
+## 📖 O que é o ESP32-TOOLS?
 
-**ESP32-TOOLS** es un firmware completo para un multi-tool portátil basado en ESP32, diseñado para pruebas de seguridad WiFi y Bluetooth. Incluye scanner de redes, analizador de espectro, monitor de paquetes, generador de beacons, deauther, disruptor Bluetooth, evil portal, KARMA attack, reloj con clima en vivo y más — todo con una UI propia estilo consola retro con nuestra mascota oficial: un ajolote con lentes de sol. 😎
+**ESP32-TOOLS** é um firmware completo para uma multiferramenta portátil baseada em ESP32, projetada para testes de segurança WiFi e Bluetooth. Inclui scanner de redes, analisador de espectro, monitor de pacotes, gerador de beacons, deauther, disruptor Bluetooth, evil portal, KARMA attack, relógio com clima ao vivo e mais — tudo com uma interface própria estilo console retrô e nosso mascote oficial: um axolote de óculos escuros. 😎
 
-Inspirado en proyectos como **Flipper Zero**, **ESP32 Marauder** y **Bruce**, pero construido desde cero con personalidad propia, en español, y pensado para la comunidad maker hispanohablante.
+Inspirado em projetos como **Flipper Zero**, **ESP32 Marauder** e **Bruce**, mas construído do zero com personalidade própria, em espanhol, e pensado para a comunidade maker de língua hispânica.
 
 ---
 
 ## ⚠️ Aviso legal
 
-Esta herramienta está pensada con fines **educativos y de pentesting en redes propias o con autorización explícita**. Varias de sus funciones (Deauther, BT Disruptor, Beacon Spam, Evil Portal, KARMA) pueden causar interferencias en redes de terceros o capturar información ajena.
+Esta ferramenta foi pensada com fins **educativos e de pentest em redes próprias ou com autorização explícita**. Várias de suas funções (Deauther, BT Disruptor, Beacon Spam, Evil Portal, KARMA) podem causar interferência em redes de terceiros ou capturar informações alheias.
 
-**En México y la mayoría de países, el uso de estas herramientas contra redes o dispositivos ajenos sin consentimiento constituye un delito federal** (Art. 211 bis del Código Penal Federal en México). El autor no se hace responsable del mal uso del firmware. Tú eres 100% responsable de cómo lo utilices.
+**No México e na maioria dos países, o uso destas ferramentas contra redes ou dispositivos alheios sem consentimento constitui crime federal** (Art. 211 bis do Código Penal Federal no México; no Brasil, veja a Lei nº 12.737/2012 — "Lei Carolina Dieckmann" — e o Marco Civil da Internet). O autor não se responsabiliza pelo mau uso do firmware. Você é 100% responsável por como o utiliza.
 
-Usa con cabeza. 🧠
+Use com a cabeça. 🧠
 
 ---
 
-## 🛠️ Herramientas incluidas
+## 🛠️ Ferramentas incluídas
 
 <div align="center">
 
-| Categoría | Herramientas |
+| Categoria | Ferramentas |
 |:---|:---|
 | 📡 **WiFi** | WiFi Scanner · Beacon Spam · Deauther · **Evil Portal** 🆕 · **Probe Sniffer** 🆕 · **KARMA Attack** 🆕 |
 | 🔵 **Bluetooth** | BLE Scanner · BLE Spam · BT Disruptor |
-| 📻 **Radio 2.4GHz** | Jammer · Spectrum Analyzer (3 modos) |
-| 📊 **Monitoreo** | Packet Monitor |
-| ⚙️ **Sistema** | Settings (con Forget WiFi 🆕) · System Info · **Clock & Weather** 🆕 |
+| 📻 **Rádio 2.4GHz** | Jammer · Spectrum Analyzer (3 modos) |
+| 📊 **Monitoramento** | Packet Monitor |
+| ⚙️ **Sistema** | Settings (com Forget WiFi 🆕) · System Info · **Clock & Weather** 🆕 |
 
 </div>
 
-**14 herramientas funcionales** + sistema completo con splash, screensaver, persistencia NVS, y módulos reusables (teclado virtual, WiFi config).
+**14 ferramentas funcionais** + sistema completo com splash, screensaver, persistência NVS, e módulos reutilizáveis (teclado virtual, WiFi config).
 
 ---
 
-## 📸 Galería
+## 📸 Galeria
 
-### Menú principal estilo carrusel
+### Menu principal estilo carrossel
 
 <div align="center">
 <img src="img/menu.jpg" width="45%" alt="WIFI TOOLS"/>
 <img src="img/menu2.jpg" width="45%" alt="RADIO TOOLS"/>
 </div>
 
-Navegación vertical tipo Flipper con íconos pixel art 64x64 para cada categoría. Animación slide suave, OK flash con beeps, y 5 categorías: **WiFi · Radio · Bluetooth · Monitor · System**.
+Navegação vertical tipo Flipper, com ícones pixel art 64x64 para cada categoria. Animação slide suave, flash de OK com beeps, e 5 categorias: **WiFi · Radio · Bluetooth · Monitor · System**.
 
 ### Screensaver
 
 <div align="center">
-<img src="img/screensaver.jpg" width="50%" alt="Screensaver con ajolote rebotando"/>
+<img src="img/screensaver.jpg" width="50%" alt="Screensaver com o axolote quicando"/>
 </div>
 
-Después de 30 segundos sin actividad, entra el screensaver: el ajolote rebota estilo DVD logo con estrellitas titilando de fondo, textos rotativos ("ESP32-TOOLS", "by PepeAngell", "ZzZ...") y contador de uptime. Cualquier botón lo despierta.
+Após 30 segundos sem atividade, entra o screensaver: o axolote quica estilo logo do DVD, com estrelinhas piscando ao fundo, textos rotativos ("ESP32-TOOLS", "by PepeAngell", "ZzZ...") e contador de uptime. Qualquer botão o acorda.
 
 ---
 
@@ -107,62 +107,62 @@ Después de 30 segundos sin actividad, entra el screensaver: el ajolote rebota e
 
 <div align="center">
 <img src="img/wifiscanner.jpg" width="45%" alt="WiFi Scanner"/>
-<img src="img/wifitools.jpg" width="45%" alt="WiFi Tools submenu"/>
+<img src="img/wifitools.jpg" width="45%" alt="Submenu WiFi Tools"/>
 </div>
 
-**WiFi Scanner** — descubre todas las redes 2.4GHz cercanas con SSID, canal, RSSI, tipo de encripción (WEP/WPA2/WPA3 con colores), detección de redes ocultas y lookup de fabricantes mexicanos (Telmex, Totalplay, Izzi, Megacable, AT&T, etc.) por OUI.
+**WiFi Scanner** — descobre todas as redes 2.4GHz próximas com SSID, canal, RSSI, tipo de encriptação (WEP/WPA2/WPA3 com cores), detecção de redes ocultas e consulta de fabricantes mexicanos (Telmex, Totalplay, Izzi, Megacable, AT&T, etc.) por OUI.
 
-**Beacon Spam** — transmite cientos de redes WiFi ficticias con channel hopping (CH 1→6→11) y BSSID rotation. 5 modos temáticos:
+**Beacon Spam** — transmite centenas de redes WiFi fictícias com channel hopping (CH 1→6→11) e rotação de BSSID. 5 modos temáticos:
 
 <div align="center">
-<img src="img/beaconspam.jpg" width="45%" alt="Beacon Spam menu"/>
-<img src="img/beaconspam2.jpg" width="45%" alt="Beacon Spam activo"/>
+<img src="img/beaconspam.jpg" width="45%" alt="Menu do Beacon Spam"/>
+<img src="img/beaconspam2.jpg" width="45%" alt="Beacon Spam ativo"/>
 </div>
 
-- 🌶️ **Mexipicante** — 40 SSIDs picantes en español
-- 🎭 **Memes Clásicos** — FBI_Van, Virus.exe, etc.
+- 🌶️ **Mexipicante** — 40 SSIDs picantes em espanhol
+- 🎭 **Memes Clássicos** — FBI_Van, Virus.exe, etc.
 - 😱 **Paranoia** — "Camara_Oculta_Activa", "Te_Estamos_Grabando"...
-- 💀 **Chaos UTF-8** — solo emojis y símbolos
+- 💀 **Chaos UTF-8** — só emojis e símbolos
 - 🎪 **Mix Total** — todos combinados (~100 SSIDs únicos)
 
-Rate de transmisión: ~190 beacons/sec.
+Taxa de transmissão: ~190 beacons/seg.
 
 **Deauther** — desconecta dispositivos de redes WiFi usando deauth frames 802.11.
 
 <div align="center">
-<img src="img/deautheralert.jpg" width="45%" alt="Deauther disclaimer"/>
-<img src="img/deauther.jpg" width="45%" alt="Deauther action menu"/>
+<img src="img/deautheralert.jpg" width="45%" alt="Aviso do Deauther"/>
+<img src="img/deauther.jpg" width="45%" alt="Menu de ação do Deauther"/>
 </div>
 
-- Scan de APs con selección visual
-- Scan de clientes conectados (modo promiscuo)
-- Ataque dirigido a un cliente específico o broadcast al AP completo
-- **Rambo Mode**: ataque simultáneo a todas las APs con channel hopping
-- Requiere patch del SDK (instrucciones en la sección de instalación)
+- Scan de APs com seleção visual
+- Scan de clientes conectados (modo promíscuo)
+- Ataque dirigido a um cliente específico ou broadcast ao AP inteiro
+- **Rambo Mode**: ataque simultâneo a todas as APs com channel hopping
+- Requer patch do SDK (instruções na seção de instalação)
 
 ---
 
 ### 🆕 Evil Portal
 
 <div align="center">
-<img src="img/evilportal_modes.jpg" width="45%" alt="Evil Portal modos"/>
-<img src="img/evilportal.jpg" width="45%" alt="Evil Portal menu principal"/>
+<img src="img/evilportal_modes.jpg" width="45%" alt="Modos do Evil Portal"/>
+<img src="img/evilportal.jpg" width="45%" alt="Menu principal do Evil Portal"/>
 </div>
 
-Portal cautivo completo con AP falso + DNS spoofing + servidor HTTP. Cuando un dispositivo se conecta al AP del ESP32, todas las URLs son redirigidas a una página de "login" que parece Facebook, Google, Instagram o TikTok.
+Portal cativo completo com AP falso + DNS spoofing + servidor HTTP. Quando um dispositivo se conecta ao AP do ESP32, todas as URLs são redirecionadas para uma página de "login" que se parece com Facebook, Google, Instagram ou TikTok.
 
-**2 modos disponibles:**
+**2 modos disponíveis:**
 
-- 🟢 **Modo SIMPLE** — AP fijo con uno de 10 SSIDs predefinidos (`INFINITUM_5G_LIBRE`, `TOTALPLAY_INVITADOS`, `Starbucks_Clientes`, `OXXO_WiFi_Gratis`, etc.). Ideal para demos.
-- 🔴 **Modo CLONE + Deauth** — escanea la red real, **clona su SSID y canal**, y simultáneamente lanza ataques deauth a la red original para forzar a los clientes a reconectar al clon.
+- 🟢 **Modo SIMPLE** — AP fixo com um de 10 SSIDs predefinidos (`INFINITUM_5G_LIBRE`, `TOTALPLAY_INVITADOS`, `Starbucks_Clientes`, `OXXO_WiFi_Gratis`, etc.). Ideal para demos.
+- 🔴 **Modo CLONE + Deauth** — escaneia a rede real, **clona seu SSID e canal**, e simultaneamente dispara ataques deauth contra a rede original para forçar os clientes a reconectar ao clone.
 
 **4 plataformas de phishing:**
-- 📘 Facebook con SVG circular oficial
-- 🟢 Google con logo a color
-- 📸 Instagram con gradient + ícono de cámara
-- 🎵 TikTok con logo cyan/magenta
+- 📘 Facebook com SVG circular oficial
+- 🟢 Google com logo colorido
+- 📸 Instagram com gradiente + ícone de câmera
+- 🎵 TikTok com logo ciano/magenta
 
-Después de capturar credenciales, redirige a `/success` que rebota a `google.com` para no levantar sospechas.
+Depois de capturar credenciais, redireciona para `/success`, que rebota para `google.com` para não levantar suspeitas.
 
 #### Logs persistentes
 
@@ -170,7 +170,7 @@ Después de capturar credenciales, redirige a `/success` que rebota a `google.co
 <img src="img/evilportal_logs.jpg" width="50%" alt="Logs capturados"/>
 </div>
 
-Los logs se guardan en NVS (hasta 20, FIFO circular) y persisten al reiniciar. Muestra plataforma, email/usuario y password capturados. Borrable desde el menú con confirmación.
+Os logs são salvos em NVS (até 20, FIFO circular) e persistem ao reiniciar. Mostra plataforma, email/usuário e senha capturados. Apagável pelo menu com confirmação.
 
 ---
 
@@ -180,13 +180,13 @@ Los logs se guardan en NVS (hasta 20, FIFO circular) y persisten al reiniciar. M
 <img src="img/probesniffer.jpg" width="50%" alt="Probe Sniffer"/>
 </div>
 
-Modo promiscuo que captura **probe requests** — los paquetes que envían los celulares preguntando "¿está cerca esta red guardada?". Útil para descubrir patrones de movilidad y combinarlo con KARMA.
+Modo promíscuo que captura **probe requests** — os pacotes que os celulares enviam perguntando "essa rede salva está por perto?". Útil para descobrir padrões de mobilidade e combinar com o KARMA.
 
-- Channel hopping 1→6→11 cada 2 segundos
-- Deduplica por SSID, muestra contador de veces visto, RSSI y "hace cuánto" se vio
-- OK click corto = ordenar por count
-- OK hold = salir
-- Hasta 50 SSIDs únicos en memoria
+- Channel hopping 1→6→11 a cada 2 segundos
+- Deduplica por SSID, mostra contador de vezes visto, RSSI e "há quanto tempo" foi visto
+- Clique curto no OK = ordenar por contagem
+- OK pressionado = sair
+- Até 50 SSIDs únicos em memória
 
 ---
 
@@ -194,17 +194,17 @@ Modo promiscuo que captura **probe requests** — los paquetes que envían los c
 
 <div align="center">
 <img src="img/karma.jpg" width="45%" alt="KARMA Fase 1"/>
-<img src="img/karma2.jpg" width="45%" alt="KARMA Fase 2 activo"/>
+<img src="img/karma2.jpg" width="45%" alt="KARMA Fase 2 ativo"/>
 </div>
 
-El ataque más sofisticado del firmware. Combina Probe Sniffer + Beacon Spam de forma quirúrgica:
+O ataque mais sofisticado do firmware. Combina Probe Sniffer + Beacon Spam de forma cirúrgica:
 
-1. **Fase 1** (15s) — escucha qué redes están buscando los celulares cercanos
-2. **Fase 2** — transmite beacons spoofeando esos SSIDs como redes abiertas existentes
+1. **Fase 1** (15s) — escuta quais redes os celulares próximos estão procurando
+2. **Fase 2** — transmite beacons falsificando esses SSIDs como redes abertas existentes
 
-Dispositivos vulnerables (Android antiguos, IoT, smart TVs, cámaras) que tenían esas redes guardadas como abiertas se conectan automáticamente. Combinado después con Evil Portal, se convierte en un ataque completo de phishing.
+Dispositivos vulneráveis (Android antigos, IoT, smart TVs, câmeras) que tinham essas redes salvas como abertas se conectam automaticamente. Combinado depois com o Evil Portal, vira um ataque completo de phishing.
 
-**Eficacia real:** ~30-50% en una multitud (iOS 14+ y Android 10+ resisten KARMA por MAC randomization). Suficiente para demostrar el ataque y entender el riesgo.
+**Eficácia real:** ~30-50% em uma multidão (iOS 14+ e Android 10+ resistem ao KARMA por randomização de MAC). Suficiente para demonstrar o ataque e entender o risco.
 
 ---
 
@@ -214,17 +214,17 @@ Dispositivos vulnerables (Android antiguos, IoT, smart TVs, cámaras) que tenía
 <img src="img/blescan.jpg" width="50%" alt="BLE Scanner"/>
 </div>
 
-**BLE Scanner** — descubre dispositivos Bluetooth Low Energy cercanos (AirPods, smartwatches, beacons, tags, etc.). Lista ordenada por RSSI con barras de señal, lookup de vendor por OUI (Apple, Samsung, Xiaomi, Microsoft, Google, y ~20 más), pantalla de detalles con MAC, servicios advertisers y manufacturer data en hex.
+**BLE Scanner** — descobre dispositivos Bluetooth Low Energy próximos (AirPods, smartwatches, beacons, tags, etc.). Lista ordenada por RSSI com barras de sinal, consulta de fabricante por OUI (Apple, Samsung, Xiaomi, Microsoft, Google, e ~20 mais), tela de detalhes com MAC, serviços anunciados e manufacturer data em hex.
 
-**BLE Spam** — transmite advertisements BLE falsos que disparan popups de pairing en dispositivos cercanos. 5 protocolos implementados:
+**BLE Spam** — transmite advertisements BLE falsos que disparam pop-ups de pareamento em dispositivos próximos. 5 protocolos implementados:
 
-- 🍎 **Apple Continuity** — popups de AirPods Pro, AirPods Max, Beats, Apple TV (13 modelos)
+- 🍎 **Apple Continuity** — pop-ups de AirPods Pro, AirPods Max, Beats, Apple TV (13 modelos)
 - 📱 **Samsung Easy Setup** — Galaxy Buds Pro, Buds 2, Buds FE (7 modelos)
-- 🪟 **Microsoft Swift Pair** — teclados, mouse Surface, Xbox Controller
-- 🟢 **Google Fast Pair** — Pixel Buds, Nest devices
-- 🌪️ **CHAOS Mode** — rota los 4 protocolos aleatoriamente
+- 🪟 **Microsoft Swift Pair** — teclados, mouse Surface, controle de Xbox
+- 🟢 **Google Fast Pair** — Pixel Buds, dispositivos Nest
+- 🌪️ **CHAOS Mode** — rotaciona os 4 protocolos aleatoriamente
 
-**BT Disruptor** — ataque dirigido a un dispositivo BLE específico. Tras escanear y seleccionar target, genera connection flood, L2CAP ping storm, spoof de identidad o chaos combinado. Útil para degradar conexión de audífonos/bocinas BLE.
+**BT Disruptor** — ataque dirigido a um dispositivo BLE específico. Após escanear e selecionar o alvo, gera connection flood, L2CAP ping storm, spoof de identidade ou chaos combinado. Útil para degradar a conexão de fones/caixas de som BLE.
 
 ---
 
@@ -236,13 +236,13 @@ Dispositivos vulnerables (Android antiguos, IoT, smart TVs, cámaras) que tenía
 <img src="img/sprectrum3.jpg" width="32%" alt="WiFi Chans"/>
 </div>
 
-**Radio Scanner** con NRF24L01 — analizador de espectro 2.4GHz con 3 modos:
+**Radio Scanner** com NRF24L01 — analisador de espectro 2.4GHz com 3 modos:
 
-- **SPECTRUM** — 80 barras con gradient vertical, peak hold, sonido geiger
-- **WATERFALL** — 166 rows de historial temporal con mapa de colores
-- **WIFI CHANS** — 13 barras (una por canal WiFi), recomendación de mejor canal
+- **SPECTRUM** — 80 barras com gradiente vertical, peak hold, som geiger
+- **WATERFALL** — 166 linhas de histórico temporal com mapa de cores
+- **WIFI CHANS** — 13 barras (uma por canal WiFi), recomendação do melhor canal
 
-**Radio Jammer** — transmisión continua en 2.4GHz con el NRF24. 3 modos: Turbo (concentrado), Wide (±2 canales), Barrido (los 14 canales WiFi). *Nota: el jamming es ilegal en México fuera de contextos educativos aislados.*
+**Radio Jammer** — transmissão contínua em 2.4GHz com o NRF24. 3 modos: Turbo (concentrado), Wide (±2 canais), Varredura (os 14 canais WiFi). *Nota: o jamming é ilegal no México e no Brasil fora de contextos educativos isolados.*
 
 ---
 
@@ -252,88 +252,90 @@ Dispositivos vulnerables (Android antiguos, IoT, smart TVs, cámaras) que tenía
 <img src="img/packetmonitor.jpg" width="50%" alt="Packet Monitor"/>
 </div>
 
-Sniffer promiscuo de paquetes 802.11 por canal. Muestra PPS (packets per second) con código de colores, VU meter vertical, gráfico histórico de 60 segundos y stats acumulados. 6 niveles de actividad (QUIET → LOW → ACTIVE → BUSY → HEAVY → FLOODED) con sonidos ambient distintos por nivel.
+Sniffer promíscuo de pacotes 802.11 por canal. Mostra PPS (pacotes por segundo) com código de cores, VU meter vertical, gráfico histórico de 60 segundos e estatísticas acumuladas. 6 níveis de atividade (QUIET → LOW → ACTIVE → BUSY → HEAVY → FLOODED) com sons ambientes distintos por nível.
 
 ---
 
 ### 🆕 Clock & Weather
 
 <div align="center">
-<img src="img/clockweather.jpg" width="45%" alt="Clock & Weather submenu"/>
-<img src="img/clockweather2.jpg" width="45%" alt="Cargando clima"/>
+<img src="img/clockweather.jpg" width="45%" alt="Submenu Clock & Weather"/>
+<img src="img/clockweather2.jpg" width="45%" alt="Carregando clima"/>
 </div>
 
 <div align="center">
-<img src="img/clockweather3.jpg" width="60%" alt="Clock & Weather pantalla principal"/>
+<img src="img/clockweather3.jpg" width="60%" alt="Tela principal do Clock & Weather"/>
 </div>
 
-Widget completo con NTP + geolocalización IP + clima en vivo:
+Widget completo com NTP + geolocalização por IP + clima ao vivo:
 
-- ⏰ **Hora grande en formato 12h** con AM/PM (cyan en mañana, naranja en tarde/noche)
-- 📅 **Fecha en español** ("Sábado, 25 de Abril")
-- 🌡️ **Temperatura actual + sensación térmica** con código de colores
-- 🌤️ **Iconos de clima pixel art** (sol, nube, lluvia, tormenta, nieve, niebla)
-- 💨 **Humedad y velocidad del viento**
-- 🌅 **Hora de amanecer y atardecer**
-- 🏙️ **Ciudad detectada por IP** (sin necesidad de GPS)
+- ⏰ **Hora grande em formato 12h** com AM/PM (ciano de manhã, laranja à tarde/noite)
+- 📅 **Data em espanhol** ("Sábado, 25 de Abril")
+- 🌡️ **Temperatura atual + sensação térmica** com código de cores
+- 🌤️ **Ícones de clima em pixel art** (sol, nuvem, chuva, tempestade, neve, névoa)
+- 💨 **Umidade e velocidade do vento**
+- 🌅 **Horário do nascer e do pôr do sol**
+- 🏙️ **Cidade detectada por IP** (sem necessidade de GPS)
 
-**APIs gratuitas sin registro:**
-- [ip-api.com](https://ip-api.com) para geolocalización IP
-- [Open-Meteo](https://open-meteo.com) para datos climáticos
+**APIs gratuitas sem cadastro:**
+- [ip-api.com](https://ip-api.com) para geolocalização por IP
+- [Open-Meteo](https://open-meteo.com) para dados climáticos
 
-**Manejo correcto de timezones:** mapper IANA → POSIX para que la hora sea exacta en cada zona horaria, incluyendo zonas sin DST (Sinaloa, Sonora, Arizona) y con DST (CDMX, EUA continental).
+**Tratamento correto de timezones:** mapper IANA → POSIX para que a hora seja exata em cada fuso horário, incluindo zonas sem horário de verão (Sinaloa, Sonora, Arizona) e com horário de verão (CDMX, EUA continental).
 
 ---
 
 ### 🆕 WiFi Config + Teclado Virtual
 
 <div align="center">
-<img src="img/keyboard.jpg" width="60%" alt="Teclado virtual escribiendo password"/>
+<img src="img/keyboard.jpg" width="60%" alt="Teclado virtual digitando a senha"/>
 </div>
 
-Sistema reusable de configuración WiFi que cualquier herramienta puede invocar:
+Sistema reutilizável de configuração WiFi que qualquer ferramenta pode invocar:
 
-- **Auto-conexión** silenciosa con credenciales guardadas en NVS (5 segundos)
-- **Scan automático** si no hay credenciales o la red guardada falla
-- **Selección visual** de redes ordenadas por RSSI con barras y tipo de encripción
-- **Teclado virtual QWERTY español** con ñ, símbolos shifteados, mayúsculas toggle, contador de caracteres y máscara de password
-- **Persistencia NVS** — el usuario solo escribe la red **una vez**
+- **Auto-conexão** silenciosa com credenciais salvas em NVS (5 segundos)
+- **Scan automático** se não houver credenciais ou se a rede salva falhar
+- **Seleção visual** de redes ordenadas por RSSI, com barras e tipo de encriptação
+- **Teclado virtual QWERTY em espanhol** com ñ, símbolos com shift, toggle de maiúsculas, contador de caracteres e máscara de senha
+- **Persistência NVS** — o usuário só escreve a rede **uma vez**
 
-**Forget WiFi** disponible en `SYSTEM → Settings` para borrar las credenciales guardadas con confirmación de seguridad (UI roja).
+**Forget WiFi** disponível em `SYSTEM → Settings` para apagar as credenciais salvas, com confirmação de segurança (UI vermelha).
 
 ---
 
-## 🔧 Hardware necesario
+## 🔧 Hardware necessário
 
-Lista de componentes para replicar este proyecto. Todo conseguible en México por Amazon, Mercado Libre o Steren por aproximadamente **$400-500 MXN** en total.
+Lista de componentes para replicar este projeto. Tudo conseguível no México pela Amazon, Mercado Livre ou Steren por aproximadamente **$400-500 MXN** no total.
 
-### Componentes principales
+### Componentes principais
 
-| Componente | Modelo específico | Función |
+| Componente | Modelo específico | Função |
 |:---|:---|:---|
-| **Microcontrolador** | ESP32-D (ESP32-WROOM-32, 30 pines) | Cerebro, WiFi + BT/BLE integrado |
-| **Radio 2.4GHz** | NRF24L01+ (con antena PCB integrada) | Analizador de espectro + jammer |
-| **Pantalla** | TFT LCD Shield 2.4" ILI9341 (paralela 8-bit) | Display 320x240 |
-| **Botones** | 3 × push buttons 12mm (arcade-style) | Navegación: UP / OK / DOWN |
-| **Buzzer** | Buzzer pasivo 5V | Audio feedback |
-| **Batería** | LiPo 3.7V 1000mAh | Portabilidad |
-| **Carga batería** | Módulo TP4056 con protección | Carga por USB |
-| **Convertidor DC-DC** | Step-Up MT3608 ajustable a 5V | Alimenta ESP32 y pantalla |
-| **Switch** | Interruptor deslizable 2 posiciones | Power on/off |
-| **PCB prototipo** | Placa perforada 7x9cm (o similar) | Montaje físico |
+| **Microcontrolador** | ESP32-D (ESP32-WROOM-32, 30 pinos) | Cérebro, WiFi + BT/BLE integrado |
+| **Rádio 2.4GHz** | NRF24L01+ (com antena PCB integrada) | Analisador de espectro + jammer |
+| **Tela** | TFT LCD Shield 2.4" ILI9341 (paralela 8-bit) | Display 320x240 |
+| **Botões** | 3 × push buttons 12mm (estilo arcade) | Navegação: UP / OK / DOWN |
+| **Buzzer** | Buzzer passivo 5V | Feedback de áudio |
+| **Bateria** | LiPo 3.7V 1000mAh | Portabilidade |
+| **Carga da bateria** | Módulo TP4056 com proteção | Carga por USB |
+| **Conversor DC-DC** | Step-Up MT3608 ajustável a 5V | Alimenta ESP32 e tela |
+| **Switch** | Interruptor deslizante de 2 posições | Liga/desliga |
+| **PCB de prototipagem** | Placa perfurada 7x9cm (ou similar) | Montagem física |
 
 ### Opcional
-- Cables jumper dupont (hembra-macho, macho-macho)
+- Cabos jumper dupont (fêmea-macho, macho-macho)
 - Pin headers 2.54mm
-- Case 3D printed (pendiente para una siguiente versión)
+- Case impresso em 3D (pendente para uma versão futura)
 
 ---
 
-## 🔌 Diagrama de conexiones
+## 🔌 Diagrama de conexões
 
-### ESP32 ↔ Pantalla TFT LCD Shield 2.4" (paralela 8-bit)
+> 💡 Há também um **esquema visual de montagem** em [`docs/esquema_montagem.svg`](docs/esquema_montagem.svg) que consolida todas as ligações abaixo numa única imagem.
 
-| Pantalla (Shield) | ESP32 (GPIO) | Función |
+### ESP32 ↔ Tela TFT LCD Shield 2.4" (paralela 8-bit)
+
+| Tela (Shield) | ESP32 (GPIO) | Função |
 |:---|:---:|:---|
 | D0 | 12 | Data bus bit 0 |
 | D1 | 13 | Data bus bit 1 |
@@ -347,31 +349,31 @@ Lista de componentes para replicar este proyecto. Todo conseguible en México po
 | WR | 15 | Write control |
 | CS | 5 | Chip Select |
 | RST | 4 | Reset |
-| RD | 3.3V | Read (fijo alto) |
-| VCC | 5V (del Step-Up) | Alimentación backlight |
-| GND | GND | Tierra |
+| RD | 3.3V | Read (fixo em alto) |
+| VCC | 5V (do Step-Up) | Alimentação do backlight |
+| GND | GND | Terra |
 
 ### ESP32 ↔ NRF24L01
 
-| NRF24L01 | ESP32 (GPIO) | Función |
+| NRF24L01 | ESP32 (GPIO) | Função |
 |:---|:---:|:---|
 | CE | 21 | Chip Enable |
 | CSN | 32 | Chip Select Not |
 | SCK | 25 | SPI Clock |
 | MISO | 26 | SPI Master In Slave Out |
 | MOSI | 33 | SPI Master Out Slave In |
-| VCC | 3.3V | ⚠️ No conectar a 5V |
-| GND | GND | Tierra |
+| VCC | 3.3V | ⚠️ Não conectar a 5V |
+| GND | GND | Terra |
 
-### Botones
+### Botões
 
-| Botón | ESP32 (GPIO) | Resistencia pull-up |
+| Botão | ESP32 (GPIO) | Resistor pull-up |
 |:---|:---:|:---:|
-| UP (arriba) | 34 | ✅ Sí (externa) |
-| OK (centro) | 35 | ✅ Sí (externa) |
-| DOWN (abajo) | 23 | ❌ Usa pull-up interno |
+| UP (cima) | 34 | ✅ Sim (externo) |
+| OK (centro) | 35 | ✅ Sim (externo) |
+| DOWN (baixo) | 23 | ❌ Usa pull-up interno |
 
-> **Nota:** GPIO 34 y 35 son solo-input en el ESP32, por eso requieren pull-up externo (10kΩ a 3.3V). El GPIO 23 usa el pull-up interno del ESP32 (`INPUT_PULLUP`).
+> **Nota:** os GPIO 34 e 35 são somente-entrada no ESP32, por isso exigem pull-up externo (10kΩ a 3.3V). O GPIO 23 usa o pull-up interno do ESP32 (`INPUT_PULLUP`).
 
 ### Buzzer
 
@@ -380,97 +382,97 @@ Lista de componentes para replicar este proyecto. Todo conseguible en México po
 | Positivo (+) | GPIO 22 |
 | Negativo (-) | GND |
 
-### Alimentación
+### Alimentação
 
 ```
-Batería 3.7V 1000mAh ──► TP4056 (carga USB) ──► Switch ──► Step-Up MT3608 (ajustado a 5V) ──► ESP32 VIN + TFT VCC
+Bateria 3.7V 1000mAh ──► TP4056 (carga USB) ──► Switch ──► Step-Up MT3608 (ajustado a 5V) ──► ESP32 VIN + TFT VCC
                                                                                                │
-                                                                                               └──► 3.3V regulado del ESP32 ──► NRF24 VCC
+                                                                                               └──► 3.3V regulado do ESP32 ──► NRF24 VCC
 ```
 
-> ⚠️ **Importante:** el NRF24 **no tolera 5V**. Siempre alimentarlo con los 3.3V del ESP32.
+> ⚠️ **Importante:** o NRF24 **não tolera 5V**. Sempre alimente-o com os 3.3V do ESP32.
 
 ---
 
-## 🚀 Instalación
+## 🚀 Instalação
 
-Hay dos formas de instalar ESP32-TOOLS en tu hardware:
+Há duas formas de instalar o ESP32-TOOLS no seu hardware:
 
-### ⚡ Opción 1 · Flasheo rápido desde el navegador (recomendado)
+### ⚡ Opção 1 · Flasheio rápido pelo navegador (recomendado)
 
-Si solo quieres usar el firmware sin compilarlo, puedes flashearlo directamente desde tu navegador en menos de 1 minuto. **No necesitas instalar nada.**
+Se você só quer usar o firmware sem compilá-lo, pode flashear direto do navegador em menos de 1 minuto. **Não precisa instalar nada.**
 
 🔗 **[https://pepeangell5.github.io/ESP32-TOOLS/](https://pepeangell5.github.io/ESP32-TOOLS/)**
 
-**Pasos:**
-1. Abre el link en **Chrome, Edge u Opera** (en computadora — no funciona en móvil ni Firefox/Safari)
-2. Conecta tu ESP32 por USB
-3. Cierra cualquier programa que esté usando el puerto serie (VS Code, PuTTY, monitor serie)
-4. Click en **⚡ INSTALAR AHORA ⚡**
-5. Selecciona el puerto del ESP32 cuando te lo pida
-6. Espera ~30 segundos mientras se flashea
-7. ¡Listo! Reinicia el ESP32 y verás el splash del ajolote 🦎
+**Passos:**
+1. Abra o link no **Chrome, Edge ou Opera** (no computador — não funciona no celular nem no Firefox/Safari)
+2. Conecte seu ESP32 por USB
+3. Feche qualquer programa que esteja usando a porta serial (VS Code, PuTTY, monitor serial)
+4. Clique em **⚡ INSTALAR AGORA ⚡**
+5. Selecione a porta do ESP32 quando for solicitado
+6. Espere ~30 segundos enquanto ele é flasheado
+7. Pronto! Reinicie o ESP32 e você verá o splash do axolote 🦎
 
-> **Si el flasheo falla:** mantén presionado el botón `BOOT` del ESP32 mientras le das click a "INSTALAR AHORA", y suéltalo cuando empiece a transferir.
+> **Se o flasheio falhar:** mantenha pressionado o botão `BOOT` do ESP32 enquanto clica em "INSTALAR AGORA", e solte quando começar a transferir.
 
-Esta opción ya incluye el patch del Deauther aplicado, por lo que **todas las herramientas funcionan out-of-the-box**.
+Esta opção já inclui o patch do Deauther aplicado, então **todas as ferramentas funcionam out-of-the-box**.
 
 ------------
 
-### 🛠️ Opción 2 · Compilar desde el código fuente
+### 🛠️ Opção 2 · Compilar a partir do código-fonte
 
-Si quieres modificar el firmware, agregarle features o estudiar el código, esta es la ruta.
+Se você quer modificar o firmware, adicionar features ou estudar o código, este é o caminho.
 
-#### Requisitos previos
+#### Pré-requisitos
 
-1. **VS Code** ([descargar](https://code.visualstudio.com/))
-2. **PlatformIO IDE** (extensión de VS Code — instalar desde el marketplace)
-3. **Python 3** (viene con PlatformIO)
-4. **Driver USB del ESP32** (CP210x o CH340 según tu módulo)
+1. **VS Code** ([baixar](https://code.visualstudio.com/))
+2. **PlatformIO IDE** (extensão do VS Code — instalar pelo marketplace)
+3. **Python 3** (vem com o PlatformIO)
+4. **Driver USB do ESP32** (CP210x ou CH340, conforme seu módulo)
 
-#### Clonar el repositorio
+#### Clonar o repositório
 
 ```bash
 git clone https://github.com/pepeangell5/ESP32-TOOLS.git
 cd ESP32-TOOLS
 ```
 
-#### Compilar y cargar
+#### Compilar e carregar
 
-Abre la carpeta en VS Code. PlatformIO detectará automáticamente el `platformio.ini`. Solo dale:
+Abra a pasta no VS Code. O PlatformIO detectará automaticamente o `platformio.ini`. Basta clicar em:
 
-1. **Build** (✓ en la barra inferior)
-2. Conecta el ESP32 por USB
-3. **Upload** (→ en la barra inferior)
+1. **Build** (✓ na barra inferior)
+2. Conecte o ESP32 por USB
+3. **Upload** (→ na barra inferior)
 
-El firmware se compilará (~3-5 minutos la primera vez por BLE + Evil Portal + ArduinoJson) y se cargará al ESP32.
+O firmware será compilado (~3-5 minutos na primeira vez por causa de BLE + Evil Portal + ArduinoJson) e carregado no ESP32.
 
-> **Importante:** si compilas desde fuente y vas a usar las herramientas Deauther o Evil Portal en modo CLONE+Deauth, primero tienes que aplicar el patch del SDK descrito más abajo.
+> **Importante:** se você compilar a partir do código-fonte e for usar as ferramentas Deauther ou Evil Portal no modo CLONE+Deauth, primeiro precisa aplicar o patch do SDK descrito mais abaixo.
 
-### Primer arranque
+### Primeiro boot
 
-Algunas herramientas (Clock & Weather) requieren conexión WiFi. La primera vez que entres a una de ellas:
+Algumas ferramentas (Clock & Weather) exigem conexão WiFi. Na primeira vez que você entrar em uma delas:
 
-1. Aparecerá automáticamente el **scanner de redes**
-2. Selecciona tu red WiFi 2.4GHz (el ESP32 no soporta 5GHz)
-3. Escribe la contraseña con el **teclado virtual** (UP/DOWN para navegar, OK para seleccionar)
-4. Conecta y guarda — la próxima vez se conectará automáticamente
+1. Aparecerá automaticamente o **scanner de redes**
+2. Selecione sua rede WiFi 2.4GHz (o ESP32 não suporta 5GHz)
+3. Digite a senha com o **teclado virtual** (UP/DOWN para navegar, OK para selecionar)
+4. Conecte e salve — na próxima vez ele conectará automaticamente
 
-Para olvidar la red guardada: `SYSTEM → Settings → FORGET WIFI`.
+Para esquecer a rede salva: `SYSTEM → Settings → FORGET WIFI`.
 
 ---
 
-## 🔓 Patch para el Deauther
+## 🔓 Patch para o Deauther
 
-**Solo necesario si vas a usar las herramientas Deauther o Evil Portal en modo CLONE+Deauth.** A partir del framework Arduino-ESP32 versión 2.0.7+, Espressif bloquea la transmisión de frames de deauth vía `esp_wifi_80211_tx()`. Este patch revierte ese bloqueo.
+**Só necessário se você for usar as ferramentas Deauther ou Evil Portal no modo CLONE+Deauth.** A partir do framework Arduino-ESP32 versão 2.0.7+, a Espressif bloqueia a transmissão de frames de deauth via `esp_wifi_80211_tx()`. Este patch reverte esse bloqueio.
 
 ### Windows (PowerShell)
 
 ```powershell
-C:\Users\TU_USUARIO\.platformio\packages\toolchain-xtensa-esp32\bin\xtensa-esp32-elf-objcopy.exe --weaken-symbol=ieee80211_raw_frame_sanity_check C:\Users\TU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a C:\Users\TU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a
+C:\Users\SEU_USUARIO\.platformio\packages\toolchain-xtensa-esp32\bin\xtensa-esp32-elf-objcopy.exe --weaken-symbol=ieee80211_raw_frame_sanity_check C:\Users\SEU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a C:\Users\SEU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a
 ```
 
-Reemplaza `TU_USUARIO` con tu nombre de usuario de Windows.
+Substitua `SEU_USUARIO` pelo seu nome de usuário do Windows.
 
 ### Linux / macOS
 
@@ -478,24 +480,24 @@ Reemplaza `TU_USUARIO` con tu nombre de usuario de Windows.
 ~/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-objcopy --weaken-symbol=ieee80211_raw_frame_sanity_check ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/lib/libnet80211.a ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/lib/libnet80211.a
 ```
 
-### Cómo funciona
+### Como funciona
 
-`objcopy --weaken-symbol` marca la función `ieee80211_raw_frame_sanity_check` como "débil". Esto permite que el firmware provea su propia versión que siempre retorna 0 (ya está incluida en `Deauther.cpp`), permitiendo que todos los frames pasen al radio.
+`objcopy --weaken-symbol` marca a função `ieee80211_raw_frame_sanity_check` como "fraca". Isso permite que o firmware forneça sua própria versão, que sempre retorna 0 (já incluída em `Deauther.cpp`), fazendo com que todos os frames passem para o rádio.
 
-> **Si reinstalas PlatformIO o actualizas el framework, hay que reaplicar el patch.**
+> **Se você reinstalar o PlatformIO ou atualizar o framework, é preciso reaplicar o patch.**
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Estrutura do projeto
 
 ```
 ESP32-TOOLS/
 ├── include/                    # Headers
-│   ├── Pins.h                  # Definición de pines
-│   ├── PepeDraw.h              # Motor de fuentes custom (5x7 + 8x12)
-│   ├── MenuSystem.h            # Carrusel principal
+│   ├── Pins.h                  # Definição de pinos
+│   ├── PepeDraw.h              # Motor de fontes custom (5x7 + 8x12)
+│   ├── MenuSystem.h            # Carrossel principal
 │   ├── Icons.h                 # Sprites pixel art
-│   ├── NVSStore.h              # Persistencia
+│   ├── NVSStore.h              # Persistência
 │   ├── SplashScreen.h
 │   ├── Screensaver.h           # 🆕
 │   ├── SoundUtils.h
@@ -516,14 +518,14 @@ ESP32-TOOLS/
 │   ├── RadioScanner.h
 │   ├── RadioJammer.h
 │   ├── PacketMonitor.h
-│   ├── VirtualKeyboard.h       # 🆕 (módulo reusable)
-│   ├── WifiConfig.h            # 🆕 (módulo reusable)
+│   ├── VirtualKeyboard.h       # 🆕 (módulo reutilizável)
+│   ├── WifiConfig.h            # 🆕 (módulo reutilizável)
 │   └── ClockWeather.h          # 🆕
-├── src/                        # Implementaciones
+├── src/                        # Implementações
 │   ├── Main.cpp
-│   └── [todos los .cpp]
-├── img/                        # Capturas del proyecto
-├── platformio.ini              # Config de PlatformIO
+│   └── [todos os .cpp]
+├── img/                        # Capturas do projeto
+├── platformio.ini              # Config do PlatformIO
 ├── LICENSE
 └── README.md
 ```
@@ -532,82 +534,82 @@ ESP32-TOOLS/
 
 ## 🎮 Controles básicos
 
-| Botón | Acción |
+| Botão | Ação |
 |:---|:---|
-| **UP / DOWN** | Navegar menús, cambiar modos |
-| **OK (click corto)** | Seleccionar / entrar |
-| **OK (mantener ~300-500ms)** | Salir / volver atrás |
+| **UP / DOWN** | Navegar menus, trocar modos |
+| **OK (clique curto)** | Selecionar / entrar |
+| **OK (segurar ~300-500ms)** | Sair / voltar |
 
-El firmware usa detección de press corto vs. hold para distinguir selección de salida, evitando la necesidad de un 4to botón.
+O firmware usa detecção de pressionar curto vs. segurar para distinguir seleção de saída, evitando a necessidade de um 4º botão.
 
-### En el teclado virtual
+### No teclado virtual
 
-| Botón | Acción |
+| Botão | Ação |
 |:---|:---|
-| **UP / DOWN** | Navegar columna por columna (vertical primero) |
-| **OK** | Seleccionar tecla actual |
-| **SHIFT** | Toggle mayúsculas + símbolos |
+| **UP / DOWN** | Navegar coluna por coluna (vertical primeiro) |
+| **OK** | Selecionar a tecla atual |
+| **SHIFT** | Toggle de maiúsculas + símbolos |
 | **OK** sobre `OK` (verde) | Confirmar texto |
-| **OK** sobre `X` (rojo) | Cancelar |
+| **OK** sobre `X` (vermelho) | Cancelar |
 
 ---
 
-## 🎨 Características destacadas
+## 🎨 Características de destaque
 
-- **Fuente custom PepeDraw v2** — dos fuentes propias (5×7 small y 8×12 big) con ~220 glyphs incluyendo acentos españoles (á é í ó ú ñ ¿ ¡)
-- **Splash screen animado** con el ajolote pixel art (96x80) scan-in, type-on de texto y beeps ascendentes
-- **Persistencia en NVS** — settings de sonido, contador de boots, credenciales WiFi y logs del Evil Portal sobreviven reinicios
-- **Menús jerárquicos** con navegación consistente y animaciones slide
-- **Paleta monocromática con acento naranja-rojo** (UI_SELECT 0xFA20) — estilo Flipper/terminal retro
-- **Sonidos contextuales** por herramienta — geiger en Spectrum, siren en Packet Monitor flooded, chirps de startup/exit
-- **Screensaver del ajolote** después de 30 segundos sin actividad
-- **Módulos reusables** — el teclado virtual y el WiFi config son funciones helper que cualquier herramienta puede invocar
+- **Fonte custom PepeDraw v2** — duas fontes próprias (5×7 small e 8×12 big) com ~220 glyphs, incluindo acentos do espanhol (á é í ó ú ñ ¿ ¡)
+- **Splash screen animada** com o axolote pixel art (96x80): scan-in, type-on do texto e beeps ascendentes
+- **Persistência em NVS** — configurações de som, contador de boots, credenciais WiFi e logs do Evil Portal sobrevivem a reinícios
+- **Menus hierárquicos** com navegação consistente e animações slide
+- **Paleta monocromática com acento laranja-vermelho** (UI_SELECT 0xFA20) — estilo Flipper/terminal retrô
+- **Sons contextuais** por ferramenta — geiger no Spectrum, sirene no Packet Monitor em FLOODED, chirps de startup/exit
+- **Screensaver do axolote** após 30 segundos sem atividade
+- **Módulos reutilizáveis** — o teclado virtual e o WiFi config são funções helper que qualquer ferramenta pode invocar
 
 ---
 
 ## 🗺️ Roadmap futuro
 
-Ideas para versiones siguientes (pull requests bienvenidos):
+Ideias para versões seguintes (pull requests são bem-vindos):
 
 - [ ] **PMKID Attack** para captura de hashes WPA2
-- [ ] **Indicador de batería** en todos los headers (requiere voltage divider con 2x 100kΩ a GPIO 36)
-- [ ] **Case 3D printable** con diseño dedicado
-- [ ] **Soporte para SD card** (log de captures, pcap export)
-- [ ] **OTA updates** vía web (aprovechando WiFi Config existente)
-- [ ] **Selector manual de timezone** en Settings (para casos donde IP geolocation falla)
-- [ ] **Más plataformas en Evil Portal** (Twitter/X, Netflix, banking)
+- [ ] **Indicador de bateria** em todos os headers (requer divisor de tensão com 2x 100kΩ no GPIO 36)
+- [ ] **Case imprimível em 3D** com design dedicado
+- [ ] **Suporte a cartão SD** (log de capturas, export pcap)
+- [ ] **OTA updates** via web (aproveitando o WiFi Config existente)
+- [ ] **Seletor manual de timezone** em Settings (para casos em que a geolocalização por IP falha)
+- [ ] **Mais plataformas no Evil Portal** (Twitter/X, Netflix, bancos)
 
-### ✅ Completado en v2.0
+### ✅ Concluído na v2.0
 
-- [x] Evil Portal (portal cautivo con AP + DNS + captura de credenciales)
+- [x] Evil Portal (portal cativo com AP + DNS + captura de credenciais)
 - [x] Probe Request Sniffer
 - [x] KARMA Attack
-- [x] Screensaver con animación del ajolote
-- [x] Reloj con NTP + clima en vivo
-- [x] WiFi Config persistente con teclado virtual
+- [x] Screensaver com animação do axolote
+- [x] Relógio com NTP + clima ao vivo
+- [x] WiFi Config persistente com teclado virtual
 
 ---
 
-## 📜 Licencia
+## 📜 Licença
 
-Este proyecto está bajo licencia **MIT** — ver [LICENSE](LICENSE) para detalles.
+Este projeto está sob a licença **MIT** — veja [LICENSE](LICENSE) para detalhes.
 
-En resumen: puedes usar, modificar y distribuir este código libremente, incluso comercialmente, siempre que incluyas el copyright original.
-
----
-
-## 🙌 Créditos y agradecimientos
-
-- Inspiración general: [Flipper Zero](https://flipperzero.one/), [ESP32 Marauder](https://github.com/justcallmekoko/ESP32Marauder), [Bruce firmware](https://github.com/pr3y/Bruce), [Spacehuhn ESP8266 Deauther](https://github.com/SpacehuhnTech/esp8266_deauther)
-- Librerías: [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) (Bodmer), [RF24](https://github.com/nRF24/RF24) (TMRh20), [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Benoît Blanchon), Arduino-ESP32 (Espressif)
-- APIs gratuitas: [ip-api.com](https://ip-api.com) (geolocalización IP) y [Open-Meteo](https://open-meteo.com) (datos climáticos sin API key)
-- SDK patch técnica: comunidad Arduino-ESP32, [Jeija/esp32free80211](https://github.com/Jeija/esp32free80211)
-- Protocolos BLE (Apple Continuity, Samsung, MS Swift Pair, Google Fast Pair): reverse engineering público de la comunidad
-- Ajolote mascota: diseño original del proyecto 🦎😎
+Em resumo: você pode usar, modificar e distribuir este código livremente, inclusive comercialmente, desde que inclua o copyright original.
 
 ---
 
-## 📬 Contacto
+## 🙌 Créditos e agradecimentos
+
+- Inspiração geral: [Flipper Zero](https://flipperzero.one/), [ESP32 Marauder](https://github.com/justcallmekoko/ESP32Marauder), [Bruce firmware](https://github.com/pr3y/Bruce), [Spacehuhn ESP8266 Deauther](https://github.com/SpacehuhnTech/esp8266_deauther)
+- Bibliotecas: [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) (Bodmer), [RF24](https://github.com/nRF24/RF24) (TMRh20), [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Benoît Blanchon), Arduino-ESP32 (Espressif)
+- APIs gratuitas: [ip-api.com](https://ip-api.com) (geolocalização por IP) e [Open-Meteo](https://open-meteo.com) (dados climáticos sem API key)
+- Técnica do patch do SDK: comunidade Arduino-ESP32, [Jeija/esp32free80211](https://github.com/Jeija/esp32free80211)
+- Protocolos BLE (Apple Continuity, Samsung, MS Swift Pair, Google Fast Pair): engenharia reversa pública da comunidade
+- Mascote axolote: design original do projeto 🦎😎
+
+---
+
+## 📬 Contato
 
 **José Ángel Chávez Félix (PepeAngell)**
 
@@ -616,14 +618,14 @@ En resumen: puedes usar, modificar y distribuir este código libremente, incluso
 - 📘 **Facebook:** [ESP32-TOOLS](https://www.facebook.com/esp32tools/)
 - 🐙 **GitHub:** [@pepeangell5](https://github.com/pepeangell5)
 
-Si te gustó el proyecto, ⭐ una estrella en el repo ayuda muchísimo. Si lo armas, mándame fotos — me encanta ver qué hacen otros makers con él.
+Se você gostou do projeto, ⭐ uma estrela no repo ajuda demais. Se você montar, me manda fotos — adoro ver o que outros makers fazem com ele.
 
 ---
 
 <div align="center">
 
-**Made with ❤️ and 🌶️ in Los Mochis, Sinaloa, México**
+**Feito com ❤️ e 🌶️ em Los Mochis, Sinaloa, México**
 
-*El conocimiento y la informacion siempre deben ser gratuitos.*
+*O conhecimento e a informação sempre devem ser gratuitos.*
 
 </div>
