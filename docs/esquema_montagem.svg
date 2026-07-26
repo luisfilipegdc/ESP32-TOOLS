@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" font-family="'Segoe UI', Arial, sans-serif">
+  <!-- Background -->
+  <rect width="1400" height="1000" fill="#0f1420"/>
+  <rect x="0" y="0" width="1400" height="70" fill="#1a2233"/>
+  <text x="30" y="35" fill="#fa4500" font-size="26" font-weight="bold">ESP32-TOOLS  —  Esquema de Montagem</text>
+  <text x="30" y="58" fill="#9fb0c8" font-size="15">Ligacoes de fiacao · GPIOs · cadeia de alimentacao</text>
+  <text x="1370" y="45" fill="#5a6b85" font-size="13" text-anchor="end">by PepeAngell 🦎</text>
+
+  <!-- Legend -->
+  <g font-size="13">
+    <rect x="980" y="20" width="18" height="10" rx="2" fill="#e53935"/><text x="1004" y="30" fill="#c8d4e6">5V</text>
+    <rect x="1040" y="20" width="18" height="10" rx="2" fill="#ffb300"/><text x="1064" y="30" fill="#c8d4e6">3.3V</text>
+    <rect x="1110" y="20" width="18" height="10" rx="2" fill="#455a64"/><text x="1134" y="30" fill="#c8d4e6">GND</text>
+    <rect x="1180" y="20" width="18" height="10" rx="2" fill="#42a5f5"/><text x="1204" y="30" fill="#c8d4e6">Dados/Sinal</text>
+  </g>
+
+  <!-- ================= ESP32 CENTRAL ================= -->
+  <g>
+    <rect x="560" y="330" width="280" height="360" rx="10" fill="#14304a" stroke="#42a5f5" stroke-width="2"/>
+    <rect x="560" y="330" width="280" height="40" rx="10" fill="#1c4468"/>
+    <text x="700" y="357" fill="#ffffff" font-size="20" font-weight="bold" text-anchor="middle">ESP32-WROOM-32</text>
+    <text x="700" y="388" fill="#9fb0c8" font-size="12" text-anchor="middle">30 pinos</text>
+
+    <!-- left pin labels (to TFT) -->
+    <g font-size="12" fill="#cfe0f5" text-anchor="start">
+      <text x="575" y="415">D0·12  D1·13  D2·14  D3·27</text>
+      <text x="575" y="435">D4·16  D5·17  D6·18  D7·19</text>
+      <text x="575" y="460">DC·2   WR·15  CS·5   RST·4</text>
+    </g>
+    <line x1="570" y1="470" x2="825" y2="470" stroke="#26384f"/>
+    <!-- radio pins -->
+    <g font-size="12" fill="#cfe0f5" text-anchor="start">
+      <text x="575" y="492">CE·21  CSN·32  SCK·25</text>
+      <text x="575" y="512">MISO·26  MOSI·33</text>
+    </g>
+    <line x1="570" y1="522" x2="825" y2="522" stroke="#26384f"/>
+    <!-- buttons -->
+    <g font-size="12" fill="#cfe0f5" text-anchor="start">
+      <text x="575" y="544">BTN UP·34   OK·35   DOWN·23</text>
+    </g>
+    <line x1="570" y1="554" x2="825" y2="554" stroke="#26384f"/>
+    <!-- buzzer + power -->
+    <g font-size="12" fill="#cfe0f5" text-anchor="start">
+      <text x="575" y="576">BUZZER·22</text>
+      <text x="575" y="600">VIN·5V   3V3·out   GND</text>
+    </g>
+    <circle cx="700" cy="650" r="26" fill="#0f2338" stroke="#42a5f5"/>
+    <text x="700" y="655" fill="#8fd0ff" font-size="13" text-anchor="middle">WiFi+BT</text>
+  </g>
+
+  <!-- ================= TFT DISPLAY (top-left) ================= -->
+  <g>
+    <rect x="60" y="120" width="330" height="210" rx="10" fill="#1e2a1e" stroke="#66bb6a" stroke-width="2"/>
+    <text x="80" y="150" fill="#a5d6a7" font-size="18" font-weight="bold">TFT LCD 2.4" ILI9341</text>
+    <text x="80" y="170" fill="#7f9c81" font-size="12">Paralela 8-bit · 320x240</text>
+    <g font-size="12.5" fill="#d7ecd8">
+      <text x="80" y="196">D0→12  D1→13  D2→14  D3→27</text>
+      <text x="80" y="216">D4→16  D5→17  D6→18  D7→19</text>
+      <text x="80" y="236">RS/DC→2   WR→15   CS→5   RST→4</text>
+      <text x="80" y="258" fill="#ffcc80">RD → 3.3V   (fixo alto)</text>
+      <text x="80" y="280" fill="#ef9a9a">VCC → 5V (do Step-Up)</text>
+      <text x="80" y="300" fill="#b0bec5">GND → GND</text>
+    </g>
+  </g>
+  <path d="M390 240 C 470 250, 490 400, 558 430" fill="none" stroke="#42a5f5" stroke-width="3"/>
+  <text x="455" y="320" fill="#7fb3e0" font-size="12" transform="rotate(20 455 320)">14 fios</text>
+
+  <!-- ================= NRF24 (bottom-left) ================= -->
+  <g>
+    <rect x="60" y="470" width="330" height="180" rx="10" fill="#2a1e2e" stroke="#ab47bc" stroke-width="2"/>
+    <text x="80" y="500" fill="#ce93d8" font-size="18" font-weight="bold">NRF24L01+</text>
+    <text x="80" y="520" fill="#9c7ba3" font-size="12">Radio 2.4GHz</text>
+    <g font-size="12.5" fill="#ecd7ef">
+      <text x="80" y="546">CE→21   CSN→32   SCK→25</text>
+      <text x="80" y="566">MISO→26   MOSI→33</text>
+      <text x="80" y="588" fill="#ffcc80">VCC → 3.3V  ⚠ nunca 5V</text>
+      <text x="80" y="608" fill="#b0bec5">GND → GND</text>
+      <text x="80" y="632" fill="#90caf9">💡 cap. 10µF entre VCC-GND</text>
+    </g>
+  </g>
+  <path d="M390 540 C 470 535, 500 515, 558 505" fill="none" stroke="#42a5f5" stroke-width="3"/>
+
+  <!-- ================= BOTOES (top-right) ================= -->
+  <g>
+    <rect x="1010" y="120" width="330" height="200" rx="10" fill="#2a2418" stroke="#ffca28" stroke-width="2"/>
+    <text x="1030" y="150" fill="#ffe082" font-size="18" font-weight="bold">Botoes (3x)</text>
+    <text x="1030" y="170" fill="#a89968" font-size="12">1 terminal → GPIO · outro → GND</text>
+    <g font-size="12.5" fill="#efe6cf">
+      <text x="1030" y="198" fill="#ef9a9a">UP → GPIO 34  + pull-up 10kΩ→3.3V</text>
+      <text x="1030" y="220" fill="#ef9a9a">OK → GPIO 35  + pull-up 10kΩ→3.3V</text>
+      <text x="1030" y="242" fill="#a5d6a7">DOWN → GPIO 23  (pull-up interno)</text>
+      <text x="1030" y="272" fill="#90caf9">⚠ GPIO 34/35 sao SÓ ENTRADA:</text>
+      <text x="1030" y="292" fill="#90caf9">   precisam do resistor externo.</text>
+    </g>
+  </g>
+  <path d="M1010 230 C 930 250, 900 400, 842 445" fill="none" stroke="#42a5f5" stroke-width="3"/>
+
+  <!-- pull-up mini diagram -->
+  <g font-size="11" fill="#cfd8dc">
+    <text x="1030" y="312">3.3V ──[10kΩ]──┬── GPIO 34/35</text>
+    <text x="1092" y="328">botao ─┴─ GND</text>
+  </g>
+
+  <!-- ================= BUZZER (right) ================= -->
+  <g>
+    <rect x="1010" y="360" width="330" height="120" rx="10" fill="#182a2a" stroke="#26c6da" stroke-width="2"/>
+    <text x="1030" y="390" fill="#80deea" font-size="18" font-weight="bold">Buzzer passivo 5V</text>
+    <g font-size="12.5" fill="#cfeef0">
+      <text x="1030" y="418">Positivo (+) → GPIO 22</text>
+      <text x="1030" y="440">Negativo (−) → GND</text>
+      <text x="1030" y="464" fill="#90caf9">💡 use passivo (firmware gera o tom)</text>
+    </g>
+  </g>
+  <path d="M1010 420 C 930 430, 890 450, 842 500" fill="none" stroke="#42a5f5" stroke-width="3"/>
+
+  <!-- ================= POWER CHAIN (bottom) ================= -->
+  <g>
+    <rect x="60" y="720" width="1280" height="240" rx="10" fill="#241414" stroke="#ef5350" stroke-width="2"/>
+    <text x="80" y="752" fill="#ffab91" font-size="18" font-weight="bold">⚡ Cadeia de Alimentacao</text>
+
+    <!-- blocks -->
+    <g font-size="13" text-anchor="middle">
+      <rect x="90" y="790" width="150" height="70" rx="8" fill="#3a2020" stroke="#ef9a9a"/>
+      <text x="165" y="818" fill="#ffcdd2" font-weight="bold">Bateria LiPo</text>
+      <text x="165" y="838" fill="#e0a0a0">3.7V 1000mAh</text>
+
+      <rect x="300" y="790" width="150" height="70" rx="8" fill="#3a2020" stroke="#ef9a9a"/>
+      <text x="375" y="812" fill="#ffcdd2" font-weight="bold">TP4056</text>
+      <text x="375" y="832" fill="#e0a0a0">carga USB</text>
+      <text x="375" y="850" fill="#e0a0a0">B+/B- → bateria</text>
+
+      <rect x="510" y="790" width="130" height="70" rx="8" fill="#20303a" stroke="#90caf9"/>
+      <text x="575" y="818" fill="#bbdefb" font-weight="bold">Switch</text>
+      <text x="575" y="838" fill="#a0c0e0">liga/desliga</text>
+
+      <rect x="700" y="790" width="180" height="70" rx="8" fill="#3a3420" stroke="#ffe082"/>
+      <text x="790" y="814" fill="#fff3c4" font-weight="bold">Step-Up MT3608</text>
+      <text x="790" y="834" fill="#e0d0a0">AJUSTAR p/ 5.0V</text>
+      <text x="790" y="852" fill="#ffab91">⚠ meça ANTES de ligar</text>
+
+      <rect x="940" y="778" width="170" height="46" rx="8" fill="#14304a" stroke="#42a5f5"/>
+      <text x="1025" y="806" fill="#bbdefb" font-weight="bold">ESP32 VIN (5V)</text>
+
+      <rect x="940" y="836" width="170" height="46" rx="8" fill="#1e2a1e" stroke="#66bb6a"/>
+      <text x="1025" y="864" fill="#c8e6c9" font-weight="bold">TFT VCC (5V)</text>
+
+      <rect x="1160" y="808" width="150" height="46" rx="8" fill="#2a1e2e" stroke="#ab47bc"/>
+      <text x="1235" y="830" fill="#e1bee7" font-weight="bold">NRF24 VCC</text>
+      <text x="1235" y="847" fill="#c090c8" font-size="11">3.3V do ESP32</text>
+    </g>
+
+    <!-- arrows -->
+    <g stroke="#e53935" stroke-width="3" fill="none" marker-end="url(#arr)">
+      <line x1="240" y1="825" x2="298" y2="825"/>
+      <line x1="450" y1="825" x2="508" y2="825"/>
+      <line x1="640" y1="825" x2="698" y2="825"/>
+      <line x1="880" y1="815" x2="938" y2="801"/>
+      <line x1="880" y1="835" x2="938" y2="855"/>
+    </g>
+    <path d="M1110 801 C 1140 801, 1140 825, 1158 828" stroke="#ffb300" stroke-width="3" fill="none" marker-end="url(#arrY)"/>
+    <text x="1120" y="905" fill="#ffcc80" font-size="12">O NRF24 usa os 3.3V regulados que saem do ESP32 — nunca 5V.</text>
+  </g>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#e53935"/>
+    </marker>
+    <marker id="arrY" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ffb300"/>
+    </marker>
+  </defs>
+</svg>
