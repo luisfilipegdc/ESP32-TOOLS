@@ -411,7 +411,7 @@ static bool connectWithCredentials(const String& ssid, const String& pass) {
             drawStringCustom(50, 120, ssidDisp, UI_MAIN, 1);
             drawStringCustom(10, 140, "IP:", UI_ACCENT, 1);
             drawStringCustom(50, 140, WiFi.localIP().toString(), UI_MAIN, 1);
-            drawStringCustom(10, 160, "Credenciales guardadas.",
+            drawStringCustom(10, 160, "Credenciais salvas.",
                              TFT_GREEN, 1);
 
             beep(2400, 50); delay(30);
@@ -434,7 +434,7 @@ static bool connectWithCredentials(const String& ssid, const String& pass) {
     tft.fillScreen(TFT_BLACK);
     tft.drawRect(0, 0, 320, 240, TFT_RED);
     drawStringBig(40, 80, "FALLO", TFT_RED, 2);
-    drawStringCustom(20, 130, "No se pudo conectar.", UI_MAIN, 1);
+    drawStringCustom(20, 130, "Nao foi possivel conectar.", UI_MAIN, 1);
     drawStringCustom(20, 146, "Password incorrecto?", UI_ACCENT, 1);
     drawStringCustom(20, 220, "OK: Reintentar", UI_MAIN, 1);
 
@@ -468,8 +468,8 @@ bool wifiConfigConnect() {
         if (scanNetCount == 0) {
             tft.fillScreen(TFT_BLACK);
             tft.drawRect(0, 0, 320, 240, UI_MAIN);
-            drawStringBig(20, 80, "NO HAY REDES", TFT_RED, 1);
-            drawStringCustom(20, 130, "No se encontraron redes WiFi.",
+            drawStringBig(20, 80, "SEM REDES", TFT_RED, 1);
+            drawStringCustom(20, 130, "Nenhuma rede WiFi encontrada.",
                              UI_ACCENT, 1);
             drawStringCustom(20, 220, "OK: reintentar  UP/DN: cancelar",
                              UI_MAIN, 1);

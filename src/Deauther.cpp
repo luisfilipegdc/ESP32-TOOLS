@@ -384,7 +384,7 @@ static bool confirmRambo() {
     drawStringCustom(10, y, "!! ESTO AFECTA A TERCEROS !!",    TFT_RED, 1); y += 12;
     drawStringCustom(10, y, "!! VECINOS, OFICINAS, ETC !!",    TFT_RED, 1); y += 20;
 
-    drawStringCustom(10, y, "Solo usar en tu propio",          UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "So usar na sua propria",          UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "espacio fisico aislado.",         UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "Responsabilidad 100% tuya.",      TFT_YELLOW, 1);

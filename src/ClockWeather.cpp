@@ -608,7 +608,7 @@ void runClockWeather() {
         tft.fillScreen(TFT_BLACK);
         tft.drawRect(0, 0, 320, 240, TFT_RED);
         drawStringBig(50, 90, "NTP FALHOU", TFT_RED, 2);
-        drawStringCustom(40, 130, "No se pudo sincronizar la hora.",
+        drawStringCustom(40, 130, "Nao foi possivel sincronizar a hora.",
                          UI_MAIN, 1);
         drawStringCustom(40, 220, "OK: sair", UI_MAIN, 1);
         beep(800, 100);

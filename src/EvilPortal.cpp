@@ -245,7 +245,7 @@ static bool showDisclaimer() {
     tft.drawFastHLine(0, 50, 320, TFT_RED);
 
     int y = 60;
-    drawStringCustom(10, y, "Crea un AP falso para capturar",     UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "Cria um AP falso para capturar",     UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "credenciales via portal cautivo.",   UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "Uso LEGAL:",                          TFT_GREEN, 1); y += 12;
@@ -256,7 +256,7 @@ static bool showDisclaimer() {
     drawStringCustom(20, y, "- Enganar a terceros",                UI_ACCENT, 1); y += 12;
     drawStringCustom(20, y, "- Capturar info sem consentim.",      UI_ACCENT, 1); y += 18;
 
-    drawStringCustom(10, y, "Phishing es delito grave.",           TFT_RED, 1); y += 12;
+    drawStringCustom(10, y, "Phishing e crime grave.",           TFT_RED, 1); y += 12;
     drawStringCustom(10, y, "100% responsabilidad tuya.",          UI_MAIN, 1);
 
     tft.drawFastHLine(0, 212, 320, TFT_RED);

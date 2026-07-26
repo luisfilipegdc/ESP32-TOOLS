@@ -278,7 +278,7 @@ static bool showDisclaimer() {
 
     int y = 62;
     drawStringCustom(10, y, "Transmite redes WiFi falsas", UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "que aparecen en tu lista WiFi.", UI_MAIN, 1); y += 20;
+    drawStringCustom(10, y, "que aparecem na sua lista WiFi.", UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "No interfiere conexiones reales,", UI_ACCENT, 1); y += 12;
     drawStringCustom(10, y, "so adiciona redes ficticias.", UI_ACCENT, 1); y += 20;

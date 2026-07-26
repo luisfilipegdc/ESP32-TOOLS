@@ -136,7 +136,7 @@ static bool showDisclaimer() {
 
     int y = 60;
     drawStringCustom(10, y, "Captura os SSIDs que procuram",   UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "celulares cercanos y los",       UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "celulares proximos e os",       UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "anuncia como redes existentes.", UI_MAIN, 1); y += 20;
 
     drawStringCustom(10, y, "Dispositivos vulneraveis se",    UI_ACCENT, 1); y += 12;
