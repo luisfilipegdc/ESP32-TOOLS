@@ -4,9 +4,10 @@
 #include "NVSStore.h"
 #include "WifiConfig.h"
 #include "SoundUtils.h"
+#include "ClockWeather.h"
 
 static int cursor = 0;
-static const int MENU_ITEMS = 4;   // antes 3, agora 4 com FORGET WIFI
+static const int MENU_ITEMS = 5;   // SOUND, VOLUME, TIMEZONE, FORGET WIFI, BACK
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESQUECER REDE WIFI · apaga as credenciais salvas no NVS
@@ -122,9 +123,12 @@ void drawSettings() {
                              textColor, 2);
         }
         else if (i == 2) {
-            drawStringCustom(20, y, "FORGET WIFI", textColor, 2);
+            drawStringCustom(20, y, "TIMEZONE", textColor, 2);
         }
         else if (i == 3) {
+            drawStringCustom(20, y, "FORGET WIFI", textColor, 2);
+        }
+        else if (i == 4) {
             drawStringCustom(20, y, "BACK", textColor, 2);
         }
     }
@@ -171,9 +175,15 @@ void runSettings() {
                 // Espera a liberação antes de entrar na sub-tela
                 while (digitalRead(BTN_OK) == LOW);
                 delay(100);
-                runForgetWifi();
+                runTimezoneSelector();
             }
             else if (cursor == 3) {
+                // Espera a liberação antes de entrar na sub-tela
+                while (digitalRead(BTN_OK) == LOW);
+                delay(100);
+                runForgetWifi();
+            }
+            else if (cursor == 4) {
                 exitMenu = true;
             }
 

@@ -8,6 +8,8 @@
 #include "PepeDraw.h"
 #include "Pins.h"
 #include "SoundUtils.h"
+#include "NVSStore.h"
+#include "MenuSystem.h"
 
 extern TFT_eSPI tft;
 
@@ -83,6 +85,19 @@ static String ianaToPosix(const String& iana, int offsetSec) {
     if (iana == "America/Santiago")       return "CLT4CLST,M9.1.6/24,M4.1.6/24";
     if (iana == "America/Buenos_Aires")   return "ART3";
     if (iana == "Europe/Madrid")          return "CET-1CEST,M3.5.0,M10.5.0/3";
+    if (iana == "Europe/Lisbon")          return "WET0WEST,M3.5.0/1,M10.5.0";
+
+    // Brasil (sem horário de verão desde 2019)
+    if (iana == "America/Sao_Paulo")      return "<-03>3";
+    if (iana == "America/Belem")          return "<-03>3";
+    if (iana == "America/Fortaleza")      return "<-03>3";
+    if (iana == "America/Recife")         return "<-03>3";
+    if (iana == "America/Bahia")          return "<-03>3";
+    if (iana == "America/Manaus")         return "<-04>4";
+    if (iana == "America/Cuiaba")         return "<-04>4";
+    if (iana == "America/Campo_Grande")   return "<-04>4";
+    if (iana == "America/Noronha")        return "<-02>2";
+    if (iana == "America/Rio_Branco")     return "<-05>5";
 
     // Fallback: monta uma string genérica a partir do offset (sem DST)
     int hours = -offsetSec / 3600;   // signo invertido en POSIX
@@ -92,6 +107,79 @@ static String ianaToPosix(const String& iana, int offsetSec) {
     return String(buf);
 }
 
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  LISTA DE TIMEZONES PARA O SELETOR MANUAL
+//  · Índice 0 = Auto (detecta por IP, comportamento padrão)
+//  · Todos os IANA aqui têm mapeamento em ianaToPosix()
+//  · Salvo em NVS como índice inteiro na chave "tz_idx"
+// ═══════════════════════════════════════════════════════════════════════════
+struct TzEntry { const char* iana; const char* label; };
+
+static const TzEntry TZ_LIST[] = {
+    { "",                     "Auto (IP)" },
+    { "America/Sao_Paulo",    "Sao Paulo BR" },
+    { "America/Manaus",       "Manaus BR" },
+    { "America/Belem",        "Belem BR" },
+    { "America/Fortaleza",    "Fortaleza BR" },
+    { "America/Recife",       "Recife BR" },
+    { "America/Bahia",        "Salvador BR" },
+    { "America/Cuiaba",       "Cuiaba BR" },
+    { "America/Campo_Grande", "Campo Grande BR" },
+    { "America/Noronha",      "F.Noronha BR" },
+    { "America/Rio_Branco",   "Rio Branco BR" },
+    { "America/Mexico_City",  "CDMX MX" },
+    { "America/Mazatlan",     "Mazatlan MX" },
+    { "America/Tijuana",      "Tijuana MX" },
+    { "America/Cancun",       "Cancun MX" },
+    { "America/Bogota",       "Bogota CO" },
+    { "America/Lima",         "Lima PE" },
+    { "America/Santiago",     "Santiago CL" },
+    { "America/Buenos_Aires", "Buenos Aires AR" },
+    { "America/New_York",     "New York US" },
+    { "America/Chicago",      "Chicago US" },
+    { "America/Denver",       "Denver US" },
+    { "America/Los_Angeles",  "Los Angeles US" },
+    { "America/Phoenix",      "Phoenix US" },
+    { "Europe/Madrid",        "Madrid ES" },
+    { "Europe/Lisbon",        "Lisboa PT" },
+};
+static const int TZ_COUNT = sizeof(TZ_LIST) / sizeof(TzEntry);
+
+// Seletor manual de fuso horário. Reusa runSubMenu() (lista rolável) e salva
+// o índice escolhido em NVS. -1 (BACK) mantém a configuração atual.
+void runTimezoneSelector() {
+    static const char* labels[TZ_COUNT];
+    for (int i = 0; i < TZ_COUNT; i++) labels[i] = TZ_LIST[i].label;
+
+    int sel = runSubMenu("TIMEZONE", labels, TZ_COUNT);
+    if (sel < 0 || sel >= TZ_COUNT) return;   // BACK ou inválido
+
+    nvsSetInt("tz_idx", sel);
+
+    // Tela de confirmação
+    tft.fillScreen(TFT_BLACK);
+    tft.drawRect(0, 0, 320, 240, TFT_WHITE);
+    drawStringCustom(55, 80, "TIMEZONE SALVO", TFT_GREEN, 2);
+
+    int lw = getTextWidth(String(TZ_LIST[sel].label), 2, FONT_BIG);
+    if (lw > 316) lw = 316;
+    drawStringBig((320 - lw) / 2, 120, TZ_LIST[sel].label, UI_SELECT, 2);
+
+    if (sel == 0) {
+        drawStringCustom(35, 160, "Detectado por IP automaticamente.",
+                         UI_ACCENT, 1);
+    } else {
+        drawStringCustom(30, 160, "Sera aplicado na proxima vez que",
+                         UI_ACCENT, 1);
+        drawStringCustom(30, 174, "voce abrir Clock & Weather.",
+                         UI_ACCENT, 1);
+    }
+
+    beep(2400, 50); delay(30);
+    beep(3000, 80);
+    delay(1600);
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  HELPERS DE TIEMPO
@@ -600,6 +688,15 @@ void runClockWeather() {
         g_city = FALLBACK_CITY;
         g_country = "MX";
         g_tzOffset = FALLBACK_TZ_OFFSET;
+    }
+
+    // 2b. Override manual de timezone (SYSTEM -> Settings -> TIMEZONE).
+    //     Se o usuário escolheu um fuso fixo, ele tem prioridade sobre o
+    //     detectado por IP. Útil quando a geolocalização falha ou erra.
+    int tzIdx = nvsGetInt("tz_idx", 0);
+    if (tzIdx > 0 && tzIdx < TZ_COUNT) {
+        g_timezone = TZ_LIST[tzIdx].iana;
+        if (!geoOk) g_city = TZ_LIST[tzIdx].label;   // sem IP, mostra o rótulo
     }
 
     // 3. NTP sync
