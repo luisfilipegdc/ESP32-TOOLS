@@ -53,6 +53,8 @@ A v2.0 expande massivamente o firmware com **6 ferramentas novas**, um **sistema
 
 Inspirado em projetos como **Flipper Zero**, **ESP32 Marauder** e **Bruce**, mas construído do zero com personalidade própria, em espanhol, e pensado para a comunidade maker de língua hispânica.
 
+> 📘 **Novo:** há um **[guia visual e didático do sistema](docs/guia_visual.html)** (arquitetura, hardware peça por peça, as 14 ferramentas e fluxos de dados, com diagramas). Abra no navegador — ideal para estudar como o firmware funciona por dentro.
+
 ---
 
 ## ⚠️ Aviso legal
