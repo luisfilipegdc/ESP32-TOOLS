@@ -1,0 +1,63 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: default
+            build_flags: ""
+          - name: sd-enabled
+            build_flags: "-DSD_ENABLED=1"
+          - name: battery-enabled
+            build_flags: "-DBATTERY_MONITOR_ENABLED=1"
+
+    name: build (${{ matrix.name }})
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: pio-${{ runner.os }}-${{ hashFiles('platformio.ini') }}
+          restore-keys: pio-${{ runner.os }}-
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Install project packages (framework + toolchain)
+        run: pio pkg install -e esp32dev
+
+      # O Deauther/Evil Portal definem seu próprio ieee80211_raw_frame_sanity_check().
+      # Sem enfraquecer o símbolo do SDK, o link falha por "multiple definition".
+      # Este passo automatiza o patch descrito no README.
+      - name: Apply deauth SDK patch (weaken symbol)
+        run: |
+          set -e
+          OBJCOPY=$(find "$HOME/.platformio/packages" -name 'xtensa-esp32-elf-objcopy' | head -n1)
+          LIB=$(find "$HOME/.platformio/packages" -path '*sdk/esp32/lib/libnet80211.a' | head -n1)
+          echo "objcopy = $OBJCOPY"
+          echo "lib     = $LIB"
+          test -n "$OBJCOPY" && test -n "$LIB"
+          "$OBJCOPY" --weaken-symbol=ieee80211_raw_frame_sanity_check "$LIB" "$LIB"
+          echo "patch aplicado."
+
+      - name: Build
+        run: pio run -e esp32dev
+        env:
+          PLATFORMIO_BUILD_FLAGS: ${{ matrix.build_flags }}

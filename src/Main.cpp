@@ -6,6 +6,7 @@
 #include "Settings.h"
 #include "NVSStore.h"
 #include "SplashScreen.h"
+#include "Storage.h"
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESP32-TOOLS · Firmware principal
@@ -47,6 +48,11 @@ void setup() {
     nvsBegin();
     loadPreferences();
     bumpBootCount();
+
+    // ── Cartão SD (opcional, no-op se SD_ENABLED == 0) ──────────────────
+    if (storageBegin()) {
+        Serial.println("[SD] Cartao montado");
+    }
 
     // ── Reset da tela ───────────────────────────────────────────────────
     pinMode(4, OUTPUT);

@@ -15,6 +15,7 @@
 ![Framework: Arduino](https://img.shields.io/badge/framework-Arduino-00979D.svg)
 ![Built with: PlatformIO](https://img.shields.io/badge/built%20with-PlatformIO-orange.svg)
 ![Version: 2.0](https://img.shields.io/badge/version-2.0-brightgreen.svg)
+[![build](https://github.com/luisfilipegdc/ESP32-TOOLS/actions/workflows/build.yml/badge.svg)](https://github.com/luisfilipegdc/ESP32-TOOLS/actions/workflows/build.yml)
 [![Web Installer](https://img.shields.io/badge/⚡_FLASH_FROM_BROWSER-fa4500?style=for-the-badge)](https://pepeangell5.github.io/ESP32-TOOLS/)
 </div>
 
@@ -329,6 +330,7 @@ Lista de componentes para replicar este projeto. Tudo conseguível no México pe
 - Pin headers 2.54mm
 - Case impresso em 3D (pendente para uma versão futura)
 - **Monitor de bateria** — 2× resistores de 100kΩ formando um divisor de tensão da bateria ao **GPIO 36**
+- **Cartão SD** — para log/export (opcional; compartilha o barramento SPI do NRF24)
 
 #### 🔋 Habilitando o indicador de bateria
 
@@ -337,6 +339,16 @@ O firmware já traz um indicador de bateria no header do menu principal, mas ele
 1. Monte um divisor de tensão com **2× 100kΩ**: bateria (+) → 100kΩ → **GPIO 36** → 100kΩ → GND. Isso entrega metade da tensão da bateria (LiPo de 4,2 V → ~2,1 V) ao ADC do ESP32.
 2. Em `include/Pins.h`, mude `#define BATTERY_MONITOR_ENABLED 0` para `1`.
 3. Recompile e grave. O ícone de bateria (verde/amarelo/vermelho conforme o nível) aparece no canto superior direito do menu.
+
+#### 💾 Habilitando o cartão SD (opcional)
+
+O firmware traz um módulo de armazenamento (`Storage`) que monta um cartão SD no boot, **desligado por padrão**. É a base para as próximas features de log/export (logs do Evil Portal, captura `.pcap`). Para usar:
+
+1. **Formate o cartão em FAT32.** Cartões de 64 GB ou mais costumam vir em **exFAT**, que a biblioteca SD do ESP32 lê mal — reformate para FAT32 (ex.: `guiformat` no Windows).
+2. Ligue o SD ao **barramento SPI compartilhado com o NRF24**: `SCK→25`, `MISO→26`, `MOSI→33`, e o **CS** num pino livre (padrão `SD_CS_PIN = GPIO 0`).
+3. Em `include/Pins.h`, mude `#define SD_ENABLED 0` para `1` (e ajuste `SD_CS_PIN` se usar outro pino).
+
+> ⚠️ Os pinos deste projeto são bem disputados (o display paralelo usa 12). O CS do SD divide o barramento SPI com o NRF24 e precisa de **um pino de saída livre**. O `GPIO 0` é "strapping" (funciona como CS idle-HIGH, mas se der problema de boot, troque por outro pino livre).
 
 ---
 
