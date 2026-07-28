@@ -141,7 +141,7 @@ Taxa de transmissão: ~190 beacons/seg.
 - Scan de clientes conectados (modo promíscuo)
 - Ataque dirigido a um cliente específico ou broadcast ao AP inteiro
 - **Rambo Mode**: ataque simultâneo a todas as APs com channel hopping
-- Requer patch do SDK (instruções na seção de instalação)
+- Injeção de frames já habilitada automaticamente na compilação (flag `-Wl,-zmuldefs`, sem patch manual)
 
 ---
 
@@ -472,7 +472,7 @@ Abra a pasta no VS Code. O PlatformIO detectará automaticamente o `platformio.i
 
 O firmware será compilado (~3-5 minutos na primeira vez por causa de BLE + Evil Portal + ArduinoJson) e carregado no ESP32.
 
-> **Importante:** se você compilar a partir do código-fonte e for usar as ferramentas Deauther ou Evil Portal no modo CLONE+Deauth, primeiro precisa aplicar o patch do SDK descrito mais abaixo.
+> **Nota:** a injeção de frames 802.11 (Deauther, Beacon Spam, Karma e o modo CLONE+Deauth do Evil Portal) já funciona automaticamente ao compilar, graças à flag `-Wl,-zmuldefs` no `platformio.ini` — não é mais preciso aplicar patch manual. Detalhes na seção [Injeção de frames 802.11](#-injeção-de-frames-80211-deauther--beacon-spam--karma--automático).
 
 ### Primeiro boot
 
@@ -487,29 +487,32 @@ Para esquecer a rede salva: `SYSTEM → Settings → FORGET WIFI`.
 
 ---
 
-## 🔓 Patch para o Deauther
+## 🔓 Injeção de frames 802.11 (Deauther / Beacon Spam / Karma) — automático
 
-**Só necessário se você for usar as ferramentas Deauther ou Evil Portal no modo CLONE+Deauth.** A partir do framework Arduino-ESP32 versão 2.0.7+, a Espressif bloqueia a transmissão de frames de deauth via `esp_wifi_80211_tx()`. Este patch reverte esse bloqueio.
+A partir do Arduino-ESP32 2.0.7+, a Espressif bloqueia a transmissão de frames crus via `esp_wifi_80211_tx()` (usada pelo **Deauther**, **Beacon Spam** e **Karma**), através da função `ieee80211_raw_frame_sanity_check()`.
 
-### Windows (PowerShell)
+**O projeto já resolve isso automaticamente na compilação — você NÃO precisa rodar nenhum comando manual.** Como funciona:
 
+- `Deauther.cpp` fornece um override de `ieee80211_raw_frame_sanity_check()` que sempre retorna `0` (permite todos os frames).
+- O `platformio.ini` inclui a flag de linker **`-Wl,-zmuldefs`**, que faz o linker aceitar o nosso override no lugar do da `libnet80211.a`. Como os objetos do app são ligados **antes** dos arquivos `.a` do framework, a nossa versão vence.
+
+Ou seja: **basta clonar e compilar** — a injeção funciona *out-of-the-box*, e continua funcionando mesmo se você reinstalar o PlatformIO ou atualizar o framework (sem o problema antigo de "reaplicar o patch").
+
+<details>
+<summary>Método antigo (objcopy manual) — não é mais necessário</summary>
+
+Antes esta correção exigia rodar `objcopy --weaken-symbol` sobre a `libnet80211.a` na mão, e reaplicar a cada atualização do framework. A flag `-Wl,-zmuldefs` substitui isso. Comandos legados, só para referência:
+
+**Windows (PowerShell):**
 ```powershell
 C:\Users\SEU_USUARIO\.platformio\packages\toolchain-xtensa-esp32\bin\xtensa-esp32-elf-objcopy.exe --weaken-symbol=ieee80211_raw_frame_sanity_check C:\Users\SEU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a C:\Users\SEU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a
 ```
 
-Substitua `SEU_USUARIO` pelo seu nome de usuário do Windows.
-
-### Linux / macOS
-
+**Linux / macOS:**
 ```bash
 ~/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-objcopy --weaken-symbol=ieee80211_raw_frame_sanity_check ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/lib/libnet80211.a ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/lib/libnet80211.a
 ```
-
-### Como funciona
-
-`objcopy --weaken-symbol` marca a função `ieee80211_raw_frame_sanity_check` como "fraca". Isso permite que o firmware forneça sua própria versão, que sempre retorna 0 (já incluída em `Deauther.cpp`), fazendo com que todos os frames passem para o rádio.
-
-> **Se você reinstalar o PlatformIO ou atualizar o framework, é preciso reaplicar o patch.**
+</details>
 
 ---
 

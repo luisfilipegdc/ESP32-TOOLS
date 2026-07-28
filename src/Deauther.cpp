@@ -9,8 +9,11 @@
 extern TFT_eSPI tft;
 // ═══════════════════════════════════════════════════════════════════════════
 //  PATCH · anula a validação de frames 802.11
-//  Este override só funciona se o comando objcopy --weaken-symbol foi aplicado
-//  sobre libnet80211.a (veja o README do projeto)
+//  A partir do Arduino-ESP32 2.0.7+, a Espressif bloqueia esp_wifi_80211_tx()
+//  via ieee80211_raw_frame_sanity_check(). Este override retorna 0 (sempre
+//  permitir). Para que o LINKER use esta versão em vez da da libnet80211.a,
+//  o projeto usa a flag -Wl,-zmuldefs (definida no platformio.ini) — portanto
+//  NÃO é mais preciso rodar objcopy --weaken-symbol manualmente.
 // ═══════════════════════════════════════════════════════════════════════════
 extern "C" int ieee80211_raw_frame_sanity_check(int32_t arg,
                                                  int32_t arg2,

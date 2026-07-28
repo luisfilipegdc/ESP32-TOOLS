@@ -306,21 +306,25 @@ Estes usam o **rádio Bluetooth interno do ESP32** (stack `BLEDevice`/`esp_gap_b
 
 ---
 
-## 13. ⚠️ A dependência crítica do patch (leia com atenção)
+## 13. Injeção de frames 802.11 — de "patch manual frágil" para automático ✅
 
-Três ferramentas — **Deauther, Beacon Spam e Karma** — precisam **injetar frames 802.11 crus** via `esp_wifi_80211_tx()`. O SDK do ESP32 **bloqueia** esses frames através da função `ieee80211_raw_frame_sanity_check()`.
+Três ferramentas — **Deauther, Beacon Spam e Karma** — precisam **injetar frames 802.11 crus** via `esp_wifi_80211_tx()`. O SDK do ESP32 **bloqueia** esses frames através da função `ieee80211_raw_frame_sanity_check()`. O projeto contorna isso com um *override* em C (em `Deauther.cpp`) que sempre retorna 0.
 
-O projeto contorna isso com um *override* em C (em `Deauther.cpp`) que retorna 0 — **mas ele só surte efeito se um patch manual de compilação for aplicado**:
+**O problema antigo (corrigido):** esse override só surtia efeito se um **patch manual** fosse aplicado a cada máquina/atualização (`objcopy --weaken-symbol` sobre a `libnet80211.a`). Se o build não fosse patcheado, os frames eram rejeitados silenciosamente — **mas os contadores na tela continuavam subindo**. Era o ponto onde *"a tela mentia"*.
+
+**A correção (atual):** o `platformio.ini` passou a incluir a flag de linker
 
 ```
-objcopy --weaken-symbol=ieee80211_raw_frame_sanity_check libnet80211.a
+-Wl,-zmuldefs
 ```
 
-(documentado no `README.md` e em `parche para deauth funcional.txt`).
+Ela permite ao linker aceitar o nosso `ieee80211_raw_frame_sanity_check()` no lugar do da `libnet80211.a`. Como os objetos do app são ligados **antes** dos arquivos `.a` do framework, a nossa versão vence. Resultado: **a injeção funciona automaticamente ao compilar (`clonar → build → funciona`)**, sem objcopy manual e sem quebrar em atualizações do framework.
 
-> **Sem esse patch, os frames são rejeitados silenciosamente pelo rádio — porém os contadores na tela (`deauthPackets`, `beaconsSent`) continuam subindo.** É exatamente o ponto onde **"a tela mente"**: parece funcionar, mas nada é transmitido.
+> ✅ **Agora a tela não mente mais** nesses três módulos: ao compilar o código-fonte atual, os frames realmente saem no ar. (A eficácia física ainda depende de ambiente — mas o caminho de transmissão está ativo.)
 
-**Não dependem do patch** (funcionam sempre): WiFi Scanner, Probe Sniffer, Packet Monitor, **Evil Portal** (captura), BLE Scanner, BLE Spam, Radio Scanner, Radio Jammer.
+**Nunca dependeram de patch** (sempre funcionaram): WiFi Scanner, Probe Sniffer, Packet Monitor, **Evil Portal** (captura), BLE Scanner, BLE Spam, Radio Scanner, Radio Jammer.
+
+> 🔎 **Melhoria complementar recomendada:** fazer os contadores (`deauthPackets`, `beaconsSent`) incrementarem **só quando `esp_wifi_80211_tx()` retorna `ESP_OK`** — assim a tela reflete transmissões reais, não apenas chamadas de envio.
 
 ---
 
@@ -329,11 +333,11 @@ objcopy --weaken-symbol=ieee80211_raw_frame_sanity_check libnet80211.a
 | Ferramenta | Rádio/HW | Status | Observação |
 |---|---|---|---|
 | WiFi Scanner | WiFi interno | ✅ REAL | scan + OUI |
-| Beacon Spam | WiFi interno | 🟡 depende do patch | senão não transmite |
-| Deauther | WiFi interno | 🟡 depende do patch | técnica real |
+| Beacon Spam | WiFi interno | ✅ REAL | injeção automática (`-zmuldefs`) |
+| Deauther | WiFi interno | ✅ REAL | injeção automática (`-zmuldefs`) |
 | **Evil Portal** | WiFi interno | ✅ REAL | captura salva na flash |
 | Probe Sniffer | WiFi interno | ✅ REAL | só recebe |
-| Karma | WiFi interno | 🟡 PARCIAL | beacon spam, não KARMA real |
+| Karma | WiFi interno | 🟡 PARCIAL | injeção OK; ainda é beacon spam, não KARMA real |
 | Radio Scanner | **NRF24** | ✅ REAL | carrier detection |
 | Radio Jammer | **NRF24** | 🟡 REAL | eficácia física limitada |
 | BLE Scanner | BT interno | ✅ REAL | scan genuíno |
@@ -343,7 +347,12 @@ objcopy --weaken-symbol=ieee80211_raw_frame_sanity_check libnet80211.a
 | Clock/Weather | WiFi interno | ✅ REAL | APIs reais + fallback |
 | System Info | — | ✅ REAL | exceto temperatura |
 
-**Resumo:** o firmware é **majoritariamente honesto** — bem mais sério que o marketing (não há "iPhone unlock" no código). Os pontos a corrigir para 100% de integridade são: **(1)** deixar claro/garantir o patch nos três injetores; **(2)** reescrever o **BT Disruptor** para fazer o que anuncia (ou renomear honestamente); **(3)** completar o **Karma** (probe responses + associação) ou renomear para "Beacon Spam dirigido"; **(4)** só incrementar contadores quando o TX realmente ocorre.
+**Resumo:** o firmware é **majoritariamente honesto** — bem mais sério que o marketing (não há "iPhone unlock" no código). Pontos de integridade:
+
+- **(1)** ✅ **Feito** — injeção 802.11 (Deauther/Beacon Spam/Karma) agora funciona **automaticamente** ao compilar, via `-Wl,-zmuldefs` (não precisa mais do patch manual — ver §13).
+- **(2)** ⏳ Reescrever o **BT Disruptor** para fazer o que anuncia (ou renomear honestamente).
+- **(3)** ⏳ Completar o **Karma** (probe responses + associação) ou renomear para "Beacon Spam dirigido".
+- **(4)** ⏳ Só incrementar contadores quando o TX realmente ocorre (`esp_wifi_80211_tx() == ESP_OK`).
 
 ---
 
