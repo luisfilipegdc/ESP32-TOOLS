@@ -110,8 +110,8 @@ static void sendDeauth(const uint8_t target[6], const uint8_t bssid[6]) {
     memcpy(&deauthFrame[4],  target, 6);   // destination
     memcpy(&deauthFrame[10], bssid,  6);   // source (BSSID)
     memcpy(&deauthFrame[16], bssid,  6);   // BSSID
-    esp_wifi_80211_tx(WIFI_IF_STA, deauthFrame, sizeof(deauthFrame), false);
-    deauthPackets++;
+    if (esp_wifi_80211_tx(WIFI_IF_STA, deauthFrame, sizeof(deauthFrame), false) == ESP_OK)
+        deauthPackets++;   // conta só transmissões que o rádio realmente aceitou
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

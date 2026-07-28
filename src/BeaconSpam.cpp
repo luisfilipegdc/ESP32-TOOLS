@@ -261,9 +261,8 @@ static void sendBeacon(const char* ssid, int channel) {
 
     // ── Transmitir ──────────────────────────────────────────────────────
     // Canal 0 = interface WIFI_IF_STA (requer que o canal já esteja fixado)
-    esp_wifi_80211_tx(WIFI_IF_STA, beaconFrame, frameLen, false);
-
-    beaconsSent++;
+    if (esp_wifi_80211_tx(WIFI_IF_STA, beaconFrame, frameLen, false) == ESP_OK)
+        beaconsSent++;   // conta só transmissões que o rádio realmente aceitou
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

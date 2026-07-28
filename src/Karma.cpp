@@ -106,8 +106,8 @@ static void sendKarmaBeacon(const char* ssid, int channel) {
 
     int totalLen = trailerOffset + sizeof(beaconTrailer);
 
-    esp_wifi_80211_tx(WIFI_IF_STA, beaconTemplate, totalLen, false);
-    totalBeacons++;
+    if (esp_wifi_80211_tx(WIFI_IF_STA, beaconTemplate, totalLen, false) == ESP_OK)
+        totalBeacons++;   // conta só transmissões que o rádio realmente aceitou
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -139,8 +139,8 @@ static bool showDisclaimer() {
     drawStringCustom(10, y, "celulares proximos e os",       UI_MAIN, 1); y += 12;
     drawStringCustom(10, y, "anuncia como redes existentes.", UI_MAIN, 1); y += 20;
 
-    drawStringCustom(10, y, "Dispositivos vulneraveis se",    UI_ACCENT, 1); y += 12;
-    drawStringCustom(10, y, "conectarao AUTOMATICAMENTE.",    UI_ACCENT, 1); y += 20;
+    drawStringCustom(10, y, "As redes so APARECEM na lista;",  UI_ACCENT, 1); y += 12;
+    drawStringCustom(10, y, "nao forca conexao (beacon spam).",UI_ACCENT, 1); y += 20;
 
     drawStringCustom(10, y, "Uso LEGAL:",                      TFT_GREEN, 1); y += 12;
     drawStringCustom(20, y, "- Auditorias autorizadas",        UI_ACCENT, 1); y += 12;

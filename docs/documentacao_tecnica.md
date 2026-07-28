@@ -280,12 +280,14 @@ Estes usam o **rádio Bluetooth interno do ESP32** (stack `BLEDevice`/`esp_gap_b
 - **Por dentro:** monta **payloads de advertising reais** de cada protocolo (Apple Continuity 0x07, Samsung Easy Setup, Microsoft Swift Pair, Google Fast Pair 0xFE2C), randomiza a MAC a cada pacote e emite ~50 pkt/s em potência máxima.
 - **Honestidade:** advertising **genuíno**, com formatos corretos. A barra de atividade é cosmética, mas `packetsSent` é real.
 
-### 10.3 BT Disruptor — ⚠️ ENCENAÇÃO (parcial)
-- **O que faz (na tela):** ataque "dirigido" a um dispositivo escolhido, com modos *Connect Flood*, *L2CAP Ping Storm*, *Spoof Identity*, *Chaos*.
-- **O que faz de verdade:** apenas **BLE advertising com payload aleatório** — a mesma mecânica do BLE Spam, com nomes agressivos.
-  - *Connect Flood* e *L2CAP Storm* **não existem**: só preenchem buffers com `random()` + alguns bytes da MAC do alvo. **Nenhuma conexão é aberta** (`BLEClient.h` é incluído mas nunca instanciado); **nenhum pacote L2CAP** é gerado.
-  - Só *Spoof Identity* realmente usa a MAC do alvo (via `esp_ble_gap_set_rand_addr`).
-- **Honestidade:** o scan de alvos e a transmissão de advertisement são reais, mas os "ataques" nomeados **não são implementados** e o alvo em geral **não é afetado** (advertisement broadcast não derruba terceiros). O contador conta atualizações de buffer, não transmissões. **É o principal caso de "teatro" do firmware.**
+### 10.3 BT Disruptor — ✅ HONESTO (após correção)
+- **O que faz:** escaneia dispositivos BLE, você escolhe um alvo, e o firmware transmite **advertisements BLE forjados** — em dois modos honestos:
+  - **Adv Flood:** spam de advertisements aleatórios (com alguns bytes da MAC do alvo embutidos), MAC do ESP32 girando.
+  - **Spoof Identity:** clona a **MAC do alvo** (via `esp_ble_gap_set_rand_addr`) nos advertisements.
+  - **Chaos:** alterna os dois.
+- **Efeito real:** polui o ar 2.4 GHz / pode gerar pop-ups e incômodo em aparelhos próximos. **Não** conecta nem "derruba" um dispositivo específico — advertisement é broadcast.
+- **Correção aplicada (honestidade):** o modo falso *"L2CAP Ping Storm"* (que não gerava nenhum pacote L2CAP) e o código morto (`executeAttackTick`) foram **removidos**; *"Connect Flood"* virou **Adv Flood** (nome real); o disclaimer passou a dizer a verdade ("spam + MAC spoof, incômodo — não é takedown"); e a barra de atividade agora é **proporcional ao rate real**.
+- **Melhoria futura:** um **connect-flood REAL** (via `BLEClient`, conexões repetidas ao alvo) — a construir e **testar no hardware**.
 
 ---
 
@@ -342,7 +344,7 @@ Ela permite ao linker aceitar o nosso `ieee80211_raw_frame_sanity_check()` no lu
 | Radio Jammer | **NRF24** | 🟡 REAL | eficácia física limitada |
 | BLE Scanner | BT interno | ✅ REAL | scan genuíno |
 | BLE Spam | BT interno | ✅ REAL | advertising real |
-| **BT Disruptor** | BT interno | ⚠️ ENCENAÇÃO | ataques nomeados não implementados |
+| **BT Disruptor** | BT interno | ✅ HONESTO | renomeado: adv spam + MAC spoof (sem "attack" falso) |
 | Packet Monitor | WiFi interno | ✅ REAL | contagem real |
 | Clock/Weather | WiFi interno | ✅ REAL | APIs reais + fallback |
 | System Info | — | ✅ REAL | exceto temperatura |
@@ -350,9 +352,9 @@ Ela permite ao linker aceitar o nosso `ieee80211_raw_frame_sanity_check()` no lu
 **Resumo:** o firmware é **majoritariamente honesto** — bem mais sério que o marketing (não há "iPhone unlock" no código). Pontos de integridade:
 
 - **(1)** ✅ **Feito** — injeção 802.11 (Deauther/Beacon Spam/Karma) agora funciona **automaticamente** ao compilar, via `-Wl,-zmuldefs` (não precisa mais do patch manual — ver §13).
-- **(2)** ⏳ Reescrever o **BT Disruptor** para fazer o que anuncia (ou renomear honestamente).
-- **(3)** ⏳ Completar o **Karma** (probe responses + associação) ou renomear para "Beacon Spam dirigido".
-- **(4)** ⏳ Só incrementar contadores quando o TX realmente ocorre (`esp_wifi_80211_tx() == ESP_OK`).
+- **(2)** ✅ **Feito (honestidade)** — o **BT Disruptor** foi renomeado para refletir a realidade: modos **Adv Flood** / **Spoof Identity** / **Chaos**; o falso "L2CAP Ping Storm" e o código morto foram removidos; o aviso agora diz que é *spam de advertisement + spoof de MAC (incômodo)*, não um "takedown". *(Um connect-flood REAL via `BLEClient` fica como melhoria a testar no hardware.)*
+- **(3)** ✅ **Feito (honestidade)** — o **Karma** não promete mais "conexão automática": o aviso agora diz que as redes *só aparecem na lista* (beacon spam dirigido). *(KARMA completo — probe responses + associação — segue como melhoria futura.)*
+- **(4)** ✅ **Feito** — contadores (`deauthPackets`, `beaconsSent`, `totalBeacons`) só incrementam quando `esp_wifi_80211_tx()` retorna `ESP_OK`. A barra de atividade do BT Disruptor agora é proporcional ao *rate* real (não mais `random()`).
 
 ---
 

