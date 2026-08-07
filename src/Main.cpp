@@ -60,21 +60,11 @@ void setup() {
     digitalWrite(4, HIGH); delay(100);
 
     tft.begin();
-    tft.setRotation(1);
-
-    tft.fillScreen(TFT_BLACK);
-
-
-    tft.begin();
-    tft.setRotation(1);
-
+    tft.setRotation(1);          // landscape 320x240
     tft.fillScreen(TFT_BLACK);
 
     // ── Splash screen (espera o usuário pressionar OK) ──────────────────
     runSplashScreen();
-
-    // ── Menu principal (loop infinito, nunca retorna) ───────────────────
-    runMainMenu();
 
     // ── Menu principal (loop infinito, nunca retorna) ───────────────────
     runMainMenu();

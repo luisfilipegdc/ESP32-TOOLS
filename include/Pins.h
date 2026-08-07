@@ -2,9 +2,14 @@
 #pragma once
 
 // ── Botões ──────────────────────────
-#define BTN_UP    34
-#define BTN_OK    35
-#define BTN_DOWN  23
+// ATENCAO (hardware): GPIO 34 e 35 sao ENTRADA-ONLY e NAO tem pull-up interno.
+// Com a tela paralela ocupando todos os pinos com pull-up, os botoes UP/OK
+// PRECISAM de um resistor de PULL-UP EXTERNO (10k entre o pino e 3V3); o botao
+// liga o pino ao GND. O DOWN (GPIO23) tem pull-up interno e dispensa resistor.
+// (Botao pressionado = nivel LOW, como o codigo espera.)
+#define BTN_UP    34   // precisa de pull-up externo 10k -> 3V3
+#define BTN_OK    35   // precisa de pull-up externo 10k -> 3V3
+#define BTN_DOWN  23   // pull-up interno OK
 
 // ── Buzzer ───────────────────────────
 #define BUZZER_PIN 22
