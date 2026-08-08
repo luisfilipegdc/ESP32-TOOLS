@@ -1,0 +1,18 @@
+# Vercel: publicar SOMENTE o web flasher.
+# Mantem apenas: index.html, manifest.json e firmware/firmware-merged.bin
+# Ignora o resto do projeto (codigo-fonte, imagens, releases) pra deixar
+# o deploy leve e rapido.
+src/
+include/
+.pio/
+docs/
+img/
+assets/
+.github/
+.vscode/
+Releases anteriores/
+*.rar
+platformio.ini
+README.md
+parche para deauth funcional.txt
+LICENSE
