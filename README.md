@@ -15,6 +15,7 @@
 ![Framework: Arduino](https://img.shields.io/badge/framework-Arduino-00979D.svg)
 ![Built with: PlatformIO](https://img.shields.io/badge/built%20with-PlatformIO-orange.svg)
 ![Version: 2.0](https://img.shields.io/badge/version-2.0-brightgreen.svg)
+[![build](https://github.com/luisfilipegdc/ESP32-TOOLS/actions/workflows/build.yml/badge.svg)](https://github.com/luisfilipegdc/ESP32-TOOLS/actions/workflows/build.yml)
 [![Web Installer](https://img.shields.io/badge/⚡_FLASH_FROM_BROWSER-fa4500?style=for-the-badge)](https://pepeangell5.github.io/ESP32-TOOLS/)
 </div>
 
@@ -51,6 +52,8 @@ A v2.0 expande massivamente o firmware com **6 ferramentas novas**, um **sistema
 **ESP32-TOOLS** é um firmware completo para uma multiferramenta portátil baseada em ESP32, projetada para testes de segurança WiFi e Bluetooth. Inclui scanner de redes, analisador de espectro, monitor de pacotes, gerador de beacons, deauther, disruptor Bluetooth, evil portal, KARMA attack, relógio com clima ao vivo e mais — tudo com uma interface própria estilo console retrô e nosso mascote oficial: um axolote de óculos escuros. 😎
 
 Inspirado em projetos como **Flipper Zero**, **ESP32 Marauder** e **Bruce**, mas construído do zero com personalidade própria, em espanhol, e pensado para a comunidade maker de língua hispânica.
+
+> 📘 **Novo:** há um **[guia visual e didático do sistema](docs/guia_visual.html)** (arquitetura, hardware peça por peça, as 14 ferramentas e fluxos de dados, com diagramas). Abra no navegador — ideal para estudar como o firmware funciona por dentro.
 
 ---
 
@@ -138,7 +141,7 @@ Taxa de transmissão: ~190 beacons/seg.
 - Scan de clientes conectados (modo promíscuo)
 - Ataque dirigido a um cliente específico ou broadcast ao AP inteiro
 - **Rambo Mode**: ataque simultâneo a todas as APs com channel hopping
-- Requer patch do SDK (instruções na seção de instalação)
+- Injeção de frames já habilitada automaticamente na compilação (flag `-Wl,-zmuldefs`, sem patch manual)
 
 ---
 
@@ -156,11 +159,13 @@ Portal cativo completo com AP falso + DNS spoofing + servidor HTTP. Quando um di
 - 🟢 **Modo SIMPLE** — AP fixo com um de 10 SSIDs predefinidos (`INFINITUM_5G_LIBRE`, `TOTALPLAY_INVITADOS`, `Starbucks_Clientes`, `OXXO_WiFi_Gratis`, etc.). Ideal para demos.
 - 🔴 **Modo CLONE + Deauth** — escaneia a rede real, **clona seu SSID e canal**, e simultaneamente dispara ataques deauth contra a rede original para forçar os clientes a reconectar ao clone.
 
-**4 plataformas de phishing:**
+**6 plataformas de phishing:**
 - 📘 Facebook com SVG circular oficial
 - 🟢 Google com logo colorido
 - 📸 Instagram com gradiente + ícone de câmera
 - 🎵 TikTok com logo ciano/magenta
+- ✖️ X (Twitter) com logo oficial, tema escuro
+- 🔴 Netflix com wordmark vermelho
 
 Depois de capturar credenciais, redireciona para `/success`, que rebota para `google.com` para não levantar suspeitas.
 
@@ -327,6 +332,7 @@ Lista de componentes para replicar este projeto. Tudo conseguível no México pe
 - Pin headers 2.54mm
 - Case impresso em 3D (pendente para uma versão futura)
 - **Monitor de bateria** — 2× resistores de 100kΩ formando um divisor de tensão da bateria ao **GPIO 36**
+- **Cartão SD** — para log/export (opcional; compartilha o barramento SPI do NRF24)
 
 #### 🔋 Habilitando o indicador de bateria
 
@@ -335,6 +341,16 @@ O firmware já traz um indicador de bateria no header do menu principal, mas ele
 1. Monte um divisor de tensão com **2× 100kΩ**: bateria (+) → 100kΩ → **GPIO 36** → 100kΩ → GND. Isso entrega metade da tensão da bateria (LiPo de 4,2 V → ~2,1 V) ao ADC do ESP32.
 2. Em `include/Pins.h`, mude `#define BATTERY_MONITOR_ENABLED 0` para `1`.
 3. Recompile e grave. O ícone de bateria (verde/amarelo/vermelho conforme o nível) aparece no canto superior direito do menu.
+
+#### 💾 Habilitando o cartão SD (opcional)
+
+O firmware traz um módulo de armazenamento (`Storage`) que monta um cartão SD no boot, **desligado por padrão**. É a base para as próximas features de log/export (logs do Evil Portal, captura `.pcap`). Para usar:
+
+1. **Formate o cartão em FAT32.** Cartões de 64 GB ou mais costumam vir em **exFAT**, que a biblioteca SD do ESP32 lê mal — reformate para FAT32 (ex.: `guiformat` no Windows).
+2. Ligue o SD ao **barramento SPI compartilhado com o NRF24**: `SCK→25`, `MISO→26`, `MOSI→33`, e o **CS** num pino livre (padrão `SD_CS_PIN = GPIO 0`).
+3. Em `include/Pins.h`, mude `#define SD_ENABLED 0` para `1` (e ajuste `SD_CS_PIN` se usar outro pino).
+
+> ⚠️ Os pinos deste projeto são bem disputados (o display paralelo usa 12). O CS do SD divide o barramento SPI com o NRF24 e precisa de **um pino de saída livre**. O `GPIO 0` é "strapping" (funciona como CS idle-HIGH, mas se der problema de boot, troque por outro pino livre).
 
 ---
 
@@ -456,7 +472,7 @@ Abra a pasta no VS Code. O PlatformIO detectará automaticamente o `platformio.i
 
 O firmware será compilado (~3-5 minutos na primeira vez por causa de BLE + Evil Portal + ArduinoJson) e carregado no ESP32.
 
-> **Importante:** se você compilar a partir do código-fonte e for usar as ferramentas Deauther ou Evil Portal no modo CLONE+Deauth, primeiro precisa aplicar o patch do SDK descrito mais abaixo.
+> **Nota:** a injeção de frames 802.11 (Deauther, Beacon Spam, Karma e o modo CLONE+Deauth do Evil Portal) já funciona automaticamente ao compilar, graças à flag `-Wl,-zmuldefs` no `platformio.ini` — não é mais preciso aplicar patch manual. Detalhes na seção [Injeção de frames 802.11](#-injeção-de-frames-80211-deauther--beacon-spam--karma--automático).
 
 ### Primeiro boot
 
@@ -471,29 +487,32 @@ Para esquecer a rede salva: `SYSTEM → Settings → FORGET WIFI`.
 
 ---
 
-## 🔓 Patch para o Deauther
+## 🔓 Injeção de frames 802.11 (Deauther / Beacon Spam / Karma) — automático
 
-**Só necessário se você for usar as ferramentas Deauther ou Evil Portal no modo CLONE+Deauth.** A partir do framework Arduino-ESP32 versão 2.0.7+, a Espressif bloqueia a transmissão de frames de deauth via `esp_wifi_80211_tx()`. Este patch reverte esse bloqueio.
+A partir do Arduino-ESP32 2.0.7+, a Espressif bloqueia a transmissão de frames crus via `esp_wifi_80211_tx()` (usada pelo **Deauther**, **Beacon Spam** e **Karma**), através da função `ieee80211_raw_frame_sanity_check()`.
 
-### Windows (PowerShell)
+**O projeto já resolve isso automaticamente na compilação — você NÃO precisa rodar nenhum comando manual.** Como funciona:
 
+- `Deauther.cpp` fornece um override de `ieee80211_raw_frame_sanity_check()` que sempre retorna `0` (permite todos os frames).
+- O `platformio.ini` inclui a flag de linker **`-Wl,-zmuldefs`**, que faz o linker aceitar o nosso override no lugar do da `libnet80211.a`. Como os objetos do app são ligados **antes** dos arquivos `.a` do framework, a nossa versão vence.
+
+Ou seja: **basta clonar e compilar** — a injeção funciona *out-of-the-box*, e continua funcionando mesmo se você reinstalar o PlatformIO ou atualizar o framework (sem o problema antigo de "reaplicar o patch").
+
+<details>
+<summary>Método antigo (objcopy manual) — não é mais necessário</summary>
+
+Antes esta correção exigia rodar `objcopy --weaken-symbol` sobre a `libnet80211.a` na mão, e reaplicar a cada atualização do framework. A flag `-Wl,-zmuldefs` substitui isso. Comandos legados, só para referência:
+
+**Windows (PowerShell):**
 ```powershell
 C:\Users\SEU_USUARIO\.platformio\packages\toolchain-xtensa-esp32\bin\xtensa-esp32-elf-objcopy.exe --weaken-symbol=ieee80211_raw_frame_sanity_check C:\Users\SEU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a C:\Users\SEU_USUARIO\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a
 ```
 
-Substitua `SEU_USUARIO` pelo seu nome de usuário do Windows.
-
-### Linux / macOS
-
+**Linux / macOS:**
 ```bash
 ~/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-objcopy --weaken-symbol=ieee80211_raw_frame_sanity_check ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/lib/libnet80211.a ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/lib/libnet80211.a
 ```
-
-### Como funciona
-
-`objcopy --weaken-symbol` marca a função `ieee80211_raw_frame_sanity_check` como "fraca". Isso permite que o firmware forneça sua própria versão, que sempre retorna 0 (já incluída em `Deauther.cpp`), fazendo com que todos os frames passem para o rádio.
-
-> **Se você reinstalar o PlatformIO ou atualizar o framework, é preciso reaplicar o patch.**
+</details>
 
 ---
 
@@ -584,7 +603,6 @@ Ideias para versões seguintes (pull requests são bem-vindos):
 - [ ] **Case imprimível em 3D** com design dedicado
 - [ ] **Suporte a cartão SD** (log de capturas, export pcap)
 - [ ] **OTA updates** via web (aproveitando o WiFi Config existente)
-- [ ] **Mais plataformas no Evil Portal** (Twitter/X, Netflix, bancos)
 
 ### ✅ Concluído na v2.0
 
@@ -596,6 +614,7 @@ Ideias para versões seguintes (pull requests são bem-vindos):
 - [x] WiFi Config persistente com teclado virtual
 - [x] Seletor manual de timezone em `Settings` (com fusos do Brasil)
 - [x] Indicador de bateria no header (opcional — ver abaixo)
+- [x] Mais plataformas no Evil Portal (X/Twitter e Netflix)
 
 ---
 

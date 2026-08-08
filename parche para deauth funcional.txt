@@ -1,3 +1,19 @@
+========================================================================
+ OBSOLETO — NÃO É MAIS NECESSÁRIO
+========================================================================
+A injeção de frames 802.11 (Deauther / Beacon Spam / Karma) agora funciona
+AUTOMATICAMENTE ao compilar, graças à flag de linker -Wl,-zmuldefs adicionada
+no platformio.ini. Não é mais preciso rodar o objcopy manual abaixo, e ele
+não quebra mais quando você atualiza/reinstala o framework.
+
+Veja a seção "Injeção de frames 802.11" no README.md.
+
+Este arquivo é mantido apenas como referência histórica do método antigo.
+========================================================================
+
+
+MÉTODO ANTIGO (objcopy manual) — apenas para referência:
+
 Abra o PowerShell e execute este comando (substitua PepeAngell pelo seu usuário, se aplicável) —
 
 C:\Users\PepeAngell\.platformio\packages\toolchain-xtensa-esp32\bin\xtensa-esp32-elf-objcopy.exe --weaken-symbol=ieee80211_raw_frame_sanity_check C:\Users\PepeAngell\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a C:\Users\PepeAngell\.platformio\packages\framework-arduinoespressif32\tools\sdk\esp32\lib\libnet80211.a
@@ -7,13 +23,11 @@ C:\Users\PepeAngell\.platformio\packages\toolchain-xtensa-esp32\bin\xtensa-esp32
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  PATCH · anula a validação de frames 802.11
-//  Este override só funciona se o comando objcopy --weaken-symbol tiver sido
-//  aplicado sobre libnet80211.a (veja o README do projeto)
+//  (o override abaixo já está em Deauther.cpp; hoje é ativado pela flag
+//   -Wl,-zmuldefs do platformio.ini, sem precisar do objcopy acima)
 // ═══════════════════════════════════════════════════════════════════════════
 extern "C" int ieee80211_raw_frame_sanity_check(int32_t arg,
                                                  int32_t arg2,
                                                  int32_t arg3) {
     return 0;   // sempre permitir
 }
-
-

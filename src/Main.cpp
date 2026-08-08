@@ -6,6 +6,7 @@
 #include "Settings.h"
 #include "NVSStore.h"
 #include "SplashScreen.h"
+#include "Storage.h"
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ESP32-TOOLS · Firmware principal
@@ -48,27 +49,22 @@ void setup() {
     loadPreferences();
     bumpBootCount();
 
+    // ── Cartão SD (opcional, no-op se SD_ENABLED == 0) ──────────────────
+    if (storageBegin()) {
+        Serial.println("[SD] Cartao montado");
+    }
+
     // ── Reset da tela ───────────────────────────────────────────────────
     pinMode(4, OUTPUT);
     digitalWrite(4, LOW);  delay(100);
     digitalWrite(4, HIGH); delay(100);
 
     tft.begin();
-    tft.setRotation(1);
-
-    tft.fillScreen(TFT_BLACK);
-
-
-    tft.begin();
-    tft.setRotation(1);
-
+    tft.setRotation(1);          // landscape 320x240
     tft.fillScreen(TFT_BLACK);
 
     // ── Splash screen (espera o usuário pressionar OK) ──────────────────
     runSplashScreen();
-
-    // ── Menu principal (loop infinito, nunca retorna) ───────────────────
-    runMainMenu();
 
     // ── Menu principal (loop infinito, nunca retorna) ───────────────────
     runMainMenu();
